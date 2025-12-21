@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gökhan Özen</title>
+    <link rel="icon" href="https://gman.dev/favicon" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'], // Kodlar için özel font
+                    },
+                    colors: {
+                        primary: '#6366f1', // Indigo 500
+                        secondary: '#a855f7', // Purple 500
+                        dark: '#0f172a',    // Slate 900
+                        card: '#1e293b',    // Slate 800 (Yetenek kutusu rengi)
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Özel scrollbar tasarımı */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        /* Video Aspect Ratio Fix */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-dark text-slate-300 font-sans antialiased selection:bg-primary selection:text-white">
+
+    <nav class="fixed w-full z-50 top-0 start-0 border-b border-slate-800 bg-dark/90 backdrop-blur-md">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center space-x-2 rtl:space-x-reverse group">
+                <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-lg group-hover:rotate-12 transition-transform shadow-lg shadow-indigo-500/30">G</div>
+                <span class="self-center text-xl font-bold whitespace-nowrap text-white">Gökhan<span class="text-primary">.dev</span></span>
+            </a>
+            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-slate-400 rounded-lg md:hidden hover:bg-slate-800 focus:outline-none" aria-controls="navbar-default" aria-expanded="false" id="menu-btn">
+                <span class="sr-only">Menüyü aç</span>
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-slate-800 rounded-lg bg-slate-900 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent">
+                    <li><a href="#home" class="block py-2 px-3 text-white bg-primary rounded md:bg-transparent md:text-primary md:p-0">Home</a></li>
+                    <li><a href="#about" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">About</a></li>
+                    <li><a href="#skills" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Skills</a></li>
+                    <li><a href="#projects" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Projects</a></li>
+                    <li><a href="#media" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Media</a></li>
+                    <li><a href="#contact" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center justify-center pt-20 pb-10 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="text-center px-4 max-w-5xl mx-auto relative z-10">
+            <div class="relative inline-block mb-8">
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-75 animate-pulse"></div>
+                <img class="relative w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-slate-800 object-cover mx-auto shadow-2xl" src="https://gman.dev/a/vesikadusuk" alt="Gökhan Özen">
+            </div>
+            
+            <h1 class="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-white md:text-6xl lg:text-7xl">
+                Merhaba, ben <br class="block md:hidden" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400 whitespace-nowrap">Gökhan Özen</span>
+            </h1>
+            
+            <p class="mb-10 text-lg font-normal text-slate-400 lg:text-2xl sm:px-16 lg:px-48 leading-relaxed">
+                Backend Developer & Computer Science Student.
+                <br class="hidden md:block">Karmaşık problemleri basit, ölçeklenebilir kodlara dönüştürüyorum.
+            </p>
+            
+            <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+                <a href="#projects" class="inline-flex justify-center items-center py-3 px-6 text-base font-semibold text-center text-white rounded-full bg-primary hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-900 transition-all shadow-lg hover:shadow-indigo-500/25">
+                    Projelerimi Gör
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#contact" class="inline-flex justify-center items-center py-3 px-6 text-base font-semibold text-center text-slate-300 rounded-full border border-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-600 focus:ring-4 focus:ring-slate-800 transition-all">
+                    İletişime Geç
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-slate-900/50">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Hakkımda</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+            </div>
+            <div class="max-w-3xl mx-auto text-slate-300 leading-relaxed text-lg space-y-6 bg-card p-8 rounded-2xl border border-slate-800 shadow-xl relative">
+                <i class="fas fa-quote-left absolute top-6 left-6 text-4xl text-slate-700 opacity-50"></i>
+                <div class="pl-6">
+                    <p>
+                        Merhaba! Ben <strong>Gökhan Özen</strong>. Yazılım geliştirme dünyasındaki yolculuğuma yeni başlamış olmama rağmen, bu heyecan verici alana olan tutkum her geçen gün artıyor. Özellikle <strong>Backend Development</strong> ve <strong>Yapay Zeka modelleri</strong> ile ilgileniyor, sürekli yeni projeler üzerinde çalışıyorum.
+                    </p>
+                    <p class="mt-4">
+                        Bu yolculukta, farklı ihtiyaçlara yönelik benzersiz çözümler üretmek için kendimi geliştirmeye adadım. <strong>API tasarımı</strong>, verimli <strong>veritabanı yapıları</strong> oluşturma ve sistemlerin sorunsuz çalışmasını sağlama konularında uzmanlaşıyorum.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Yetenekler</h2>
+                <p class="mt-4 text-slate-400">Kullandığım teknolojiler ve araçlar</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-indigo-400 font-semibold hover:border-indigo-500 hover:bg-indigo-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-js text-xl me-2"></i>JavaScript</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-cyan-400 font-semibold hover:border-cyan-500 hover:bg-cyan-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-golang text-xl me-2"></i>Go</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-yellow-400 font-semibold hover:border-yellow-500 hover:bg-yellow-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-python text-xl me-2"></i>Python</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-orange-400 font-semibold hover:border-orange-500 hover:bg-orange-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-git-alt text-xl me-2"></i>Git</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-blue-400 font-semibold hover:border-blue-500 hover:bg-blue-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fas fa-database text-xl me-2"></i>MySQL</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-blue-500 font-semibold hover:border-blue-600 hover:bg-blue-600/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-docker text-xl me-2"></i>Docker</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-green-400 font-semibold hover:border-green-500 hover:bg-green-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-linux text-xl me-2"></i>Linux</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-green-500 font-semibold hover:border-green-600 hover:bg-green-600/10 transition-all cursor-default shadow-lg flex items-center"><i class="fas fa-leaf text-xl me-2"></i>MongoDB</span>
+                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-orange-500 font-semibold hover:border-orange-600 hover:bg-orange-600/10 transition-all cursor-default shadow-lg flex items-center"><i class="fas fa-server text-xl me-2"></i>Proxmox</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 bg-slate-900/50">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Projeler</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="group relative">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
+                    
+                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-indigo-400">
+                                <i class="fas fa-server text-xl"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="https://gman.dev/api" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-primary transition-colors">Live</a>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">Eldoia API</h3>
+                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
+                            Gerçek zamanlı deprem verilerinden günlük yaşamı kolaylaştıran pratik veri iletim sistemlerine kadar geniş bir yelpazede bilgi sağlayan çok yönlü bir API servisi.
+                        </p>
+                        
+                        <div class="border-t border-slate-700 pt-4 mt-auto">
+                            <div class="flex flex-wrap gap-2 font-mono text-xs">
+                                <span class="text-indigo-400">#NodeJS</span>
+                                <span class="text-indigo-400">#Express</span>
+                                <span class="text-indigo-400">#REST</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
+                    
+                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-purple-400">
+                                <i class="fab fa-discord text-xl"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="https://gman.dev/lucy" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-purple-500 transition-colors">Live</a>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Lucy Discord Bot</h3>
+                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
+                            Sunucu moderasyonunu geliştiren, mini oyunlarla kullanıcı etkileşimini artıran ve yapay zeka yeteneklerini Discord topluluklarına entegre eden gelişmiş bot.
+                        </p>
+                        
+                        <div class="border-t border-slate-700 pt-4 mt-auto">
+                            <div class="flex flex-wrap gap-2 font-mono text-xs">
+                                <span class="text-purple-400">#Python</span>
+                                <span class="text-purple-400">#Discord.py</span>
+                                <span class="text-purple-400">#AI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
+                    
+                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-green-400">
+                                <i class="fas fa-network-wired text-xl"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="https://gman.dev/proxmox" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-green-500 transition-colors">View</a>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-green-400 transition-colors">Gökhan Hosting</h3>
+                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
+                            Docker, Linux ve sanallaştırma teknolojilerini deneyimlemek, kendi projelerimi host etmek için kurduğum 2-node Proxmox kümesi.
+                        </p>
+                        
+                        <div class="border-t border-slate-700 pt-4 mt-auto">
+                            <div class="flex flex-wrap gap-2 font-mono text-xs">
+                                <span class="text-green-400">#Proxmox</span>
+                                <span class="text-green-400">#Docker</span>
+                                <span class="text-green-400">#Linux</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-red-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
+                    
+                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-orange-400">
+                                <i class="fas fa-bus text-xl"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="https://gman.dev/ekogokhan" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-orange-500 transition-colors">Live</a>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">EkoGökhan</h3>
+                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
+                            Kentkart açık API'sini kullanarak şehir otobüslerinin gerçek zamanlı takibini sağlayan ve toplu taşıma deneyimini verimli hale getiren platform.
+                        </p>
+                        
+                        <div class="border-t border-slate-700 pt-4 mt-auto">
+                            <div class="flex flex-wrap gap-2 font-mono text-xs">
+                                <span class="text-orange-400">#API</span>
+                                <span class="text-orange-400">#RealTime</span>
+                                <span class="text-orange-400">#Web</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="media" class="py-20">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Fotoğraf & Video</h2>
+                <p class="mt-4 text-slate-400">Yazılımın ötesindeki yaratıcı dünyam</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                
+                <div class="lg:col-span-2">
+                    <div class="rounded-xl overflow-hidden border border-slate-700 bg-slate-900 shadow-2xl">
+                        <div class="h-8 bg-slate-800 flex items-center px-4 space-x-2 border-b border-slate-700">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <div class="flex-1 text-center text-xs text-slate-500 font-mono">youtube.com/watch?v=OFDs0qDjW6Y</div>
+                        </div>
+                        <div class="video-container bg-black">
+                            <iframe src="https://www.youtube.com/embed/OFDs0qDjW6Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex items-center justify-between text-sm text-slate-400 px-1">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-play-circle text-primary"></i>
+                            <span>Video Düzenleme Çalışmam</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
+                            <img src="https://gman.dev/a/portoflio1" alt="Portfolio 1" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <i class="fas fa-expand text-white text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
+                            <img src="https://gman.dev/a/portoflio2" alt="Portfolio 2" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <i class="fas fa-expand text-white text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
+                            <img src="https://gman.dev/a/portoflio3" alt="Portfolio 3" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <i class="fas fa-expand text-white text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
+                            <img src="https://gman.dev/a/portoflio4" alt="Portfolio 4" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <i class="fas fa-expand text-white text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-slate-900/50">
+        <div class="max-w-screen-md mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">İletişim</h2>
+                <p class="mt-4 text-slate-400">Harika bir şey inşa etmek için birlikte çalışalım.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <a href="https://github.com/gokhazen" target="_blank" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
+                    <i class="fab fa-github text-4xl text-slate-400 group-hover:text-white mb-3 transition-colors"></i>
+                    <h3 class="text-sm font-semibold text-slate-300">GitHub</h3>
+                </a>
+                <a href="https://x.com/gokhazen" target="_blank" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
+                    <i class="fab fa-x-twitter text-4xl text-slate-400 group-hover:text-white mb-3 transition-colors"></i>
+                    <h3 class="text-sm font-semibold text-slate-300">Twitter</h3>
+                </a>
+                <a href="https://gokhanozen.top/discord" target="_blank" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
+                    <i class="fab fa-discord text-4xl text-slate-400 group-hover:text-indigo-400 mb-3 transition-colors"></i>
+                    <h3 class="text-sm font-semibold text-slate-300">Discord</h3>
+                </a>
+                <a href="mailto:contact@gman.dev" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
+                    <i class="fas fa-envelope text-4xl text-slate-400 group-hover:text-red-400 mb-3 transition-colors"></i>
+                    <h3 class="text-sm font-semibold text-slate-300">Email</h3>
+                </a>
+            </div>
+            
+            <div class="mt-12 text-center p-8 bg-black/40 rounded-2xl border border-slate-800 font-mono text-sm">
+                <div class="flex items-center justify-center gap-2 text-slate-500 mb-2">
+                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    <span class="ml-2">terminal</span>
+                </div>
+                <div class="text-left max-w-sm mx-auto">
+                    <span class="text-primary">gokhan@dev:~$</span> <span class="text-white">echo "Let's connect!"</span><br>
+                    <span class="text-slate-400">Sending invitation...</span><br>
+                    <span class="text-green-400">Success! Looking forward to it.</span><span class="animate-pulse">_</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark border-t border-slate-800 py-8">
+        <div class="max-w-screen-xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm">
+                &copy; 2025 Gökhan Özen. All rights reserved. <br>
+                <span class="text-xs mt-2 block opacity-50">Built with HTML5 & Tailwind CSS</span>
+            </p>
+        </div>
+    </footer>
+
+    <div id="imageModal" class="fixed inset-0 z-[60] hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeModal()">
+        <span class="absolute top-5 right-5 text-white text-4xl cursor-pointer hover:text-primary z-50">&times;</span>
+        <img id="modalImg" src="" alt="Full view" class="max-h-[90vh] max-w-full rounded-lg shadow-2xl border border-slate-700">
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const navMenu = document.getElementById('navbar-default');
+        
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#navbar-default a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.add('hidden');
+            });
+        });
+
+        // Simple Lightbox Logic
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = src;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+    </script>
+</body>
+</html>
