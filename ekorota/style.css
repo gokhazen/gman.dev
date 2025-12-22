@@ -1,0 +1,1169 @@
+:root {
+  /* === MAIN COLORS === */
+  --primary-color: #0d9488; /* Derin ve zengin teal */
+  --primary-light: #2dd4bf; /* Daha açık teal */
+  --primary-soft: #5eead4; /* Çok açık teal */
+  --accent-color: #f97316; /* Canlı mercan turuncusu */
+  
+  /* === BACKGROUND COLORS === */
+  --background-main: #f8fafc; /* Hafif kirli beyaz */
+  --background-secondary: #f1f5f9;
+  --background-soft: #e2e8f0;
+  --card-background: #ffffff;
+  --card-secondary: #fefefe;
+  
+  /* === TEXT COLORS === */
+  --text-primary: #1e293b; /* Koyu gri, okunabilir */
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  /* === BORDER COLORS === */
+  --border-color: #cbd5e1;
+  --border-light: #e2e8f0;
+  --border-accent: #2dd4bf;
+  
+  /* === STATUS COLORS === */
+  --success-color: #22c55e;
+  --success-light: #dcfce7;
+  --success-border: #bbf7d0;
+  
+  --danger-color: #ef4444;
+  --danger-light: #fee2e2;
+  --danger-border: #fecaca;
+  
+  --warning-color: #f59e0b;
+  --warning-light: #fffbeb;
+  --warning-border: #fde68a;
+  
+  /* === TRACKING COLORS === */
+  --tracking-active-bg: #fff7ed;
+  --tracking-active-border: var(--accent-color);
+  --tracking-active-shadow: rgba(249, 115, 22, 0.15);
+  
+  /* === MISSED TIME COLORS === */
+  --missed-bg: var(--danger-light);
+  --missed-border: var(--danger-border);
+  --missed-text: var(--text-muted);
+  
+  /* === CURRENT TIME COLORS === */
+  --current-time-bg: #ecfdf5;
+  --current-time-border: var(--success-color);
+  --current-time-shadow: rgba(34, 197, 94, 0.15);
+  
+  /* === STOP BADGE COLORS === */
+  --start-badge-bg: var(--success-light);
+  --start-badge-color: var(--success-color);
+  --start-badge-border: var(--success-border);
+  
+  --end-badge-bg: var(--danger-light);
+  --end-badge-color: var(--danger-color);
+  --end-badge-border: var(--danger-border);
+  
+  --nearest-badge-bg: var(--warning-light);
+  --nearest-badge-color: var(--warning-color);
+  --nearest-badge-border: var(--warning-border);
+  
+  /* === STOP HIGHLIGHT COLORS === */
+  --nearest-stop-bg: #f5f6ff; /* Hafif bir mor-mavi vurgu */
+  --buses-at-stop-bg: #f0fdf4;
+  --buses-at-stop-border: var(--success-border);
+  
+  /* === BUS PLATE COLORS === */
+  --bus-plate-at-stop-bg: var(--success-color);
+  --bus-plate-between-stops-bg: var(--primary-color);
+  
+  /* === SEGMENT COLORS === */
+  --segment-bg: var(--background-soft);
+  --segment-border: var(--primary-soft);
+  
+  /* === LEAFLET OVERRIDE COLORS === */
+  --leaflet-control-bg: var(--card-background);
+  --leaflet-control-border: var(--border-light);
+  --leaflet-control-text: var(--text-secondary);
+  --leaflet-control-hover-bg: var(--primary-color);
+  --leaflet-control-hover-text: white;
+  --leaflet-attribution-bg: rgba(255, 255, 255, 0.9);
+  --leaflet-attribution-text: var(--text-muted);
+  --leaflet-attribution-link: var(--primary-color);
+  
+  /* === SPACING & SIZING === */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+
+  
+  /* === MOBILE SIZES === */
+  --header-padding: 12px 16px;
+  --route-title-size: 1rem;
+  --btn-size: 36px;
+  --btn-font-size: 0.875rem;
+  --content-padding: 16px;
+  --section-title-size: 0.95rem;
+  --section-title-margin: 12px;
+  --info-item-padding: 12px;
+  --info-item-margin: 10px;
+  --bus-item-margin: 4px;
+  --bus-main-padding: 6px 8px;
+  --bus-status-panel-width: 25%;
+  --bus-status-panel-padding: 4px 2px;
+  --bus-status-panel-height: 50px;
+  --bus-status-panel-min-width: 45px;
+  --bus-status-panel-font: 0.6rem;
+  --bus-status-text-font: 0.55rem;
+  --bus-status-value-font: 0.65rem;
+  --nearest-stop-padding: 6px 8px;
+  --nearest-stop-margin: 4px;
+  --nearest-stop-title-font: 0.75rem;
+  --nearest-stop-detail-font: 0.65rem;
+  --bus-plate-font: 0.9rem;
+  --destination-text-font: 0.75rem;
+  --destination-distance-font: 0.65rem;
+  --destination-distance-padding: 1px 4px;
+  --bus-user-status-font: 0.6rem;
+  --bus-user-status-padding: 2px 4px;
+  --bus-user-status-margin: 2px;
+  --bus-user-status-gap: 3px;
+  --user-status-icon-size: 5px;
+  --bus-info-font: 0.8rem;
+  --bus-info-padding: 8px 12px;
+  --tab-font: 0.8rem;
+  --tab-padding: 6px 8px;
+  --time-item-padding: 10px 12px;
+  --time-item-margin: 6px;
+  --time-display-font: 0.875rem;
+  --time-badge-font: 0.7rem;
+  --time-badge-padding: 3px 6px;
+  --stop-item-padding: 10px 12px;
+  --stop-item-margin: 6px;
+  --stop-name-font: 0.875rem;
+  --stop-index-font: 0.8rem;
+  --stop-index-margin: 6px;
+  --stop-index-width: 20px;
+  --stop-badge-padding: 2px 4px;
+  --stop-badge-font: 0.7rem;
+  --stop-badge-margin: 4px;
+  --buses-at-stop-padding: 6px 10px;
+  --buses-at-stop-font: 0.75rem;
+  --buses-at-stop-gap: 6px;
+  --buses-at-stop-margin: 8px;
+  --segment-padding: 8px 12px;
+  --segment-margin: 6px;
+  --segment-gap: 6px;
+  --expand-btn-font: 0.8rem;
+  --expand-btn-padding: 6px 12px;
+  --map-control-size: 36px;
+  --map-control-font: 14px;
+  --map-control-margin: 6px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--background-main) 0%, var(--background-secondary) 100%);
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* === HEADER === */
+.route-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--header-padding);
+  background: var(--card-background);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.route-title {
+  font-size: var(--route-title-size);
+  font-weight: 600;
+  color: var(--primary-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100vw - 160px);
+}
+
+.route-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.direction-btn, .search-btn, .back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: var(--btn-font-size);
+}
+
+.direction-btn:hover, .search-btn:hover, .back-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.bus-track-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bus-track-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+/* === MAP === */
+.map-container {
+  height: 38vh;
+  position: relative;
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  filter: brightness(1.05) contrast(1.1) saturate(1.1);
+}
+
+/* === CONTENT === */
+.route-info {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--content-padding);
+  background: var(--background-main);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+  margin-bottom: var(--section-title-margin);
+  font-size: var(--section-title-size);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 16px;
+  background: var(--primary-color);
+  margin-right: 12px;
+  border-radius: 2px;
+}
+
+/* === KONUM BİLGİSİ === */
+.nearest-user-stop {
+  padding: var(--nearest-stop-padding) !important;
+  margin-bottom: var(--nearest-stop-margin) !important;
+}
+
+.nearest-user-stop strong {
+  font-size: var(--nearest-stop-title-font);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.nearest-user-stop .info-detail {
+  font-size: var(--nearest-stop-detail-font);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.nearest-user-stop .info-detail i {
+  font-size: 0.65rem;
+  margin-right: 4px;
+}
+
+/* === CARDS & INFO ITEMS === */
+.info-item {
+  background: var(--card-background);
+  border: 1px solid var(--border-light);
+  padding: var(--info-item-padding);
+  margin-bottom: var(--info-item-margin);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.info-item:hover {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow);
+}
+
+.info-item[data-plate] {
+  background: var(--card-background);
+  border: 1px solid var(--border-light);
+  padding: 0;
+  margin-bottom: var(--bus-item-margin);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  overflow: hidden;
+}
+
+.info-item[data-plate]:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow);
+}
+
+.info-item[data-plate].tracking-active {
+  border-color: var(--tracking-active-border);
+  background: var(--tracking-active-bg);
+  box-shadow: 0 0 0 3px var(--tracking-active-shadow);
+}
+
+/* === BUS INFO === */
+.bus-main-content {
+  flex: 1;
+  padding: var(--bus-main-padding);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.bus-status-panel {
+  width: var(--bus-status-panel-width);
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--bus-status-panel-padding);
+  color: white;
+  font-size: var(--bus-status-panel-font);
+  font-weight: 600;
+  text-align: center;
+  min-height: var(--bus-status-panel-height);
+  min-width: var(--bus-status-panel-min-width);
+}
+
+.bus-status-panel .status-text {
+  font-size: var(--bus-status-text-font);
+  margin-bottom: 2px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bus-status-panel .status-value {
+  font-size: var(--bus-status-value-font);
+  font-weight: 700;
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+.info-item[data-plate].tracking-active .bus-status-panel {
+  background: linear-gradient(135deg, var(--warning-color) 0%, #f59e0b 100%);
+}
+
+.bus-plate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.bus-plate-number {
+  font-size: var(--bus-plate-font);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.info-item[data-plate].tracking-active .bus-plate-number {
+  color: var(--warning-color);
+}
+
+.bus-status-badge {
+  display: none;
+}
+
+.bus-status-badge.at-stop {
+  background: var(--success-light);
+  color: var(--success-color);
+  border: 1px solid var(--success-border);
+}
+
+.bus-status-badge.in-route {
+  background: var(--background-soft);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-soft);
+}
+
+.bus-destination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 3px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.destination-icon {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.destination-text {
+  font-size: var(--destination-text-font);
+  color: var(--text-primary);
+  font-weight: 400;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.destination-distance {
+  font-size: var(--destination-distance-font);
+  color: var(--primary-color);
+  font-weight: 500;
+  background: var(--background-soft);
+  padding: var(--destination-distance-padding);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.bus-user-status {
+  display: flex;
+  align-items: center;
+  gap: var(--bus-user-status-gap);
+  padding: var(--bus-user-status-padding);
+  border-radius: var(--radius-sm);
+  font-size: var(--bus-user-status-font);
+  font-weight: 400;
+  margin-top: var(--bus-user-status-margin);
+}
+
+.bus-user-status.approaching {
+  background: var(--success-light);
+  color: var(--success-color);
+  border: 1px solid var(--success-border);
+}
+
+.bus-user-status.passed {
+  background: var(--danger-light);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-border);
+}
+
+.user-status-icon {
+  width: var(--user-status-icon-size);
+  height: var(--user-status-icon-size);
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* === SCHEDULE TABS === */
+#schedule-tabs {
+  margin-top: 20px;
+}
+
+.tab-buttons {
+  display: flex;
+  background: var(--card-background);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  padding: 4px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: var(--tab-padding);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--tab-font);
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--background-secondary);
+}
+
+.tab-btn.active {
+  color: white;
+  background: var(--primary-color);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-content {
+  position: relative;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* === TIME ITEMS === */
+.time-item {
+  background: var(--card-background);
+  border: 1px solid var(--border-light);
+  padding: var(--time-item-padding);
+  margin-bottom: var(--time-item-margin);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.time-item:hover {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow);
+}
+
+.time-item:last-child {
+  margin-bottom: 0;
+}
+
+.time-display {
+  font-size: var(--time-display-font);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.time-badge {
+  font-size: var(--time-badge-font);
+  padding: var(--time-badge-padding);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.time-item.missed {
+  opacity: 0.6;
+  border-color: var(--border-color);
+}
+
+.time-item.missed .time-display {
+  text-decoration: line-through;
+  color: var(--missed-text);
+}
+
+.time-item.missed .time-badge {
+  background: var(--missed-bg);
+  color: var(--danger-color);
+  border-color: var(--missed-border);
+}
+
+.time-item.current-time {
+  border-color: var(--current-time-border);
+  background: var(--current-time-bg);
+  box-shadow: 0 0 0 3px var(--current-time-shadow);
+}
+
+.time-item.current-time .time-display {
+  color: var(--success-color);
+  font-weight: 700;
+}
+
+.time-item.current-time .time-badge.live {
+  background: var(--success-light);
+  color: var(--success-color);
+  border-color: var(--success-border);
+}
+
+/* === EXPAND BUTTONS === */
+.expand-btn-wrapper {
+  text-align: center;
+  margin: 16px 0;
+}
+
+.expand-btn {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: var(--expand-btn-padding);
+  border-radius: var(--radius);
+  font-size: var(--expand-btn-font);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+}
+
+.expand-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: var(--background-soft);
+  box-shadow: var(--shadow);
+}
+
+/* === STOPS === */
+.stop-item {
+  margin-bottom: var(--stop-item-margin);
+  padding: var(--stop-item-padding);
+}
+
+.stop-main-info {
+  display: flex;
+  align-items: center;
+}
+
+.stop-name-and-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  font-size: var(--stop-name-font);
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.stop-index {
+  font-size: var(--stop-index-font);
+  color: var(--text-muted);
+  margin-right: var(--stop-index-margin);
+  min-width: var(--stop-index-width);
+  text-align: right;
+}
+
+.stop-name-and-badges strong {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-right: 8px;
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.stop-badge {
+  display: inline-block;
+  padding: var(--stop-badge-padding);
+  border-radius: var(--radius-sm);
+  font-size: var(--stop-badge-font);
+  font-weight: 500;
+  margin-left: var(--stop-badge-margin);
+  white-space: nowrap;
+}
+
+.start-badge {
+  background: var(--start-badge-bg);
+  color: var(--start-badge-color);
+  border: 1px solid var(--start-badge-border);
+}
+
+.end-badge {
+  background: var(--end-badge-bg);
+  color: var(--end-badge-color);
+  border: 1px solid var(--end-badge-border);
+}
+
+.nearest-badge {
+  background: var(--nearest-badge-bg);
+  color: var(--nearest-badge-color);
+  border: 1px solid var(--nearest-badge-border);
+}
+
+.nearest-stop-highlight {
+  border-color: var(--warning-color);
+  background: var(--nearest-stop-bg);
+}
+
+.buses-at-stop-indicator {
+  background: var(--buses-at-stop-bg);
+  border: 1px solid var(--buses-at-stop-border);
+  border-radius: var(--radius);
+  padding: var(--buses-at-stop-padding);
+  font-size: var(--buses-at-stop-font);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--buses-at-stop-gap);
+  margin-top: var(--buses-at-stop-margin);
+}
+
+.buses-at-stop-indicator .fas {
+  color: var(--success-color);
+  margin-right: 5px;
+}
+
+.bus-plate-tag-at-stop {
+  background: var(--bus-plate-at-stop-bg);
+  color: white;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.segment-buses-summary {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--segment-padding);
+  margin-bottom: var(--segment-margin);
+  background: var(--segment-bg);
+  border: 1px solid var(--segment-border);
+  border-radius: var(--radius);
+  gap: var(--segment-gap);
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.segment-arrow {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.segment-bus-plates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.bus-plate-tag-between-stops {
+  background: var(--bus-plate-between-stops-bg);
+  color: white;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.segment-distance-info {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+/* === SCROLLBAR === */
+.route-info::-webkit-scrollbar {
+  width: 6px;
+}
+
+.route-info::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+.route-info::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.route-info::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* === LEAFLET OVERRIDES === */
+.leaflet-div-icon {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* === LEAFLET ZOOM CONTROLS === */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  font-size: var(--map-control-font) !important;
+  font-weight: 600 !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  line-height: 34px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  border-radius: 0 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-control-zoom a:first-child {
+  border-top-left-radius: var(--radius) !important;
+  border-top-right-radius: var(--radius) !important;
+  border-bottom: none !important;
+}
+
+.leaflet-control-zoom a:last-child {
+  border-bottom-left-radius: var(--radius) !important;
+  border-bottom-right-radius: var(--radius) !important;
+  border-top: none !important;
+}
+
+/* === LEAFLET LAYERS CONTROL === */
+.leaflet-control-layers {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-control-layers-toggle {
+  background: var(--leaflet-control-bg) !important;
+  border: none !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  background-image: none !important;
+  position: relative;
+  transition: all 0.15s ease !important;
+}
+
+.leaflet-control-layers-toggle::before {
+  content: "🗺️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--map-control-font);
+  color: var(--leaflet-control-text);
+  transition: all 0.15s ease;
+}
+
+.leaflet-control-layers-toggle:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+}
+
+.leaflet-control-layers-toggle:hover::before {
+  color: var(--leaflet-control-hover-text);
+}
+
+.leaflet-control-layers-expanded {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 12px !important;
+  min-width: 160px !important;
+}
+
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+  display: none !important;
+}
+
+.leaflet-control-layers-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.leaflet-control-layers-base label,
+.leaflet-control-layers-overlays label {
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 0 !important;
+  margin: 0 !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease !important;
+  border-bottom: 1px solid var(--border-light) !important;
+}
+
+.leaflet-control-layers-base label:last-child,
+.leaflet-control-layers-overlays label:last-child {
+  border-bottom: none !important;
+}
+
+.leaflet-control-layers-base label:hover,
+.leaflet-control-layers-overlays label:hover {
+  color: var(--primary-color) !important;
+}
+
+.leaflet-control-layers-base input,
+.leaflet-control-layers-overlays input {
+  margin-right: 6px !important;
+  margin-left: 0 !important;
+  width: 14px !important;
+  height: 14px !important;
+  accent-color: var(--primary-color) !important;
+}
+
+.leaflet-control-layers-separator {
+  height: 1px !important;
+  background: var(--border-light) !important;
+  margin: 8px 0 !important;
+  border: none !important;
+}
+
+/* === LEAFLET ATTRIBUTION === */
+.leaflet-control-attribution {
+  background: var(--leaflet-attribution-bg) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-sm) !important;
+  backdrop-filter: blur(8px) !important;
+  font-size: 0.7rem !important;
+  color: var(--leaflet-attribution-text) !important;
+  padding: 3px 6px !important;
+  margin: var(--map-control-margin) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--leaflet-attribution-link) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.leaflet-control-attribution a:hover {
+  text-decoration: underline !important;
+}
+
+/* === CUSTOM MAP CONTROL BUTTONS === */
+.custom-map-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--map-control-margin);
+}
+
+.map-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--map-control-size);
+  height: var(--map-control-size);
+  background: var(--card-background);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow);
+  font-size: var(--map-control-font);
+}
+
+.map-control-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.map-control-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* === LOCATION CONTROL BUTTON === */
+.leaflet-control-locate {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.leaflet-control-locate a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: var(--map-control-font) !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-locate a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+}
+
+.leaflet-control-locate.requesting a {
+  background: var(--warning-color) !important;
+  border-color: var(--warning-color) !important;
+  color: white !important;
+  animation: pulse-locate 1.5s infinite;
+}
+
+.leaflet-control-locate.active a {
+  background: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  color: white !important;
+}
+
+@keyframes pulse-locate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* === FULLSCREEN CONTROL === */
+.leaflet-control-fullscreen {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.leaflet-control-fullscreen a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: var(--map-control-font) !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-fullscreen a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+}
+
+/* === UTILITY === */
+.info-detail {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+.bus-info-item {
+  background: var(--background-soft);
+  padding: var(--bus-info-padding);
+  margin: 8px 0 12px 20px;
+  border-radius: var(--radius);
+  font-size: var(--bus-info-font);
+  color: var(--text-primary);
+  border: 1px solid var(--primary-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.info-item strong {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.info-item span {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  margin-left: 6px;
+  font-weight: 500;
+}
+
+.info-item span[style*="color:#48bb78"] {
+  background: var(--success-light) !important;
+  color: var(--success-color) !important;
+  border: 1px solid var(--success-border);
+}
+
+.info-item span[style*="color:#f56565"] {
+  background: var(--danger-light) !important;
+  color: var(--danger-color) !important;
+  border: 1px solid var(--danger-border);
+}
+
+.info-item span[style*="color:#ff9800"] {
+  background: var(--warning-light) !important;
+  color: var(--warning-color) !important;
+  border: 1px solid var(--warning-border);
+}

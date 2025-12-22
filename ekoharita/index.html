@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="https://gman.dev/ekogokhanlogo" type="image/x-icon"> 
+  <title>Eko3 Harita</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../ekorota/style.css">
+  <style>
+    /* Harita için özel stiller */
+    .map-page-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .map-main-content {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+      filter: brightness(1.05) contrast(1.1) saturate(1.1);
+    }
+
+    /* Loading Indicator */
+    #loading-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(248, 250, 252, 0.95);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(8px);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border-color);
+      border-top: 3px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #loading-indicator span {
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Toast Bildirimleri */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card-background);
+      color: var(--text-primary);
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      font-size: 0.875rem;
+      font-weight: 500;
+      max-width: calc(100vw - 40px);
+      text-align: center;
+    }
+
+    #toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(-10px);
+    }
+
+    /* Harita Popup Stilleri */
+    .popup-content {
+      padding: 12px;
+      min-width: 200px;
+    }
+
+    .popup-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .popup-title i {
+      color: var(--primary-color);
+      font-size: 0.8rem;
+    }
+
+    .popup-address {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .popup-address i {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .popup-button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .popup-button:hover {
+      background: var(--primary-light);
+      box-shadow: var(--shadow);
+    }
+
+    .popup-button i {
+      font-size: 0.75rem;
+    }
+
+    /* Harita Marker İkonları */
+    .kiosk-icon,
+    .stop-icon,
+    .place-icon,
+    .user-location-icon {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Leaflet Popup Özelleştirmeleri */
+    .leaflet-popup-content-wrapper {
+      background: var(--card-background);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 0;
+    }
+
+    .leaflet-popup-content {
+      margin: 0;
+      padding: 0;
+    }
+
+    .leaflet-popup-tip {
+      background: var(--card-background);
+      border: 1px solid var(--border-light);
+      border-top: none;
+      border-right: none;
+    }
+
+    .leaflet-popup-close-button {
+      color: var(--text-muted) !important;
+      font-size: 18px !important;
+      font-weight: bold !important;
+      padding: 8px !important;
+      transition: color 0.15s ease !important;
+    }
+
+    .leaflet-popup-close-button:hover {
+      color: var(--primary-color) !important;
+    }
+
+    /* Leaflet Zoom Control Özelleştirmeleri */
+    .leaflet-control-zoom {
+      border: none !important;
+      box-shadow: var(--shadow) !important;
+      border-radius: var(--radius) !important;
+      overflow: hidden;
+    }
+
+    .leaflet-control-zoom a {
+      background: var(--card-background) !important;
+      border: 1px solid var(--border-light) !important;
+      color: var(--text-secondary) !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      width: 36px !important;
+      height: 36px !important;
+      line-height: 34px !important;
+      text-align: center !important;
+      text-decoration: none !important;
+      transition: all 0.15s ease !important;
+      border-radius: 0 !important;
+    }
+
+    .leaflet-control-zoom a:hover {
+      background: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+      color: white !important;
+      box-shadow: none !important;
+    }
+
+    .leaflet-control-zoom a:first-child {
+      border-top-left-radius: var(--radius) !important;
+      border-top-right-radius: var(--radius) !important;
+      border-bottom: none !important;
+    }
+
+    .leaflet-control-zoom a:last-child {
+      border-bottom-left-radius: var(--radius) !important;
+      border-bottom-right-radius: var(--radius) !important;
+      border-top: none !important;
+    }
+
+    /* Attribution Özelleştirmeleri */
+    .leaflet-control-attribution {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid var(--border-light) !important;
+      border-radius: var(--radius-sm) !important;
+      backdrop-filter: blur(8px) !important;
+      font-size: 0.7rem !important;
+      color: var(--text-muted) !important;
+      padding: 3px 6px !important;
+      margin: 6px !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+
+    .leaflet-control-attribution a {
+      color: var(--primary-color) !important;
+      text-decoration: none !important;
+      font-weight: 500 !important;
+    }
+
+    .leaflet-control-attribution a:hover {
+      text-decoration: underline !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-indicator">
+    <div class="spinner"></div>
+    <span>Yükleniyor...</span>
+  </div>
+
+  <div id="toast"></div>
+
+  <div class="map-page-container">
+    <!-- Header -->
+    <div class="route-header">
+      <div class="route-title">Eko3 Harita</div>
+      <div class="route-actions">
+        <button id="search-btn" class="search-btn" title="Arama">
+          <i class="fas fa-search"></i>
+        </button>
+        <button id="search-center-area" class="direction-btn" title="Burayı Ara">
+          <i class="fas fa-map-marker-alt"></i>
+        </button>
+        <button id="user-location-btn" class="back-btn" title="Konumuma Git">
+          <i class="fas fa-location-arrow"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Harita -->
+    <div class="map-main-content">
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    let map;
+    let currentMarkers = [];
+    const searchBtn = document.getElementById('search-btn');
+    const searchCenterBtn = document.getElementById('search-center-area');
+    const userLocationBtn = document.getElementById('user-location-btn');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const toast = document.getElementById('toast');
+
+    // Region koordinatları
+    const CONFIG = {
+      '004': [40.7686795, 29.9526597],
+      '010': [37.2153, 28.3636],
+      '003': [37.0000, 35.3213],
+      '019': [36.5444, 31.9956],
+      '029': [41.1833, 31.3833],
+      '017': [37.7167, 30.2833],
+      '007': [40.1553, 26.4142],
+      '036': [40.8438, 31.1565],
+      '013': [41.6818, 26.5623],
+      '020': [41.2833, 31.4167],
+      '032': [37.3212, 40.7245],
+      '026': [36.8841, 30.7056],
+      '023': [37.9667, 34.6833],
+      '025': [41.3887, 33.7827],
+      '027': [41.7333, 27.2167],
+      '031': [40.9839, 37.8764],
+      '033': [37.0742, 36.2611],
+      '037': [41.2500, 32.6833],
+      '005': [39.7477, 37.0179],
+      '011': [39.8181, 34.8147]
+    };
+
+    // URL parametrelerini al
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentRegion = urlParams.get('region') || '004';
+
+    // Region'a göre varsayılan koordinatları belirle
+    const getDefaultCoordinates = (region) => {
+      return CONFIG[region] || CONFIG['004'];
+    };
+
+    const [DEFAULT_LAT, DEFAULT_LNG] = getDefaultCoordinates(currentRegion);
+
+    function showToast(message, duration = 3000) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, duration);
+    }
+
+    function showLoading() {
+      loadingIndicator.style.display = 'flex';
+    }
+
+    function hideLoading() {
+      loadingIndicator.style.display = 'none';
+    }
+
+    function createKioskIcon() {
+      return L.divIcon({
+        className: 'kiosk-icon',
+        html: `
+          <div style="
+            width: 36px; 
+            height: 36px; 
+            background: linear-gradient(135deg, #f97316, #ea580c); 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+            border: 2px solid white;
+          ">
+            <i class="fas fa-credit-card"></i>
+          </div>
+        `,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]
+      });
+    }
+
+    function createStopIcon() {
+      return L.divIcon({
+        className: 'stop-icon',
+        html: `
+          <div style="
+            width: 36px; 
+            height: 36px; 
+            background: linear-gradient(135deg, #0d9488, #0f766e); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+            border: 2px solid white;
+          ">
+            <i class="fas fa-bus"></i>
+          </div>
+        `,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]
+      });
+    }
+
+    function createPlaceIcon() {
+      return L.divIcon({
+        className: 'place-icon',
+        html: `
+          <div style="
+            width: 36px; 
+            height: 36px; 
+            background: linear-gradient(135deg, #3b82f6, #2563eb); 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            border: 2px solid white;
+          ">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+        `,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]
+      });
+    }
+
+    function createUserLocationIcon() {
+      return L.divIcon({
+        className: 'user-location-icon',
+        html: `
+          <div style="
+            width: 44px; 
+            height: 44px; 
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 20px;
+            border: 4px solid white;
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5);
+            position: relative;
+            animation: pulse-user 2s infinite;
+          ">
+            <i class="fas fa-crosshairs" style="
+              filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            "></i>
+            <div style="
+              position: absolute;
+              width: 60px;
+              height: 60px;
+              border: 2px solid rgba(139, 92, 246, 0.3);
+              border-radius: 50%;
+              animation: ripple-user 2s infinite;
+            "></div>
+          </div>
+          <style>
+            @keyframes pulse-user {
+              0%, 100% { transform: scale(1); }
+              50% { transform: scale(1.05); }
+            }
+            @keyframes ripple-user {
+              0% { 
+                transform: scale(0.8); 
+                opacity: 1; 
+              }
+              100% { 
+                transform: scale(1.4); 
+                opacity: 0; 
+              }
+            }
+          </style>
+        `,
+        iconSize: [44, 44],
+        iconAnchor: [22, 22]
+      });
+    }
+
+    function initMap(lat, lng) {
+      map = L.map('map', {
+        center: [lat, lng],
+        zoom: 16,
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19
+      }).addTo(map);
+
+      addUserLocationMarker(lat, lng);
+      fetchNearbyPlaces(lat, lng);
+    }
+
+    function addUserLocationMarker(lat, lng) {
+      const userMarker = L.marker([lat, lng], {
+        icon: createUserLocationIcon()
+      }).addTo(map);
+      
+      userMarker.bindPopup(
+        '<div class="popup-content">' +
+        '<div class="popup-title"><i class="fas fa-map-marker-alt"></i> Konumunuz</div>' +
+        '</div>'
+      );
+      
+      return userMarker;
+    }
+
+    function clearMarkers() {
+      currentMarkers.forEach(marker => map.removeLayer(marker));
+      currentMarkers = [];
+    }
+
+    async function fetchNearbyPlaces(lat, lng) {
+      const apiUrl = `https://service.kentkart.com/rl1//web/nearest/place?region=${currentRegion}&lang=tr&authType=4&lat=${lat}&lng=${lng}&version=Web_1.8.1(32)_1.0_FIREFOX_kentkart.web.mkentkart`;
+      try {
+        showLoading();
+        clearMarkers();
+
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        data.kioskList.forEach(kiosk => {
+          const marker = L.marker([parseFloat(kiosk.lat), parseFloat(kiosk.lng)], {
+            icon: createKioskIcon()
+          }).addTo(map);
+          
+          marker.bindPopup(
+            '<div class="popup-content">' +
+              '<div class="popup-header">' +
+                '<div class="popup-icon kiosk">' +
+                  '<i class="fas fa-credit-card"></i>' +
+                '</div>' +
+                '<div class="popup-title">' +
+                  '<div class="popup-name">Yükleme Noktası</div>' +
+                  '<div class="popup-subtitle">Kart Dolum</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="popup-info">' +
+                '<div class="popup-detail">' +
+                  '<i class="fas fa-building"></i>' +
+                  '<span class="popup-detail-text">' + kiosk.title + '</span>' +
+                '</div>' +
+                '<div class="popup-detail">' +
+                  '<i class="fas fa-map-marker-alt"></i>' +
+                  '<span class="popup-detail-text">' + kiosk.address + '</span>' +
+                '</div>' +
+              '</div>' +
+            '</div>'
+          );
+          
+          currentMarkers.push(marker);
+        });
+
+        data.stopList.forEach(stop => {
+          const marker = L.marker([parseFloat(stop.lat), parseFloat(stop.lng)], {
+            icon: createStopIcon()
+          }).addTo(map);
+          
+          // Hat listesini kısalt
+          const routes = stop.routes.length > 30 ? stop.routes.substring(0, 30) + '...' : stop.routes;
+          
+          const popupContent = 
+            '<div class="popup-content">' +
+              '<div class="popup-header">' +
+                '<div class="popup-icon stop">' +
+                  '<i class="fas fa-bus"></i>' +
+                '</div>' +
+                '<div class="popup-title">' +
+                  '<div class="popup-name">' + (stop.stopName.length > 25 ? stop.stopName.substring(0, 25) + '...' : stop.stopName) + '</div>' +
+                  '<div class="popup-subtitle">Otobüs Durağı</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="popup-info">' +
+                '<div class="popup-detail">' +
+                  '<i class="fas fa-route"></i>' +
+                  '<span class="popup-detail-text">' + routes + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<button id="stop-details-btn-' + stop.stopId + '" class="popup-button" data-stop-id="' + stop.stopId + '">' +
+                '<i class="fas fa-info-circle"></i> Detayları Gör' +
+              '</button>' +
+            '</div>';
+          
+          marker.bindPopup(popupContent);
+          
+          marker.on('popupopen', function() {
+            document.getElementById('stop-details-btn-' + stop.stopId).addEventListener('click', function() {
+              const stopId = this.getAttribute('data-stop-id');
+              const currentPageUrl = encodeURIComponent(window.location.href);
+              let stopDetailsUrl = `https://gman.dev/ekostop/?stop=${stopId}&back=${currentPageUrl}`;
+              
+              // Region parametresi varsa ve 004 değilse ekle
+              if (currentRegion && currentRegion !== '004') {
+                stopDetailsUrl = `https://gman.dev/ekostop/?region=${currentRegion}&stop=${stopId}&back=${currentPageUrl}`;
+              }
+              
+              window.location.href = stopDetailsUrl;
+            });
+          });
+          
+          currentMarkers.push(marker);
+        });
+
+        data.placeList.forEach(place => {
+          const marker = L.marker([parseFloat(place.lat), parseFloat(place.lng)], {
+            icon: createPlaceIcon()
+          }).addTo(map);
+          
+          marker.bindPopup(
+            '<div class="popup-content">' +
+              '<div class="popup-header">' +
+                '<div class="popup-icon place">' +
+                  '<i class="fas fa-map-marker-alt"></i>' +
+                '</div>' +
+                '<div class="popup-title">' +
+                  '<div class="popup-name">' + (place.name.length > 25 ? place.name.substring(0, 25) + '...' : place.name) + '</div>' +
+                  '<div class="popup-subtitle">Önemli Yer</div>' +
+                '</div>' +
+              '</div>' +
+              (place.website ? 
+                '<button onclick="window.open(\'' + place.website + '\', \'_blank\')" class="popup-button secondary">' +
+                  '<i class="fas fa-external-link-alt"></i> Web Sitesi' +
+                '</button>' : ''
+              ) +
+            '</div>'
+          );
+          
+          currentMarkers.push(marker);
+        });
+
+        hideLoading();
+        showToast(`Toplam ${data.kioskList.length + data.stopList.length + data.placeList.length} nokta bulundu`);
+        
+      } catch (error) {
+        console.error('API isteğinde hata:', error);
+        hideLoading();
+        showToast('Yerler yüklenirken bir hata oluştu');
+      }
+    }
+
+    // Sayfa yüklendiğinde kullanıcı konumunu al
+    if (navigator.geolocation) {
+      showLoading();
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          initMap(latitude, longitude);
+          hideLoading();
+        },
+        (error) => {
+          console.error('Konum alınamadı:', error);
+          initMap(DEFAULT_LAT, DEFAULT_LNG);
+          hideLoading();
+        }
+      );
+    } else {
+      initMap(DEFAULT_LAT, DEFAULT_LNG);
+    }
+
+    // Arama butonuna tıklandığında ana sayfaya yönlendir
+    searchBtn.addEventListener('click', () => {
+      window.location.href = 'https://gman.dev/ekoarama/';
+    });
+
+    // "Burayı Ara" butonu
+    searchCenterBtn.addEventListener('click', () => {
+      const center = map.getCenter();
+      fetchNearbyPlaces(center.lat, center.lng);
+    });
+
+    // "Konumuma Git" butonu
+    userLocationBtn.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        showLoading();
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            map.setView([latitude, longitude], 16);
+            fetchNearbyPlaces(latitude, longitude);
+            addUserLocationMarker(latitude, longitude);
+            hideLoading();
+          },
+          (error) => {
+            console.error('Konum alınamadı:', error);
+            hideLoading();
+            showToast('Kullanıcı konumu alınamadı');
+          }
+        );
+      } else {
+        showToast('Tarayıcınız konum desteği sunmuyor');
+      }
+    });
+  </script>
+</body>
+</html>

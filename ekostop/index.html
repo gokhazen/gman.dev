@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Eko3 Durak</title>
+  <link rel="icon" href="https://gman.dev/ekogokhanlogo" type="image/x-icon"> 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../ekorota/style.css">
+  <script src="../ekorota/map.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <div class="route-header">
+      <div class="route-title" id="header-title"></div>
+      <div class="route-actions">
+        <button class="direction-btn" onclick="refreshData()" title="Verileri Yenile">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+        <button class="direction-btn" onclick="window.centerToUserLocation()" title="Konumuma Git">
+          <i class="fas fa-location-arrow"></i>
+        </button>
+        <button class="search-btn" onclick="openSearchPage()" title="Arama Sayfası">
+          <i class="fas fa-search"></i>
+        </button>
+        <button class="back-btn" id="back-btn" onclick="goBack()" title="Geri Dön" style="display:none;">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+    
+    <div class="route-info" id="bus-info"></div>
+  </div>
+
+  <script>
+// Global variables
+window.trackedBusPlate = null;
+window.previousBusList = [];
+window.isFirstBusLoad = true;
+window.currentStopId = null;
+window.keepMapPosition = false;
+window.currentStopLat = null;
+window.currentStopLng = null;
+window.currentRegion = '004';
+window.userLocation = null;
+window.stopMarker = null;
+window.busAnimations = {};
+
+// Bus tracking functions
+window.toggleBusTracking = function(plate) {
+  document.querySelectorAll('.info-item[data-plate]').forEach(item => {
+    item.classList.remove('tracking-active');
+  });
+
+  if (window.trackedBusPlate === plate) {
+    window.stopBusTracking();
+  } else {
+    if (window.trackedBusPlate) {
+      window.stopBusTracking();
+    }
+    
+    window.trackedBusPlate = plate;
+    localStorage.setItem('trackedBusPlate', window.trackedBusPlate);
+    
+    const targetItem = document.querySelector(`.info-item[data-plate="${plate}"]`);
+    if (targetItem) {
+      targetItem.classList.add('tracking-active');
+    }
+    
+    window.focusOnBus(plate);
+  }
+};
+
+window.stopBusTracking = function() {
+  window.trackedBusPlate = null;
+  localStorage.removeItem('trackedBusPlate');
+  document.querySelectorAll('.info-item[data-plate]').forEach(item => {
+    item.classList.remove('tracking-active'); 
+  });
+};
+
+function openSearchPage() {
+  window.location.href = 'https://gman.dev/ekoarama/';
+}
+
+function goBack() {
+  const backLink = getQueryParam('back');
+  if(backLink) window.location.href = backLink;
+}
+
+function getQueryParam(param) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(param);
+}
+
+function refreshData() {
+  const refreshBtn = document.querySelector('.direction-btn');
+  refreshBtn.classList.add('loading');
+  
+  centerOnStop();
+  if (window.currentStopId) {
+    window.keepMapPosition = true;
+    fetchStopData(window.currentStopId).finally(() => {
+      setTimeout(() => {
+        refreshBtn.classList.remove('loading');
+      }, 500);
+    });
+  }
+}
+
+function centerOnStop() {
+  if (window.currentStopLat != null && window.currentStopLng != null) {
+    window.focusOnLocation([window.currentStopLat, window.currentStopLng], 15);
+  }
+}
+
+function getUserLocation() {
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const userPos = [position.coords.latitude, position.coords.longitude];
+      window.userLocation = userPos;
+      
+      window.addUserLocationToMap(userPos);
+      
+      fetch('https://gman.dev/location', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lat: userPos[0],
+          lng: userPos[1]
+        })
+      })
+      .then(res => res.json())  
+      .then(data => console.log('Location API yanıtı:', data))
+      .catch(err => console.error('Location API hatası:', err));
+
+    }, error => {
+      console.error("Konum alınamadı: ", error.message);
+    });
+  }
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371e3;
+  const φ1 = lat1 * Math.PI / 180;
+  const φ2 = lat2 * Math.PI / 180;
+  const Δφ = (lat2 - lat1) * Math.PI / 180;
+  const Δλ = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function formatDistance(distance) {
+  return distance >= 1000 ? (distance / 1000).toFixed(1) + " km" : Math.round(distance) + " m";
+}
+
+function transferBus(route, direction) {
+  const backLink = encodeURIComponent(window.location.href);
+  const region = getQueryParam('region');
+
+  let targetUrl = 'https://gman.dev/ekorota/?';
+  
+  if (region) {
+    targetUrl += `region=${region}&`;
+  }
+
+  targetUrl += `route=${route}&direction=${direction}&back=${backLink}`;
+  window.location.href = targetUrl;
+}
+
+// Basit otobüs animasyonu fonksiyonu (ekostop için özelleştirilmiş)
+// Hat kodunu da parametre olarak alan animasyon fonksiyonu
+function animateBusToPosition(busPlate, startPos, endPos, bearing, duration = 10000, routeCode = null) {
+  // Önceki animasyonu iptal et
+  if (window.busAnimations && window.busAnimations[busPlate]) {
+    cancelAnimationFrame(window.busAnimations[busPlate].animationId);
+  }
+  
+  if (!window.busAnimations) {
+    window.busAnimations = {};
+  }
+
+  const startTime = performance.now();
+  let startBearing = bearing;
+  
+  if (window.prevBusPositions[busPlate] && window.prevBusPositions[busPlate].bearing !== undefined) {
+    startBearing = window.prevBusPositions[busPlate].bearing;
+  }
+
+  function animate(currentTime) {
+    const elapsed = currentTime - startTime;
+    let progress = Math.min(1, elapsed / duration);
+
+    // Yumuşak easing
+    progress = progress < 0.5 
+      ? 4 * progress * progress * progress 
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    // Basit doğrusal interpolasyon
+    const currentPos = [
+      startPos[0] + (endPos[0] - startPos[0]) * progress,
+      startPos[1] + (endPos[1] - startPos[1]) * progress
+    ];
+
+    // Bearing interpolasyonu
+    let currentBearing = bearing;
+    if (startBearing !== bearing) {
+      let angleDiff = ((bearing - startBearing + 180) % 360) - 180;
+      if (angleDiff < -180) angleDiff += 360;
+      currentBearing = startBearing + angleDiff * progress;
+    }
+
+    const marker = window.activeBusMarkers[busPlate];
+    if (marker) {
+      marker.setLatLng(currentPos);
+      
+      // Hat kodu ile ikon güncelle
+      const displayText = routeCode || busPlate || 'Bilinmiyor';
+      const updatedIcon = window.createBusIconWithPlate(displayText, currentBearing);
+      marker.setIcon(updatedIcon);
+
+      // Takip edilen otobüsü merkezde tut
+      if (window.trackedBusPlate === busPlate) {
+        window.map.panTo(currentPos, {
+          animate: true,
+          duration: 0.25
+        });
+      }
+    }
+
+    if (progress < 1) {
+      window.busAnimations[busPlate].animationId = requestAnimationFrame(animate);
+    } else {
+      delete window.busAnimations[busPlate];
+    }
+  }
+
+  window.busAnimations[busPlate] = {
+    animationId: requestAnimationFrame(animate)
+  };
+}
+
+function updateBusListWithAnimation(sortedBuses, stopLat, stopLng, stopInfo) {
+  const currentBusPlates = window.previousBusList.map(bus => bus.plate);
+  const newBusPlates = sortedBuses.map(bus => bus.plate);
+  
+  const exitingBuses = currentBusPlates.filter(plate => !newBusPlates.includes(plate));
+  
+  exitingBuses.forEach(plate => {
+    const existingItem = document.querySelector(`.info-item[data-plate="${plate}"]`);
+    if (existingItem) {
+      existingItem.classList.add('bus-item-exit');
+      setTimeout(() => {
+        if (existingItem.parentNode) {
+          existingItem.remove();
+        }
+      }, 400);
+    }
+  });
+  
+  setTimeout(() => {
+    let busesHTML = sortedBuses.map((bus, index) => {
+      const busLat = parseFloat(bus.lat);
+      const busLng = parseFloat(bus.lng);
+      const distance = calculateDistance(busLat, busLng, stopLat, stopLng);
+      const formattedDistance = formatDistance(distance);
+      
+      const isTracked = window.trackedBusPlate === bus.plate;
+      const isNewBus = !currentBusPlates.includes(bus.plate);
+      
+      let animationClass = '';
+      if (window.isFirstBusLoad) {
+        animationClass = 'bus-item-enter';
+      } else if (isNewBus) {
+        animationClass = 'bus-item-enter';
+      } else {
+        const oldIndex = currentBusPlates.indexOf(bus.plate);
+        if (oldIndex !== -1 && oldIndex !== index) {
+          animationClass = 'bus-item-move';
+        }
+      }
+
+      return `<div class="info-item ${isTracked ? 'tracking-active' : ''} ${animationClass}" data-plate="${bus.plate}">
+        <div class="bus-main-content" onclick="event.stopPropagation(); window.toggleBusTracking('${bus.plate}')" title="Otobüsü Haritada Takip Et" style="cursor: pointer; transition: all 0.15s ease;">
+          <div class="bus-plate-header">
+            <div class="bus-plate-number">${bus.displayRouteCode || 'Bilinmiyor'}</div>
+          </div>
+          <div class="bus-destination">
+            <div class="destination-icon"></div>
+            <div class="destination-text">${bus.displayName || 'Bilinmiyor'}</div>
+            <div class="destination-distance">${formattedDistance} | ${bus.direction === "0" ? "Gidiş" : "Geliş"}</div>
+          </div>
+          <div class="bus-user-status ${bus.stopDiff <= 5 ? 'approaching' : 'passed'}">
+            <div class="user-status-icon"></div>
+            ${bus.stopDiff || 0} durak kaldı | ${bus.plate || 'Bilinmiyor'}
+          </div>
+        </div>
+        <div class="bus-status-panel" onclick="event.stopPropagation(); transferBus('${bus.displayRouteCode || (bus.routeCode ? bus.routeCode.replace(/^41/, '') : 'N/A')}', '${bus.direction}')" title="Hattı Aç" style="cursor: pointer; transition: all 0.15s ease;">
+          <div class="status-text">SIRA</div>
+          <div class="status-value">${index + 1}</div>
+          <div class="status-action">
+            <i class="fas fa-external-link-alt"></i>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('bus-info').innerHTML = `
+      <h3 class="section-title">(${sortedBuses.length}) ${stopInfo ? stopInfo.busStopName : 'Durak'}</h3>
+      ${busesHTML}
+    `;
+
+    if (window.isFirstBusLoad) {
+      window.isFirstBusLoad = false;
+    }
+
+    setTimeout(() => {
+      document.querySelectorAll('.bus-item-enter, .bus-item-move').forEach(item => {
+        item.classList.remove('bus-item-enter', 'bus-item-move');
+      });
+    }, 800);
+    
+    if (window.trackedBusPlate && newBusPlates.includes(window.trackedBusPlate)) {
+      const targetItem = document.querySelector(`.info-item[data-plate="${window.trackedBusPlate}"]`);
+      if (targetItem) {
+        targetItem.classList.add('tracking-active');
+      }
+      window.focusOnBus(window.trackedBusPlate);
+    } else if (window.trackedBusPlate && !newBusPlates.includes(window.trackedBusPlate)) {
+      window.stopBusTracking();
+    }
+    
+  }, exitingBuses.length > 0 ? 200 : 0);
+  
+  window.previousBusList = [...sortedBuses];
+}
+
+async function fetchStopData(stopId) {
+  const url = `https://service.kentkart.com/rl1//web/nearest/bus?region=${window.currentRegion}&lang=tr&authType=4&accuracy=0&busStopId=${stopId}&version=Web_1.8.1(32)_1.0_FIREFOX_kentkart.web.mkentkart`;
+  try {
+    const { data } = await axios.get(url);
+    displayData(data);
+    return data;
+  } catch (error) {
+    document.getElementById('bus-info').innerHTML = `
+      <div class="info-item" style="color:#f56565;">
+        Hata: ${error.message}
+      </div>`;
+    throw error;
+  }
+}
+
+function displayData(data) {
+  window.currentStopId = data.stopInfo.busStopId;
+  
+  // Header'ı güncelle - veri geldiğinde de URL'deki stop ID'yi kullan
+  const stopId = getQueryParam('stop');
+  document.getElementById('header-title').textContent = `Durak: ${stopId || data.stopInfo.busStopId}`;
+
+  const backParam = getQueryParam('back');
+  if(backParam) {
+    document.getElementById('back-btn').style.display = 'inline-block';
+  }
+
+  const stopLat = parseFloat(data.stopInfo.lat);
+  const stopLng = parseFloat(data.stopInfo.lng);
+  
+  window.currentStopLat = stopLat;
+  window.currentStopLng = stopLng;
+
+  // Durak marker'ını haritaya ekle
+  if (window.stopMarker) {
+    window.map.removeLayer(window.stopMarker);
+  }
+  
+  const stopIcon = window.createStopIcon(false, false, false);
+  window.stopMarker = L.marker([stopLat, stopLng], {
+    icon: stopIcon,
+    zIndexOffset: 1000
+  }).addTo(window.map);
+  
+  if (!window.keepMapPosition) {
+    window.focusOnLocation([stopLat, stopLng], 15);
+  } else {
+    window.keepMapPosition = false;
+  }
+
+  const newBusPlates = new Set(data.busList.map(bus => bus.plate));
+  
+  // Eski otobüs marker'larını temizle
+  window.clearBusMarkers(Array.from(newBusPlates));
+
+  const sortedBuses = data.busList.sort((a, b) => {
+    const distA = calculateDistance(parseFloat(a.lat), parseFloat(a.lng), stopLat, stopLng);
+    const distB = calculateDistance(parseFloat(b.lat), parseFloat(b.lng), stopLat, stopLng);
+    return distA - distB;
+  });
+
+  sortedBuses.forEach(bus => {
+    const busLat = parseFloat(bus.lat);
+    const busLng = parseFloat(bus.lng);
+    
+    if (window.activeBusMarkers[bus.plate]) {
+      const marker = window.activeBusMarkers[bus.plate];
+      
+      // Basit animasyon fonksiyonunu kullan
+      if (window.prevBusPositions[bus.plate]) {
+        const oldPos = window.prevBusPositions[bus.plate];
+        const newPos = [busLat, busLng];
+        
+        // Eğer pozisyon değiştiyse animasyon yap
+        if (Math.abs(oldPos.lat - busLat) > 0.0001 || Math.abs(oldPos.lng - busLng) > 0.0001) {
+          animateBusToPosition(
+            bus.plate, 
+            [oldPos.lat, oldPos.lng], 
+            newPos, 
+            bus.bearing || 0,
+            8000, // 8 saniye animasyon
+            bus.displayRouteCode // Hat kodunu da gönder
+          );
+        } else {
+          // Pozisyon değişmemişse sadece ikonu güncelle (hat kodu ile)
+          const newIcon = window.createBusIconWithPlate(bus.displayRouteCode || bus.plate || 'Bilinmiyor', bus.bearing || 0);
+          marker.setIcon(newIcon);
+        }
+      } else {
+        // İlk kez görülüyorsa direkt pozisyon ayarla (hat kodu ile)
+        const newIcon = window.createBusIconWithPlate(bus.displayRouteCode || bus.plate || 'Bilinmiyor', bus.bearing || 0);
+        marker.setIcon(newIcon);
+        marker.setLatLng([busLat, busLng]);
+      }
+      
+      window.prevBusPositions[bus.plate] = { lat: busLat, lng: busLng, bearing: bus.bearing || 0 };
+      
+    } else {
+      // Yeni otobüs marker'ı oluştur (hat kodu ile)
+      const busData = {
+        ...bus,
+        plateNumber: bus.displayRouteCode || bus.plate || 'Bilinmiyor', // Hat kodunu göster
+        lat: busLat,
+        lng: busLng,
+        bearing: bus.bearing || 0
+      };
+      
+      const marker = window.createOrUpdateBusMarker(busData, true);
+      
+      // Manuel olarak tıklama event'i ekle - haritada otobüse tıklayınca takip et
+      marker.on('click', function(e) {
+        e.target.closePopup();
+        window.toggleBusTracking(bus.plate); // Takip etmeye başla
+      });
+      
+      window.activeBusMarkers[bus.plate] = marker;
+      window.prevBusPositions[bus.plate] = { lat: busLat, lng: busLng, bearing: bus.bearing || 0 };
+    }
+  });
+
+  updateBusListWithAnimation(sortedBuses, stopLat, stopLng, data.stopInfo);
+}
+
+function init() {
+  const stopId = getQueryParam('stop');
+  
+  window.currentRegion = getQueryParam('region') || '004';
+  
+  // Load tracked bus from localStorage
+  window.trackedBusPlate = localStorage.getItem('trackedBusPlate');
+  
+  window.isFirstBusLoad = true;
+  window.previousBusList = [];
+  
+  // Initialize map using map.js functions
+  window.initializeMap();
+  
+  getUserLocation();
+  
+  if(stopId) {
+    // Set initial header title with stop ID from URL
+    document.getElementById('header-title').textContent = `Durak: ${stopId}`;
+    
+    fetchStopData(stopId);
+    
+    setInterval(() => {
+      window.keepMapPosition = true;
+      fetchStopData(stopId);
+    }, 10000);
+    
+    setInterval(() => {
+      getUserLocation();
+    }, 5000);
+  } else {
+    document.getElementById('bus-info').innerHTML = `
+      <div class="info-item" style="color:#f56565;">
+        Hata: "stop" parametresi belirtilmedi.
+      </div>`;
+  }
+}
+
+window.onload = init;
+  </script>
+</body>
+</html>

@@ -1,0 +1,354 @@
+{"stopId": "2", "stopName": "Beldemiz (K)", "lat": "40.1156819", "lng": "26.4126497", "routes": "Ç1,Ç2,Ç3,Ç4,Ç7,Ç8,Ç10,ÇT1,ÇT2,ÇT3,Ç1EKS,Ç3EKS,Ç9EKS,960,Ç9GC,ÇT3E,Ç7EKS"}
+{"stopId": "3", "stopName": "Ösem", "lat": "40.1112597", "lng": "26.417916", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "4", "stopName": "KİPA", "lat": "40.1140768", "lng": "26.4082136", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "5", "stopName": "ALTIN YILLAR DURAĞI", "lat": "40.1216914", "lng": "26.4132271", "routes": "Ç3"}
+{"stopId": "6", "stopName": "İL ÖZEL İDARE", "lat": "40.120542", "lng": "26.4105532", "routes": "Ç1,Ç2,Ç4,Ç7,11G,11K,11Ç,ÇT3,G.EKS,Ç1EKS,11K-E,960,11G-T,Ç9GC,ÇT3E,OGR1,OGR2,Ç7EKS"}
+{"stopId": "7", "stopName": "17 BURDA AVM", "lat": "40.1237959", "lng": "26.4102517", "routes": "Ç1,Ç2,Ç4,Ç7,11G,11K,11Ç,ÇT3,G.EKS,Ç1EKS,11K-E,960,11G-T,Ç9GC,ÇT3E,OGR1,OGR2,Ç7EKS"}
+{"stopId": "8", "stopName": "TROYA PARK AVM", "lat": "40.1275897", "lng": "26.4101753", "routes": "Ç1,Ç2,Ç3,Ç4,Ç7,11G,11K,11Ç,ÇT3,Ç1EKS,Ç3EKS,11K-E,960,11G-T,Ç9GC,ÇT3E,OGR1,OGR2,Ç7EKS"}
+{"stopId": "9", "stopName": "TURKUAZ SİTESİ", "lat": "40.1307919", "lng": "26.4093192", "routes": "Ç1,Ç2,Ç4,Ç7,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,OGR1,OGR2,Ç7EKS"}
+{"stopId": "10", "stopName": "BADEM SOKAK", "lat": "40.1365278", "lng": "26.4203994", "routes": "Ç8"}
+{"stopId": "11", "stopName": "HALK KÜTÜPHANESİ", "lat": "40.1348086", "lng": "26.4088539", "routes": "Ç1,Ç2,Ç4,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,OGR1,OGR2"}
+{"stopId": "12", "stopName": "BARBAROS OKULU KARŞISI", "lat": "40.1377076", "lng": "26.408476", "routes": "Ç1,Ç2,Ç4,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,OGR1,OGR2"}
+{"stopId": "13", "stopName": "BARBAROS POLİKLİNİĞİ", "lat": "40.1397079", "lng": "26.4082369", "routes": "Ç1,Ç2,Ç4,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,OGR1,OGR2"}
+{"stopId": "14", "stopName": "İBRAHİM BODUR LİSESİ", "lat": "40.1420043", "lng": "26.4079199", "routes": "Ç1,Ç2,Ç4,Ç8,11G,11K,11Ç,Ç1EKS,11K-E,960,OGR1,OGR2"}
+{"stopId": "15", "stopName": "CUMA PAZARI", "lat": "40.144532", "lng": "26.4076424", "routes": "Ç1,Ç2,Ç3,Ç4,Ç5,Ç8,11G,11K,11Ç,ÇT3,Ç1EKS,Ç3EKS,11K-E,960,11G-T,ÇT3E,OGR1,OGR2"}
+{"stopId": "16", "stopName": "ADİLE NAŞİT KREŞİ-1", "lat": "40.095028", "lng": "26.3887148", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,OGR1,OGR2"}
+{"stopId": "17", "stopName": "CUMHURİYET MEYDANI", "lat": "40.1481084", "lng": "26.4051997", "routes": "Ç1,Ç3,Ç8,11K,11Ç,ÇT3,Ç8EKS"}
+{"stopId": "18", "stopName": "İSKELE", "lat": "40.1502179", "lng": "26.4031012", "routes": "Ç1,Ç3,Ç8,11K,11Ç,ÇT3,Ç8EKS"}
+{"stopId": "19", "stopName": "VALİLİK", "lat": "40.15138", "lng": "26.40488", "routes": "Ç1,Ç3,Ç8,11K,11Ç,ÇT3,Ç8EKS"}
+{"stopId": "20", "stopName": "MESLEK LİSESİ", "lat": "40.15156", "lng": "26.40872", "routes": "Ç1,Ç3,Ç4,Ç5,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "21", "stopName": "İŞKUR", "lat": "40.1530229", "lng": "26.4100743", "routes": "Ç1,Ç3,Ç4,Ç5,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "22", "stopName": "ANAFARTALAR KAMPÜSÜ", "lat": "40.155079", "lng": "26.41188", "routes": "Ç1,Ç3,Ç4,Ç5,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "23", "stopName": "SERAMİK MÜZESİ", "lat": "40.156905", "lng": "26.41355", "routes": "Ç1,Ç3,Ç5,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "24", "stopName": "ŞEHİTLER CAMİ", "lat": "40.1598591", "lng": "26.4146291", "routes": "Ç1,Ç3,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "25", "stopName": "Karacaören Caddesi", "lat": "40.1618762", "lng": "26.4319464", "routes": "Ç6,11Ç,OGR3"}
+{"stopId": "26", "stopName": "HAVUZ", "lat": "40.1625", "lng": "26.4100083", "routes": "Ç1,Ç3,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "27", "stopName": "BARIŞKENT", "lat": "40.1646071", "lng": "26.4098565", "routes": "Ç1,Ç3,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "28", "stopName": "VAHİT TUNA LİSESİ", "lat": "40.1663012", "lng": "26.4105923", "routes": "Ç1,Ç3,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "29", "stopName": "Karacaören Caddesi", "lat": "40.162235", "lng": "26.4319035", "routes": "Ç5,11Ç"}
+{"stopId": "30", "stopName": "Gazi Meclisi Caddesi1", "lat": "40.1675128", "lng": "26.4298221", "routes": "Ç6,11Ç,OGR3"}
+{"stopId": "31", "stopName": "İSTEK YAPI KOOPERATİFİ", "lat": "40.1687729", "lng": "26.4163883", "routes": "Ç1,Ç2,Ç6,11K,11Ç,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "32", "stopName": "BARIŞ CADDESİ", "lat": "40.1703138", "lng": "26.4243855", "routes": "Ç6,OGR3"}
+{"stopId": "33", "stopName": "ŞEHİT.ONB. FATİH DURU", "lat": "40.1317606", "lng": "26.4163228", "routes": "Ç8"}
+{"stopId": "34", "stopName": "ATAM KREŞ", "lat": "40.1345208", "lng": "26.4184656", "routes": "Ç8"}
+{"stopId": "35", "stopName": "BARIŞ CADDESİ", "lat": "40.1713291", "lng": "26.4263859", "routes": "Ç2"}
+{"stopId": "36", "stopName": "ESENKENT SİTESİ", "lat": "40.1609788", "lng": "26.424162", "routes": "Ç2,11K,11Ç"}
+{"stopId": "38", "stopName": "HUZUR SOKAK", "lat": "40.15545", "lng": "26.42194", "routes": "Ç5"}
+{"stopId": "39", "stopName": "ÇAĞDAŞ KENT", "lat": "40.152743", "lng": "26.420908", "routes": "Ç5"}
+{"stopId": "40", "stopName": "ÇEVRE ŞEH. BAKANLIĞI", "lat": "40.152115", "lng": "26.419322", "routes": "Ç8,Ç9,960,11G-T,Ç8EKS"}
+{"stopId": "41", "stopName": "PİRİ REİS", "lat": "40.152832", "lng": "26.416632", "routes": "Ç8,Ç9,960,11G-T,Ç8EKS"}
+{"stopId": "42", "stopName": "DÖRT YOL", "lat": "40.152955", "lng": "26.413541", "routes": "Ç8,Ç9,960,11G-T,Ç9GC,Ç8EKS"}
+{"stopId": "43", "stopName": "STADYUM", "lat": "40.15143", "lng": "26.412357", "routes": "Ç8,Ç9,960,11G-T,Ç9GC"}
+{"stopId": "44", "stopName": "ESKİ HASTANE", "lat": "40.1488279", "lng": "26.4103574", "routes": "960,11G-T,Ç9GC,OGR1,Ç8EKS"}
+{"stopId": "45", "stopName": "ASKERLİK ŞUBESİ", "lat": "40.146037", "lng": "26.408009", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,11G,11K,11Ç,ÇT3,G.EKS,Ç1EKS,Ç3EKS,11K-E,960,11G-T,Ç9GC,ÇT3E,OGR1,OGR2"}
+{"stopId": "46", "stopName": "CUMA PAZARI", "lat": "40.14427", "lng": "26.40733", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,11G,11K,11Ç,ÇT3,G.EKS,Ç1EKS,Ç3EKS,11K-E,960,11G-T,Ç9GC,ÇT3E,OGR1,OGR2"}
+{"stopId": "47", "stopName": "İBRAHİM BODUR LİSESİ", "lat": "40.14192", "lng": "26.40777", "routes": "Ç1,Ç2,Ç4,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,Ç9GC,OGR1,OGR2"}
+{"stopId": "48", "stopName": "BARBAROS POLİKLİNİĞİ", "lat": "40.13975", "lng": "26.40799", "routes": "Ç1,Ç2,Ç4,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,Ç9GC,OGR1,OGR2"}
+{"stopId": "49", "stopName": "BARBAROS İLKÖĞRETİM OKULU", "lat": "40.137375", "lng": "26.408325", "routes": "Ç1,Ç2,Ç4,11G,11K,11Ç,Ç1EKS,11K-E,960,Ç9GC,OGR1,OGR2"}
+{"stopId": "50", "stopName": "HALK KÜTÜPHANESİ", "lat": "40.134645", "lng": "26.408649", "routes": "Ç1,Ç2,Ç4,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,Ç9GC,OGR1,OGR2"}
+{"stopId": "51", "stopName": "YENİ KORDON", "lat": "40.131728", "lng": "26.408974", "routes": "Ç1,Ç2,Ç4,Ç7,11G,11K,11Ç,G.EKS,Ç1EKS,11K-E,960,Ç9GC,OGR1,OGR2,Ç7EKS"}
+{"stopId": "53", "stopName": "KERİME SULTAN YURDU", "lat": "40.1494057", "lng": "26.4486838", "routes": "Ç9,Ç10,11G-T,Ç9GC,OGR1"}
+{"stopId": "54", "stopName": "KIYI AVM", "lat": "40.1234128", "lng": "26.410055", "routes": "Ç1,Ç2,Ç4,Ç7,11G,11K,11Ç,ÇT3,G.EKS,Ç1EKS,11K-E,960,11G-T,Ç9GC,ÇT3E,OGR1,OGR2,Ç7EKS"}
+{"stopId": "55", "stopName": "İL ÖZEL İDARE", "lat": "40.1204383", "lng": "26.4103321", "routes": "Ç1,Ç2,Ç4,Ç7,11G,11K,11Ç,ÇT3,G.EKS,Ç1EKS,11K-E,960,11G-T,Ç9GC,ÇT3E,OGR1,OGR2,Ç7EKS"}
+{"stopId": "56", "stopName": "AKÇANSA GÜZEL SANATLAR LİSESİ", "lat": "40.1213767", "lng": "26.4133675", "routes": "Ç3"}
+{"stopId": "57", "stopName": "KİPA", "lat": "40.113892", "lng": "26.407869", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "58", "stopName": "Beldemiz", "lat": "40.1154223", "lng": "26.4125141", "routes": "Ç1,Ç2,Ç3,Ç4,Ç7,Ç8,Ç10,ÇT1,ÇT2,ÇT3,Ç1EKS,Ç3EKS,Ç9EKS,960,ÇT3E,Ç7EKS"}
+{"stopId": "59", "stopName": "Ziraat fakültesi", "lat": "40.110158", "lng": "26.41578", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "60", "stopName": "BELEDİYE", "lat": "40.1472603", "lng": "26.4092246", "routes": "Ç2,Ç9,11G,Ç1EKS,Ç3EKS,11K-E,960,11G-T,ÇT3E,OGR1,OGR2"}
+{"stopId": "61", "stopName": "Adalet Parkı", "lat": "40.151465", "lng": "26.41259", "routes": "Ç2,Ç8,Ç9,960,11G-T,OGR2,Ç8EKS"}
+{"stopId": "62", "stopName": "Adnan Kahveci Cad.", "lat": "40.1633006", "lng": "26.4139871", "routes": "Ç2,Ç5,11G-T"}
+{"stopId": "63", "stopName": "PİRİ REİS", "lat": "40.153037", "lng": "26.41554", "routes": "Ç2,Ç6,Ç8,Ç9,960,11G-T,OGR2,OGR3,Ç8EKS"}
+{"stopId": "64", "stopName": "ÇEVRE ŞEHİRCİLİK BAKANLIĞI", "lat": "40.152094", "lng": "26.419045", "routes": "Ç2,Ç6,Ç8,Ç9,960,11G-T,OGR2,OGR3,Ç8EKS"}
+{"stopId": "65", "stopName": "ÇAĞDAŞ KENT", "lat": "40.15276", "lng": "26.421097", "routes": "Ç2,Ç9GC"}
+{"stopId": "66", "stopName": "Gazi Meclisi Caddesi2", "lat": "40.1676205", "lng": "26.4292222", "routes": "Ç2,Ç5,Ç9GC"}
+{"stopId": "67", "stopName": "SERİNKENT", "lat": "40.1609541", "lng": "26.4240291", "routes": "11K,11Ç"}
+{"stopId": "68", "stopName": "İMKB Lisesi", "lat": "40.1671571", "lng": "26.4123062", "routes": "Ç5"}
+{"stopId": "69", "stopName": "ATAM KREŞ", "lat": "40.1342011", "lng": "26.4179399", "routes": "Ç8"}
+{"stopId": "70", "stopName": "IŞILAY SOKAK", "lat": "40.1596011", "lng": "26.4233315", "routes": "Ç1,Ç5,ÇT3"}
+{"stopId": "72", "stopName": "AHMET PİRİŞTİNA CD.", "lat": "40.1685694", "lng": "26.4199793", "routes": "Ç1,Ç2,Ç6,11K,11Ç,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "74", "stopName": "DEMOKRASİ CD.", "lat": "40.167624", "lng": "26.415337", "routes": "Ç1,Ç2,Ç6,11K,11Ç,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "75", "stopName": "Ahmet Piriştina Caddesi 3", "lat": "40.1578295", "lng": "26.4331483", "routes": "Ç2,Ç5,11Ç,Ç9GC,OGR3"}
+{"stopId": "76", "stopName": "SEYİT ONBAŞI", "lat": "40.164608", "lng": "26.414428", "routes": "Ç1,Ç2,Ç6,Ç7,11K,11Ç,ÇT3,OGR1,OGR3"}
+{"stopId": "77", "stopName": "ADLİYE GİDİŞ", "lat": "40.1224152", "lng": "26.4209794", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "78", "stopName": "VAHİT TUNA LİSESİ", "lat": "40.1662788", "lng": "26.4101192", "routes": "Ç1,Ç2,Ç6,Ç7,11K,11Ç,ÇT3,OGR1,OGR3"}
+{"stopId": "79", "stopName": "BARIŞKENT", "lat": "40.1641247", "lng": "26.4098684", "routes": "Ç1,Ç2,Ç6,Ç7,11K,11Ç,ÇT3,OGR1,OGR3"}
+{"stopId": "80", "stopName": "HAVUZ", "lat": "40.162003", "lng": "26.4106545", "routes": "Ç1,Ç2,Ç6,Ç7,11K,11Ç,ÇT3,OGR1,OGR3"}
+{"stopId": "81", "stopName": "ÖMER MART İLKÖĞRETİM", "lat": "40.1607977", "lng": "26.4128809", "routes": "Ç1,Ç2,Ç6,Ç7,11K,11Ç,ÇT3,OGR1,OGR3"}
+{"stopId": "82", "stopName": "ŞEHİTLER CAMİ", "lat": "40.1588983", "lng": "26.4154621", "routes": "Ç1,Ç2,Ç4,Ç6,Ç7,11K,11Ç,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "83", "stopName": "SERAMİK MÜZESİ", "lat": "40.1569217", "lng": "26.4133084", "routes": "Ç1,Ç2,Ç3,Ç4,Ç6,Ç7,11K,11Ç,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "84", "stopName": "ANAFARTALAR KAMPÜSÜ", "lat": "40.1550475", "lng": "26.4116202", "routes": "Ç1,Ç2,Ç3,Ç4,Ç6,Ç7,11K,11Ç,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "85", "stopName": "CEVATPAŞA PARKI", "lat": "40.1517868", "lng": "26.4087203", "routes": "Ç5"}
+{"stopId": "86", "stopName": "CEVATPAŞA PARKI", "lat": "40.1517868", "lng": "26.4087203", "routes": "Ç1,Ç2,Ç3,Ç4,Ç7,11K,11Ç,ÇT3,OGR1,OGR3"}
+{"stopId": "87", "stopName": "VALİLİK", "lat": "40.151732", "lng": "26.405145", "routes": "Ç1,Ç2,Ç3,Ç8,11K,11Ç,ÇT3,G.EKS,11K-E,OGR3,Ç7EKS"}
+{"stopId": "88", "stopName": "iskele", "lat": "40.1501811", "lng": "26.4029206", "routes": "Ç1,Ç2,Ç3,Ç8,11K,11Ç,ÇT3,G.EKS,11K-E,OGR3,Ç7EKS"}
+{"stopId": "89", "stopName": "ÖĞRETMEN EVİ", "lat": "40.148092", "lng": "26.404966", "routes": "Ç1,Ç2,Ç3,Ç8,11K,11Ç,ÇT3,G.EKS,11K-E,OGR3,Ç7EKS"}
+{"stopId": "90", "stopName": "KÜÇÜK SANAYİ SİTESİ", "lat": "40.150015", "lng": "26.4271705", "routes": "Ç6,Ç8,Ç9,960,11G-T,Ç9GC,OGR2,OGR3,Ç8EKS"}
+{"stopId": "91", "stopName": "Adliye Geliş", "lat": "40.1224075", "lng": "26.420935", "routes": "Ç3,Ç8,ÇT2,Ç3EKS"}
+{"stopId": "92", "stopName": "EMİNKENT", "lat": "40.1205564", "lng": "26.4140902", "routes": "Ç3"}
+{"stopId": "93", "stopName": "KIZ YURDU", "lat": "40.121883", "lng": "26.4146289", "routes": "Ç8,Ç3EKS"}
+{"stopId": "94", "stopName": "Adliye", "lat": "40.1243908", "lng": "26.4223767", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "95", "stopName": "Adliye", "lat": "40.1246533", "lng": "26.4223606", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "96", "stopName": "M.PARK HASTANESİ", "lat": "40.131308", "lng": "26.411432", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,Ç9GC,ÇT3E"}
+{"stopId": "97", "stopName": "TROYA CADDESİ", "lat": "40.135005", "lng": "26.412605", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,Ç9GC,ÇT3E"}
+{"stopId": "98", "stopName": "IŞILAY SK.", "lat": "40.1595595", "lng": "26.4230422", "routes": "Ç1,ÇT3,11G-T,Ç9GC"}
+{"stopId": "99", "stopName": "CEVİZ SOKAK", "lat": "40.141261", "lng": "26.415686", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,Ç9GC,ÇT3E"}
+{"stopId": "100", "stopName": "KAYALAR SOKAK", "lat": "40.143146", "lng": "26.417998", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,Ç9GC,ÇT3E"}
+{"stopId": "101", "stopName": "Çınarlı Köy Yolu", "lat": "40.0727385", "lng": "26.3801184", "routes": "11Ç"}
+{"stopId": "102", "stopName": "KANTAR", "lat": "40.1448968", "lng": "26.412438", "routes": "Ç3,Ç5,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "104", "stopName": "HİZMET EVİ DURAĞI", "lat": "40.16236", "lng": "26.418457", "routes": "Ç3,Ç7"}
+{"stopId": "105", "stopName": "HASTANE BAYIRI ŞEHİTLİĞİ 0", "lat": "40.1605168", "lng": "26.4193789", "routes": "Ç3,Ç7"}
+{"stopId": "109", "stopName": "KANTAR", "lat": "40.1448697", "lng": "26.4128345", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "110", "stopName": "ÇATALTEPELİLER", "lat": "40.146063", "lng": "26.418389", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "111", "stopName": "SILA SOKAK", "lat": "40.142789", "lng": "26.417234", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "112", "stopName": "ANAFARTALAR", "lat": "40.1412799", "lng": "26.4152063", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "113", "stopName": "HAVAALANI KAVŞAĞI", "lat": "40.1387654", "lng": "26.4135072", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "114", "stopName": "TROYA CADDESİ", "lat": "40.135465", "lng": "26.412519", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "115", "stopName": "M.PARK HASTANESİ", "lat": "40.130435", "lng": "26.410899", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "118", "stopName": "ÇTSO", "lat": "40.1571544", "lng": "26.4629965", "routes": "Ç9,OGR1,OGR2"}
+{"stopId": "119", "stopName": "LOZAN CADDESİ", "lat": "40.1253632", "lng": "26.4112808", "routes": "Ç3,Ç8,Ç3EKS"}
+{"stopId": "120", "stopName": "LOZAN CD.", "lat": "40.1251929", "lng": "26.4111651", "routes": "Ç3,Ç8,Ç3EKS"}
+{"stopId": "121", "stopName": "D.HASTANESİ", "lat": "40.0973665", "lng": "26.4175153", "routes": "ÇT3,ÇT3E"}
+{"stopId": "122", "stopName": "boş 62", "lat": "40.17617", "lng": "26.4699262", "routes": "ÇT2"}
+{"stopId": "124", "stopName": "boş 63", "lat": "40.1763458", "lng": "26.4745813", "routes": "OGR3"}
+{"stopId": "125", "stopName": "D.HASTANESİ", "lat": "40.0972888", "lng": "26.418194", "routes": "ÇT3,ÇT3E,OGR3"}
+{"stopId": "126", "stopName": "boş 64", "lat": "40.1854294", "lng": "26.4779961", "routes": "OGR3"}
+{"stopId": "127", "stopName": "boş 65", "lat": "40.1816901", "lng": "26.4748816", "routes": "OGR3"}
+{"stopId": "128", "stopName": "boş 66", "lat": "40.1815557", "lng": "26.4734916", "routes": "OGR3"}
+{"stopId": "129", "stopName": "boş 67", "lat": "40.1794036", "lng": "26.4767902", "routes": "OGR3"}
+{"stopId": "131", "stopName": "Gazi Meclisi Caddesi3", "lat": "40.1651699", "lng": "26.4318932", "routes": "Ç6,OGR3"}
+{"stopId": "132", "stopName": "BARIŞ CADDESİ", "lat": "40.1738319", "lng": "26.4311618", "routes": "Ç5"}
+{"stopId": "134", "stopName": "Gazi Meclisi Caddesi4", "lat": "40.1648437", "lng": "26.4319938", "routes": "Ç5"}
+{"stopId": "137", "stopName": "BARIŞ CADDESİ", "lat": "40.1701979", "lng": "26.4245147", "routes": "Ç5"}
+{"stopId": "138", "stopName": "TUĞSAVUL", "lat": "40.150262", "lng": "26.419704", "routes": "Ç5,Ç6,OGR3"}
+{"stopId": "139", "stopName": "ÇANAKKALE LİSESİ", "lat": "40.148515", "lng": "26.418854", "routes": "Ç5,Ç6,OGR3"}
+{"stopId": "141", "stopName": "AHMET PİRİŞTİNA CAD.", "lat": "40.1585097", "lng": "26.4329243", "routes": "Ç5,Ç6,OGR3"}
+{"stopId": "150", "stopName": "YAHYA ÇAVUŞ", "lat": "40.1668226", "lng": "26.4204287", "routes": "11K,11Ç"}
+{"stopId": "152", "stopName": "ÖZLEM KAYALI", "lat": "40.1638267", "lng": "26.4214081", "routes": "11K,11Ç"}
+{"stopId": "157", "stopName": "ÖZLEM KAYALI", "lat": "40.1638165", "lng": "26.4215577", "routes": "11K,11Ç"}
+{"stopId": "158", "stopName": "SOSYAL BİLİMLER", "lat": "40.1191114", "lng": "26.4200966", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "159", "stopName": "YAHYA ÇAVUŞ", "lat": "40.1661433", "lng": "26.4200409", "routes": "11K,11Ç"}
+{"stopId": "164", "stopName": "TEKZEN DURAĞI", "lat": "40.1491385", "lng": "26.4484416", "routes": "Ç9,Ç10,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "166", "stopName": "HAMİDİYE TABYA", "lat": "40.136209", "lng": "26.40466", "routes": "Ç7,Ç7EKS"}
+{"stopId": "170", "stopName": "GAZİ OKULU", "lat": "40.1504654", "lng": "26.4100876", "routes": "Ç8,Ç9,11G,Ç1EKS,Ç3EKS,11K-E,ÇT3E"}
+{"stopId": "171", "stopName": "TAC.AS LİSESİ", "lat": "40.1631271", "lng": "26.46838", "routes": "OGR1,OGR2"}
+{"stopId": "174", "stopName": "BAHÇEŞEHİR SİTESİ", "lat": "40.0978438", "lng": "26.408014", "routes": "Ç7,ÇT1,960,Ç7EKS"}
+{"stopId": "176", "stopName": "GAZİ İLKÖĞRETİM", "lat": "40.1503448", "lng": "26.4098548", "routes": "Ç8,Ç8EKS"}
+{"stopId": "179", "stopName": "HAMİDİYE TABYA", "lat": "40.136131", "lng": "26.404532", "routes": "Ç7,Ç7EKS"}
+{"stopId": "182", "stopName": "ŞEHİT GÜROL CADDESİ", "lat": "40.14021", "lng": "26.41236", "routes": "Ç8"}
+{"stopId": "183", "stopName": "106. Sokak", "lat": "40.172484", "lng": "26.428691", "routes": "Ç5"}
+{"stopId": "184", "stopName": "BADEM SOKAK", "lat": "40.1366448", "lng": "26.4206589", "routes": "Ç8"}
+{"stopId": "188", "stopName": "AHMET PİRİŞTİNA CAD.", "lat": "40.1542108", "lng": "26.4372484", "routes": "Ç5,Ç6,11G-T,OGR3,Ç8EKS"}
+{"stopId": "190", "stopName": "Ş.F.BAYRAKTAR İLKOKULU", "lat": "40.1408567", "lng": "26.4091502", "routes": "Ç8"}
+{"stopId": "193", "stopName": "OĞUZ SOKAK", "lat": "40.0960204", "lng": "26.4039874", "routes": "ÇT1,960"}
+{"stopId": "194", "stopName": "KEPEZ TOKİ", "lat": "40.0933488", "lng": "26.3900443", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,OGR2"}
+{"stopId": "195", "stopName": "ORMAN DEPOSU", "lat": "40.0818739", "lng": "26.3745085", "routes": "11Ç,11G-T"}
+{"stopId": "196", "stopName": "ŞABAN MARKET", "lat": "40.1400314", "lng": "26.4128189", "routes": "Ç8"}
+{"stopId": "197", "stopName": "SUN SAN KAMP", "lat": "40.081785", "lng": "26.36563", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "198", "stopName": "42. SOKAK", "lat": "40.080215", "lng": "26.36562", "routes": "11G,11G-T"}
+{"stopId": "199", "stopName": "AY IŞIĞI", "lat": "40.077963", "lng": "26.365932", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "200", "stopName": "YEŞİL DARDONOS SİTESİ", "lat": "40.076373", "lng": "26.366403", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "201", "stopName": "ÇÖMÜ TESİSLER", "lat": "40.071384", "lng": "26.364395", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "202", "stopName": "ÇANAKKALE KOLEJİ", "lat": "40.065675", "lng": "26.360687", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "203", "stopName": "JANDARMA KAMPI", "lat": "40.0636902", "lng": "26.359689", "routes": "11G,11G-T"}
+{"stopId": "204", "stopName": "GÜZELYALI", "lat": "40.0582692", "lng": "26.3572356", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "206", "stopName": "OZAN OTEL", "lat": "40.05355", "lng": "26.35386", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "207", "stopName": "24. SOKAK", "lat": "40.05206", "lng": "26.35281", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "208", "stopName": "EKO MARKET", "lat": "40.05087", "lng": "26.351995", "routes": "11G,11G-T"}
+{"stopId": "209", "stopName": "AKARSU VİLLALARI", "lat": "40.049065", "lng": "26.35072", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "210", "stopName": "YALI RESTAURANT", "lat": "40.047088", "lng": "26.349343", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "211", "stopName": "MERKEZ", "lat": "40.046163", "lng": "26.348535", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "212", "stopName": "İSKELE", "lat": "40.04506", "lng": "26.34746", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "213", "stopName": "KİRAZ MARKET", "lat": "40.044058", "lng": "26.346436", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "214", "stopName": "ESENTEPE", "lat": "40.043116", "lng": "26.345478", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "215", "stopName": "JANDARMA", "lat": "40.04203", "lng": "26.34443", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "216", "stopName": "BARIŞ CADDESİ 3", "lat": "40.171721", "lng": "26.427296", "routes": "Ç5,11G-T"}
+{"stopId": "217", "stopName": "İRİS OTEL", "lat": "40.040094", "lng": "26.342268", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "218", "stopName": "ŞEHİT ONBAŞI FATİH DURU", "lat": "40.130967", "lng": "26.415984", "routes": "Ç8"}
+{"stopId": "219", "stopName": "GÜZELYALI", "lat": "40.038232", "lng": "26.340242", "routes": "11G,G.EKS"}
+{"stopId": "220", "stopName": "JANDARMA KAMPI", "lat": "40.0595926", "lng": "26.3577276", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "221", "stopName": "HALK PLAJI1", "lat": "40.038433", "lng": "26.34051", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "222", "stopName": "Bayır Sokak", "lat": "40.098392", "lng": "26.415102", "routes": "Ç7,ÇT1,960"}
+{"stopId": "223", "stopName": "İRİS OTEL", "lat": "40.040242", "lng": "26.342534", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "224", "stopName": "SEYİT ONBAŞI", "lat": "40.164564", "lng": "26.414185", "routes": "Ç1,Ç3,Ç7,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "225", "stopName": "JANDARMA", "lat": "40.04219", "lng": "26.344669", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "227", "stopName": "FIRIN", "lat": "40.04385", "lng": "26.346282", "routes": "11G,11G-T"}
+{"stopId": "228", "stopName": "İSKELE", "lat": "40.044967", "lng": "26.34738", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "229", "stopName": "GÜZELYALI MERKEZ", "lat": "40.046136", "lng": "26.348632", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "230", "stopName": "ARTEMİS RESTORANT", "lat": "40.046896", "lng": "26.349273", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "231", "stopName": "AKARSU VİLLALARI", "lat": "40.049105", "lng": "26.350831", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "232", "stopName": "SU EVLERİ", "lat": "40.050518", "lng": "26.351802", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "233", "stopName": "24. SOKAK", "lat": "40.051941", "lng": "26.352788", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "234", "stopName": "OZAN OTEL", "lat": "40.053463", "lng": "26.353843", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "235", "stopName": "BELEDİYE KAMPI", "lat": "40.054942", "lng": "26.354953", "routes": "11G-T"}
+{"stopId": "236", "stopName": "GÜZELYALI", "lat": "40.05771", "lng": "26.35709", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "238", "stopName": "Ç.KALE KOLEJİ", "lat": "40.066312", "lng": "26.361162", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "239", "stopName": "ÇÖMÜ TESİSLER", "lat": "40.071689", "lng": "26.364672", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "240", "stopName": "YEŞİL DARDONOS SİTESİ", "lat": "40.076561", "lng": "26.366392", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "241", "stopName": "AY IŞIĞI", "lat": "40.07815", "lng": "26.36599", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "242", "stopName": "42. SOKAK", "lat": "40.080119", "lng": "26.365717", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "243", "stopName": "SUN SAN KAMPI", "lat": "40.08189", "lng": "26.365772", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "244", "stopName": "DARDONOS", "lat": "40.084068", "lng": "26.366554", "routes": "11G-T"}
+{"stopId": "245", "stopName": "ORMAN DEPOSU", "lat": "40.0818844", "lng": "26.3745984", "routes": "11Ç,11G-T"}
+{"stopId": "246", "stopName": "Kepez Toki", "lat": "40.0931347", "lng": "26.3900706", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "251", "stopName": "100. YIL CADDESİ", "lat": "40.13445", "lng": "26.40635", "routes": "Ç7,Ç7EKS"}
+{"stopId": "252", "stopName": "MÜHENDİSLİK-1", "lat": "40.1143501", "lng": "26.4224149", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "253", "stopName": "100. YIL CADDESİ", "lat": "40.13419", "lng": "26.40653", "routes": "Ç7,Ç7EKS"}
+{"stopId": "256", "stopName": "İKLİM SOKAK", "lat": "40.1461933", "lng": "26.4167867", "routes": "Ç3,Ç5,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "257", "stopName": "HİZMET EVİ DURAĞI -1", "lat": "40.16233", "lng": "26.4185328", "routes": "Ç7"}
+{"stopId": "258", "stopName": "AHMET TANER KIŞLALI PARKI", "lat": "40.1372638", "lng": "26.4133673", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,Ç9GC,ÇT3E"}
+{"stopId": "259", "stopName": "ŞEHİT GÜROL CADDESİ", "lat": "40.139035", "lng": "26.4175774", "routes": "Ç8"}
+{"stopId": "268", "stopName": "RÜYAM SİTESİ", "lat": "40.167683", "lng": "26.4233109", "routes": "Ç1,Ç2,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "269", "stopName": "19. SOKAK", "lat": "40.1707652", "lng": "26.4186798", "routes": "Ç5"}
+{"stopId": "272", "stopName": "Çınarlı Köy Yolu", "lat": "40.0727088", "lng": "26.3798604", "routes": "11Ç"}
+{"stopId": "275", "stopName": "KOLİN OTEL", "lat": "40.111379", "lng": "26.40584", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "276", "stopName": "DARDANEL", "lat": "40.10835", "lng": "26.40343", "routes": "11G,11K,11Ç,ÇT1,ÇT2,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "277", "stopName": "OPET DURAĞI", "lat": "40.10632", "lng": "26.40183", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "278", "stopName": "AYDIN ERKEK YURDU", "lat": "40.104503", "lng": "26.400407", "routes": "11G,11K,11Ç,ÇT1,ÇT2,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "279", "stopName": "OFİS", "lat": "40.10271", "lng": "26.398962", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "280", "stopName": "SEÇKİN DURAĞI", "lat": "40.100825", "lng": "26.397503", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "281", "stopName": "DURAK", "lat": "40.099191", "lng": "26.396247", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "282", "stopName": "DUTLAR", "lat": "40.097452", "lng": "26.394844", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "286", "stopName": "BELEDİYE MEYDAN", "lat": "40.095676", "lng": "26.393557", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "287", "stopName": "DUTLAR", "lat": "40.097496", "lng": "26.395104", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "288", "stopName": "DURAK", "lat": "40.099502", "lng": "26.396693", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "289", "stopName": "SEÇKİN DURAĞI", "lat": "40.100704", "lng": "26.397645", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "290", "stopName": "OFİS", "lat": "40.102886", "lng": "26.399349", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "291", "stopName": "YELTEPE", "lat": "40.1054336", "lng": "26.4013798", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "292", "stopName": "DARDANEL", "lat": "40.107519", "lng": "26.403072", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "293", "stopName": "BOĞAZKENT", "lat": "40.109018", "lng": "26.404231", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "294", "stopName": "PİRİ REİS SİTELERİ", "lat": "40.111144", "lng": "26.405904", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,11G-T,OGR1,OGR2"}
+{"stopId": "295", "stopName": "SOSYAL GÜVENLİK KURUMU", "lat": "40.096787", "lng": "26.390535", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,OGR1,OGR2"}
+{"stopId": "296", "stopName": "DİŞ HASTANESİ", "lat": "40.096656", "lng": "26.390598", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,OGR1,OGR2"}
+{"stopId": "297", "stopName": "BOŞ 72", "lat": "40.139206", "lng": "26.426089", "routes": "11G-T,Ç9GC"}
+{"stopId": "298", "stopName": "GÜZEL SANATLAR FAKÜLTESİ", "lat": "40.1138628", "lng": "26.4215617", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "299", "stopName": "HUZUR EVİ", "lat": "40.0997242", "lng": "26.3860439", "routes": "11G,G.EKS"}
+{"stopId": "300", "stopName": "SSK Durağı", "lat": "40.15728", "lng": "26.420214", "routes": "Ç2"}
+{"stopId": "301", "stopName": "JANDARMA KAMPI", "lat": "40.0596831", "lng": "26.3579158", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "304", "stopName": "Mühendislik Fakültesi", "lat": "40.113158", "lng": "26.421289", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "305", "stopName": "VİSTA PREMİUM", "lat": "40.111953", "lng": "26.4276756", "routes": "Ç1,Ç3,Ç8"}
+{"stopId": "306", "stopName": "Hatime Ana Ulu Camii", "lat": "40.11027", "lng": "26.41036", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "307", "stopName": "KREŞ DURAĞI", "lat": "40.1101878", "lng": "26.4114111", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "308", "stopName": "Fen Edebiyat Fakültesi", "lat": "40.11082", "lng": "26.41744", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "309", "stopName": "Sosyal Bilimler", "lat": "40.1194437", "lng": "26.4206868", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "314", "stopName": "KIZ YETİŞTİRME YURDU", "lat": "40.15907", "lng": "26.42103", "routes": "Ç3,Ç7"}
+{"stopId": "315", "stopName": "AHMET PİRİŞTİNA CAD.", "lat": "40.16739", "lng": "26.4232426", "routes": "Ç1,ÇT3,OGR1"}
+{"stopId": "316", "stopName": "960 Toki belediye hizmet evi", "lat": "40.10516", "lng": "26.40853", "routes": "Ç7,ÇT1,ÇT3,960,ÇT3E,Ç7EKS"}
+{"stopId": "317", "stopName": "960 Toki belediye hizmet evi", "lat": "40.10495", "lng": "26.40864", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E"}
+{"stopId": "319", "stopName": "SANAYİ KAVŞAĞI", "lat": "40.145763", "lng": "26.420444", "routes": "Ç3,ÇT3,Ç3EKS,11G-T,ÇT3E"}
+{"stopId": "322", "stopName": "ESKİ SSK", "lat": "40.15752", "lng": "26.42066", "routes": "Ç1,Ç3,Ç5,Ç7,11K,11Ç,ÇT3"}
+{"stopId": "324", "stopName": "ÇINARLI", "lat": "40.05241", "lng": "26.38821", "routes": "11Ç"}
+{"stopId": "325", "stopName": "BOŞ 83", "lat": "40.174974", "lng": "26.4764987", "routes": "Ç9GC"}
+{"stopId": "326", "stopName": "CEVATPAŞA İLKÖĞRETİM OKULU", "lat": "40.1685086", "lng": "26.4164984", "routes": "Ç1,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "327", "stopName": "UGUR 96", "lat": "40.1682915", "lng": "26.4196695", "routes": "Ç1,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "328", "stopName": "Spor salonu", "lat": "40.1068058", "lng": "26.4108271", "routes": "ÇT1,ÇT3,960,ÇT3E"}
+{"stopId": "329", "stopName": "UĞUR 96", "lat": "40.1678518", "lng": "26.4154615", "routes": "Ç1,Ç5,11K,11Ç,ÇT3,OGR1"}
+{"stopId": "332", "stopName": "NUSRAT YURDU", "lat": "40.1446921", "lng": "26.4425227", "routes": "Ç6,Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "333", "stopName": "BAHRİYE ÜÇOK CADDESİ", "lat": "40.15561", "lng": "26.4188", "routes": "Ç3"}
+{"stopId": "335", "stopName": "CEZAEVİ", "lat": "40.1498075", "lng": "26.4322687", "routes": "Ç6,Ç8,Ç9,960,11G-T,Ç9GC,OGR2,OGR3,Ç8EKS"}
+{"stopId": "347", "stopName": "ŞEHİT GÜROL CADDESİ", "lat": "40.1391857", "lng": "26.4170474", "routes": "Ç8"}
+{"stopId": "350", "stopName": "PELİT SİTESİ", "lat": "40.08833", "lng": "26.36751", "routes": "11G,G.EKS"}
+{"stopId": "351", "stopName": "DARDANOS KÖPRÜSÜ", "lat": "40.0903397", "lng": "26.3641872", "routes": "11G,G.EKS"}
+{"stopId": "352", "stopName": "AQUAPARK ÖNÜ", "lat": "40.096282", "lng": "26.3647051", "routes": "11G,G.EKS"}
+{"stopId": "353", "stopName": "KEPEZ KARAVAN PARKI", "lat": "40.1001948", "lng": "26.3674459", "routes": "11G,G.EKS"}
+{"stopId": "354", "stopName": "LİMANKÖPRÜKEPEZ", "lat": "40.10246", "lng": "26.3750243", "routes": "11G"}
+{"stopId": "355", "stopName": "KEPEZ LİMANI", "lat": "40.10165", "lng": "26.37949", "routes": "11G,G.EKS"}
+{"stopId": "356", "stopName": "ESNAF KEFALET-1", "lat": "40.1013948", "lng": "26.3830082", "routes": "11G,G.EKS"}
+{"stopId": "357", "stopName": "Huzur Evi", "lat": "40.0996092", "lng": "26.3859844", "routes": "11G,G.EKS"}
+{"stopId": "358", "stopName": "KEPEZ ÇAMLIK ALTI -1", "lat": "40.09708", "lng": "26.3872473", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,OGR1,OGR2"}
+{"stopId": "359", "stopName": "960 Toki", "lat": "40.10666", "lng": "26.40861", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,Ç7EKS"}
+{"stopId": "360", "stopName": "960 Toki", "lat": "40.10679", "lng": "26.40848", "routes": "Ç7,ÇT1,ÇT3,960,ÇT3E,Ç7EKS"}
+{"stopId": "361", "stopName": "960Toki", "lat": "40.10368", "lng": "26.40824", "routes": "Ç7,ÇT1,ÇT3,960,ÇT3E,Ç7EKS"}
+{"stopId": "362", "stopName": "960Toki okul", "lat": "40.1038", "lng": "26.40844", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,Ç7EKS"}
+{"stopId": "365", "stopName": "960 Toki askeri lojmanlar", "lat": "40.10034", "lng": "26.41091", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,OGR2,Ç7EKS"}
+{"stopId": "367", "stopName": "OTOGAR", "lat": "40.14994", "lng": "26.45708", "routes": "Ç9,Ç9EKS,11G-T,Ç9GC"}
+{"stopId": "368", "stopName": "Otogar", "lat": "40.1502271", "lng": "26.4578491", "routes": "Ç9,Ç9EKS,11G-T,Ç9GC"}
+{"stopId": "369", "stopName": "CEZAEVİ", "lat": "40.15001", "lng": "26.43327", "routes": "Ç8,Ç9,960,11G-T,Ç9GC,Ç8EKS"}
+{"stopId": "371", "stopName": "Salı Pazarı", "lat": "40.1567237", "lng": "26.4149511", "routes": "Ç3"}
+{"stopId": "372", "stopName": "FEN LİSESİ", "lat": "40.06601", "lng": "26.38399", "routes": "11Ç"}
+{"stopId": "373", "stopName": "FEN LİSESİ", "lat": "40.06627", "lng": "26.38401", "routes": "11Ç"}
+{"stopId": "374", "stopName": "Çınarlı Merkez", "lat": "40.05262", "lng": "26.38828", "routes": "11Ç"}
+{"stopId": "379", "stopName": "Spor salonu", "lat": "40.1071", "lng": "26.41098", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,Ç7EKS"}
+{"stopId": "380", "stopName": "Aynalı Çarşı", "lat": "40.1453236", "lng": "26.4037088", "routes": "Ç7,Ç7EKS"}
+{"stopId": "381", "stopName": "Aynalı Çarşı", "lat": "40.1456537", "lng": "26.4039878", "routes": "Ç7,Ç7EKS"}
+{"stopId": "382", "stopName": "TURGUT REİS İLKÖĞRETİM OKULU", "lat": "40.14259", "lng": "26.40305", "routes": "Ç7,Ç7EKS"}
+{"stopId": "383", "stopName": "TURGUT REİS İLKÖĞRETİM OKULU", "lat": "40.14247", "lng": "26.40286", "routes": "Ç7,Ç7EKS"}
+{"stopId": "388", "stopName": "Hastane Bay.Şehitliği 1", "lat": "40.1604227", "lng": "26.4195359", "routes": "Ç7"}
+{"stopId": "390", "stopName": "YABANCI DİLLER MYO", "lat": "40.1144823", "lng": "26.4221652", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "391", "stopName": "SİYASAL BİLİMLER FAKÜLTESİ", "lat": "40.110687", "lng": "26.416405", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT1,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "392", "stopName": "HALKBAHÇESİ", "lat": "40.149915", "lng": "26.407056", "routes": "Ç4,Ç7,Ç9,11G,Ç1EKS,Ç3EKS,ÇT3E"}
+{"stopId": "393", "stopName": "ESKİ HASTANE", "lat": "40.149767", "lng": "26.407147", "routes": "Ç4,Ç5,Ç7"}
+{"stopId": "394", "stopName": "TURİZM OTELCİLİK KEPEZ", "lat": "40.0950481", "lng": "26.3888233", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,OGR1,OGR2"}
+{"stopId": "395", "stopName": "SAMYELİ SOKAK 0", "lat": "40.1192619", "lng": "26.4165019", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "396", "stopName": "DARDANOS CAD.", "lat": "40.0772441", "lng": "26.377324", "routes": "11Ç,Ç9GC"}
+{"stopId": "397", "stopName": "KEPEZ HUZUREVİ", "lat": "40.0985761", "lng": "26.3867286", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,OGR1,OGR2"}
+{"stopId": "398", "stopName": "KEPEZ HUZUREVİ-1", "lat": "40.0986315", "lng": "26.3866261", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,OGR1,OGR2"}
+{"stopId": "399", "stopName": "KEPEZ ÇAMLIK", "lat": "40.0969112", "lng": "26.387641", "routes": "11K,11Ç,ÇT1,ÇT2,11K-E,OGR1,OGR2"}
+{"stopId": "400", "stopName": "MEYDAN", "lat": "40.0958", "lng": "26.39272", "routes": "11G,11K,11Ç,ÇT1,ÇT2,G.EKS,11K-E,Ç9GC,OGR1,OGR2"}
+{"stopId": "401", "stopName": "Karacaören Caddesi 0", "lat": "40.1596122", "lng": "26.4279344", "routes": "Ç1,Ç5,ÇT3"}
+{"stopId": "402", "stopName": "İMECE SİTESİ", "lat": "40.1603", "lng": "26.42922", "routes": "Ç9GC"}
+{"stopId": "403", "stopName": "KENT YILDIZ SİTESİ", "lat": "40.1623394", "lng": "26.429224", "routes": "Ç1,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "404", "stopName": "YILDIZ KENT SİTESİ", "lat": "40.1619685", "lng": "26.4289637", "routes": "Ç1,ÇT3,OGR1"}
+{"stopId": "406", "stopName": "Karacaören Caddesi 2", "lat": "40.1589585", "lng": "26.427266", "routes": "Ç1,ÇT3,Ç9GC"}
+{"stopId": "410", "stopName": "Bursa Caddesi 1", "lat": "40.146035", "lng": "26.4429437", "routes": "Ç6,Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "412", "stopName": "ÇTSO", "lat": "40.1572738", "lng": "26.4628673", "routes": "Ç9"}
+{"stopId": "413", "stopName": "KIZ YETİŞTİRME YURDU", "lat": "40.1590921", "lng": "26.4220334", "routes": "11K,11Ç"}
+{"stopId": "414", "stopName": "KIZ YURDU", "lat": "40.1220281", "lng": "26.414676", "routes": "Ç8,Ç3EKS"}
+{"stopId": "416", "stopName": "ÇANKA EVLERİ", "lat": "40.1282608", "lng": "26.4139974", "routes": "Ç8"}
+{"stopId": "417", "stopName": "Toki/Bahçeşehir", "lat": "40.0977314", "lng": "26.4080053", "routes": "Ç7,ÇT1,960,Ç7EKS"}
+{"stopId": "419", "stopName": "İLAHİYAT FAKÜLTESİ", "lat": "40.1255127", "lng": "26.4186538", "routes": "Ç3,Ç8,Ç3EKS"}
+{"stopId": "420", "stopName": "İLAHİYAT FAKÜLTESİ", "lat": "40.1253383", "lng": "26.4182622", "routes": "Ç3,Ç8,Ç3EKS"}
+{"stopId": "421", "stopName": "TACETTİN ASLAN CAMİİ", "lat": "40.1255291", "lng": "26.4214004", "routes": "Ç3,Ç8,Ç3EKS"}
+{"stopId": "422", "stopName": "DAYANIŞMA SİTESİ", "lat": "40.1260931", "lng": "26.4211053", "routes": "Ç3,Ç8,Ç3EKS"}
+{"stopId": "423", "stopName": "FİLE MARKET", "lat": "40.1643417", "lng": "26.4266682", "routes": "Ç1,ÇT3,OGR1"}
+{"stopId": "424", "stopName": "AHMET PİRİŞTİNA CD.", "lat": "40.1647393", "lng": "26.4268828", "routes": "Ç1,Ç2,ÇT3,Ç9GC,OGR1,OGR3"}
+{"stopId": "425", "stopName": "EVİM SİTESİ", "lat": "40.1184592", "lng": "26.4145071", "routes": "Ç10,ÇT2,Ç3EKS"}
+{"stopId": "426", "stopName": "EMİNKENT1", "lat": "40.1200138", "lng": "26.4138042", "routes": "Ç3"}
+{"stopId": "427", "stopName": "DENİZ SOKAK", "lat": "40.139932", "lng": "26.4030971", "routes": "Ç7,Ç7EKS"}
+{"stopId": "428", "stopName": "PLAJ CADDESİ DURAĞI", "lat": "40.14002", "lng": "26.4030434", "routes": "Ç7,Ç7EKS"}
+{"stopId": "429", "stopName": "KABRİSTAN", "lat": "40.1505169", "lng": "26.4437003", "routes": "Ç9,Ç10,11G-T,Ç9GC,OGR1"}
+{"stopId": "430", "stopName": "KABRİSTAN", "lat": "40.150318", "lng": "26.4442233", "routes": "Ç9,11G-T,Ç9GC,OGR1,OGR2"}
+{"stopId": "431", "stopName": "DARDANOS CAD.", "lat": "40.0769995", "lng": "26.3774282", "routes": "11Ç,11G-T,Ç9GC"}
+{"stopId": "432", "stopName": "DOĞA EVLERİ", "lat": "40.0691816", "lng": "26.3630033", "routes": "11G,G.EKS,11G-T"}
+{"stopId": "433", "stopName": "HASAN MEVSUT CD.", "lat": "40.0862654", "lng": "26.3669435", "routes": "11G,G.EKS"}
+{"stopId": "434", "stopName": "KERİME SULTAN YURT", "lat": "40.1477101", "lng": "26.4482627", "routes": "Ç6,Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "435", "stopName": "Yeni Hastane", "lat": "40.097873", "lng": "26.416347", "routes": "ÇT3,ÇT3E,Ç7EKS"}
+{"stopId": "436", "stopName": "Yeni Hastane", "lat": "40.0985602", "lng": "26.4155985", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,OGR2,Ç7EKS"}
+{"stopId": "437", "stopName": "Anadolu İmam Hatip Lisesi", "lat": "40.1001177", "lng": "26.4127744", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,OGR2,Ç7EKS"}
+{"stopId": "438", "stopName": "boş81", "lat": "40.1381779", "lng": "26.431464", "routes": "Ç7EKS"}
+{"stopId": "439", "stopName": "HASTANE YOLU2", "lat": "40.1002408", "lng": "26.4105213", "routes": "Ç7,ÇT1,ÇT3,960,ÇT3E,Ç7EKS"}
+{"stopId": "440", "stopName": "Konakkale", "lat": "40.0998427", "lng": "26.4129031", "routes": "Ç7,ÇT1,ÇT3,960,ÇT3E,Ç7EKS"}
+{"stopId": "441", "stopName": "Durak", "lat": "40.1009671", "lng": "26.4081503", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,OGR2,Ç7EKS"}
+{"stopId": "442", "stopName": "PARK17", "lat": "40.0934658", "lng": "26.4095825", "routes": "Ç7,960,Ç7EKS"}
+{"stopId": "443", "stopName": "PARK 17", "lat": "40.0941758", "lng": "26.40903", "routes": "Ç7,960,Ç7EKS"}
+{"stopId": "444", "stopName": "TİMELİNE", "lat": "40.0964901", "lng": "26.4077211", "routes": "Ç7,Ç7EKS"}
+{"stopId": "445", "stopName": "MEDİGARDEN", "lat": "40.0978587", "lng": "26.4110523", "routes": "Ç7,ÇT1,960,Ç7EKS"}
+{"stopId": "446", "stopName": "MEDİGARDEN2", "lat": "40.0977047", "lng": "26.4111006", "routes": "Ç7,ÇT1,960,Ç7EKS"}
+{"stopId": "447", "stopName": "Yeni Hastane", "lat": "40.0987759", "lng": "26.41536", "routes": "Ç7,ÇT1,ÇT3,960,Ç9GC,ÇT3E,OGR2,Ç7EKS"}
+{"stopId": "448", "stopName": "H.ELBİ KYK", "lat": "40.111844", "lng": "26.4315874", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,ÇT2,Ç3EKS,Ç9EKS"}
+{"stopId": "449", "stopName": "H.ELBİ KYK", "lat": "40.1112656", "lng": "26.4310188", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,ÇT2,Ç9EKS"}
+{"stopId": "450", "stopName": "ARDES ÖĞRENCİ YURDU", "lat": "40.1132656", "lng": "26.4238814", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "451", "stopName": "ARDES YURT", "lat": "40.1131958", "lng": "26.4240665", "routes": "Ç1,Ç2,Ç3,Ç4,Ç8,Ç10,ÇT2,Ç1EKS,Ç3EKS,Ç9EKS"}
+{"stopId": "452", "stopName": "SAMYELİ SOKAK", "lat": "40.1193678", "lng": "26.4164865", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "453", "stopName": "HAL DURAĞI KARŞISI", "lat": "40.1489628", "lng": "26.4415169", "routes": "Ç6,Ç8,960,OGR3,Ç8EKS"}
+{"stopId": "454", "stopName": "Hal Duağı", "lat": "40.1488152", "lng": "26.4411736", "routes": "Ç6,Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "455", "stopName": "Bursa Caddesi 2", "lat": "40.1458833", "lng": "26.4475465", "routes": "Ç6,Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "456", "stopName": "Bursa Caddesi", "lat": "40.1460411", "lng": "26.4472165", "routes": "Ç6,Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "457", "stopName": "Egepark1", "lat": "40.1480955", "lng": "26.4455546", "routes": "Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "458", "stopName": "EgePark 2", "lat": "40.1480935", "lng": "26.4453847", "routes": "Ç6,Ç8,Ç10,960,OGR3,Ç8EKS"}
+{"stopId": "460", "stopName": "Port Mare Evleri", "lat": "40.1025755", "lng": "26.3739735", "routes": "11G,G.EKS"}
+{"stopId": "462", "stopName": "Kepez Plajı", "lat": "40.1030597", "lng": "26.3706154", "routes": "11G,G.EKS"}
+{"stopId": "463", "stopName": "Kepez Plaj", "lat": "40.1029653", "lng": "26.3707281", "routes": "11G,G.EKS"}
+{"stopId": "464", "stopName": "Karavan Parkı", "lat": "40.099732", "lng": "26.3673056", "routes": "11G,G.EKS"}
+{"stopId": "465", "stopName": "AQUAPARK", "lat": "40.0966872", "lng": "26.364677", "routes": "11G,G.EKS"}
+{"stopId": "467", "stopName": "Dardanos Feneri", "lat": "40.0920336", "lng": "26.3625044", "routes": "11G,G.EKS"}
+{"stopId": "468", "stopName": "Dardanos Feneri", "lat": "40.0919925", "lng": "26.3626546", "routes": "11G,G.EKS"}
+{"stopId": "469", "stopName": "EVİM SİTESİ", "lat": "40.1172326", "lng": "26.4132437", "routes": "Ç3,Ç8,Ç10,ÇT2,Ç3EKS"}
+{"stopId": "470", "stopName": "EVİM SİTESİ", "lat": "40.1172367", "lng": "26.413394", "routes": "Ç3,Ç8"}
+{"stopId": "471", "stopName": "ÇANKA EVLERİ", "lat": "40.1281275", "lng": "26.414204", "routes": "Ç8"}
+{"stopId": "474", "stopName": "KAMPÜS KAPI", "lat": "40.1144984", "lng": "26.4118088", "routes": "Ç1,Ç2,Ç3,Ç4,Ç7,Ç8,Ç10,ÇT1,ÇT2,ÇT3,Ç1EKS,Ç3EKS,Ç9EKS,960,ÇT3E,Ç7EKS"}
+{"stopId": "476", "stopName": "StarLife", "lat": "40.094701", "lng": "26.4047438", "routes": "960"}
+{"stopId": "477", "stopName": "Star Life Site", "lat": "40.0947051", "lng": "26.4045882", "routes": "960"}
+{"stopId": "478", "stopName": "BAHAR EVLERİ", "lat": "40.0966256", "lng": "26.4078042", "routes": "Ç7,Ç7EKS"}
+{"stopId": "480", "stopName": "KALE CENTER", "lat": "40.0941101", "lng": "26.4014984", "routes": "ÇT1"}
+{"stopId": "481", "stopName": "KALE CENTER", "lat": "40.0942825", "lng": "26.4015949", "routes": "ÇT1"}
+{"stopId": "482", "stopName": "Oğuz Kent", "lat": "40.0959567", "lng": "26.4040626", "routes": "ÇT1,960"}

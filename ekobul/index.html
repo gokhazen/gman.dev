@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eko3 Bul</title>
+    <link rel="icon" href="https://gman.dev/ekogokhanlogo" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="../ekorota/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="route-header">
+            <h1 class="route-title">Eko3 Rota Bulucu</h1>
+            <div class="route-actions">
+                <button id="backButton" class="back-btn" onclick="goBack()" style="display: none;" title="Geri">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <button class="search-btn" onclick="goToSearch()" title="Arama">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="shareButton" class="search-btn" onclick="copyShareLink()" style="display: none;" title="Paylaş">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+
+        <div class="route-info">
+            <div id="usage-info" class="info-item">
+                <strong>📍 Nasıl Kullanılır</strong>
+                <div class="info-detail">
+                    <i class="fas fa-mouse-pointer"></i> Haritada 2 konum seçin. İlk tıklama başlangıç, ikinci tıklama bitiş noktası olacak.
+                </div>
+            </div>
+
+            <div id="selected-points"></div>
+
+            <div id="route-result"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="rotabulma.js"></script>
+    <script>
+        let map, stops = [], routes = {}, selectedPoints = [], markers = [], routeMarkers = [], routeLines = [];
+        
+        // Region koordinatları
+        const CONFIG = {
+            '004': [40.7686795, 29.9526597],
+            '010': [37.2153, 28.3636],
+            '003': [37.0000, 35.3213],
+            '019': [36.5444, 31.9956],
+            '029': [41.1833, 31.3833],
+            '017': [37.7167, 30.2833],
+            '007': [40.1553, 26.4142],
+            '036': [40.8438, 31.1565],
+            '013': [41.6818, 26.5623],
+            '020': [41.2833, 31.4167],
+            '032': [37.3212, 40.7245],
+            '026': [36.8841, 30.7056],
+            '023': [37.9667, 34.6833],
+            '025': [41.3887, 33.7827],
+            '027': [41.7333, 27.2167],
+            '031': [40.9839, 37.8764],
+            '033': [37.0742, 36.2611],
+            '037': [41.2500, 32.6833],
+            '005': [39.7477, 37.0179],
+            '011': [39.8181, 34.8147]
+        };
+
+        const region = new URLSearchParams(window.location.search).get('region') || '004';
+
+        // Region'a göre varsayılan koordinatları belirle
+        const getDefaultCoordinates = (region) => {
+            return CONFIG[region] || CONFIG['004'];
+        };
+
+        const [DEFAULT_LAT, DEFAULT_LNG] = getDefaultCoordinates(region);
+
+        // Haritayı region koordinatlarıyla başlat
+        map = L.map('map').setView([DEFAULT_LAT, DEFAULT_LNG], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        function updateURL() {
+            const url = new URL(window.location);
+            url.searchParams.set('region', region);
+            
+            if (selectedPoints.length >= 1) {
+                url.searchParams.set('start', `${selectedPoints[0].lat.toFixed(6)},${selectedPoints[0].lng.toFixed(6)}`);
+            }
+            
+            if (selectedPoints.length >= 2) {
+                url.searchParams.set('end', `${selectedPoints[1].lat.toFixed(6)},${selectedPoints[1].lng.toFixed(6)}`);
+            }
+            
+            window.history.replaceState({}, '', url);
+            console.log('URL güncellendi:', url.toString());
+        }
+
+        function loadFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const startParam = urlParams.get('start');
+            const endParam = urlParams.get('end');
+            const backParam = urlParams.get('back');
+            
+            if (backParam) {
+                const backButton = document.getElementById('backButton');
+                backButton.style.display = 'flex';
+                backButton.onclick = () => goBack(backParam);
+                console.log('Geri butonu aktif, hedef:', backParam);
+            }
+            
+            if (startParam && endParam) {
+                try {
+                    const [startLat, startLng] = startParam.split(',').map(parseFloat);
+                    const [endLat, endLng] = endParam.split(',').map(parseFloat);
+                    
+                    selectedPoints = [
+                        { lat: startLat, lng: startLng },
+                        { lat: endLat, lng: endLng }
+                    ];
+                    
+                    selectedPoints.forEach((point, idx) => {
+                        const marker = L.marker([point.lat, point.lng], {
+                            icon: L.divIcon({
+                                className: 'user-marker',
+                                html: `<div style="background: var(--primary-color); color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 3px solid white; box-shadow: var(--shadow);">${idx + 1}</div>`,
+                                iconSize: [28, 28]
+                            })
+                        }).addTo(map).bindPopup(`Seçilen Nokta ${idx + 1}`);
+                        
+                        markers.push(marker);
+                    });
+                    
+                    updateInfo();
+                    
+                    setTimeout(() => {
+                        if (stops.length > 0) {
+                            calculateRoute();
+                            document.getElementById('shareButton').style.display = 'flex';
+                        }
+                    }, 1000);
+                    
+                    console.log('URL\'den koordinatlar yüklendi:', startParam, endParam);
+                    
+                } catch (error) {
+                    console.error('URL koordinatları parse edilemedi:', error);
+                }
+            }
+        }
+
+        function goBack(backUrl) {
+            if (backUrl) {
+                window.location.href = decodeURIComponent(backUrl);
+            } else {
+                window.history.back();
+            }
+        }
+
+        function goToSearch() {
+            window.location.href = 'https://gman.dev/ekogokhan';
+        }
+
+        function copyShareLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const shareBtn = document.getElementById('shareButton');
+                const originalHTML = shareBtn.innerHTML;
+                shareBtn.innerHTML = '<i class="fas fa-check"></i>';
+                shareBtn.style.background = 'var(--success-color)';
+                
+                setTimeout(() => {
+                    shareBtn.innerHTML = originalHTML;
+                    shareBtn.style.background = '';
+                }, 2000);
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            });
+        }
+
+        function createRouteDetailLink(routeNumber, routeKey) {
+            const direction = routeKey.split('_')[1] || '0'; 
+            const currentUrl = encodeURIComponent(window.location.href);
+            return `https://gman.dev/ekorota/?region=${region}&route=${routeNumber}&direction=${direction}&back=${currentUrl}`;
+        }
+
+        function makeRouteNumberClickable(routeNumber, routeKey) {
+            const link = createRouteDetailLink(routeNumber, routeKey);
+            return `<a href="${link}" style="color: inherit; text-decoration: none; border-bottom: 1px dashed currentColor; cursor: pointer;" title="Hat ${routeNumber} detaylarını görüntüle" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Hat ${routeNumber}</a>`;
+        }
+
+        async function loadData() {
+            try {
+                const [stopsRes, routesRes] = await Promise.all([
+                    fetch(`https://gman.dev/ekodata/stops/${region}.json`),
+                    fetch(`https://gman.dev/ekodata/routes/${region}.json`)
+                ]);
+                
+                const stopsText = await stopsRes.text();
+                const routesText = await routesRes.text();
+                
+                stops = stopsText.trim().split('\n').map(line => JSON.parse(line));
+                
+                routesText.trim().split('\n').forEach(line => {
+                    const route = JSON.parse(line);
+                    Object.assign(routes, route);
+                });
+                
+                console.log(`${stops.length} durak ve ${Object.keys(routes).length} rota yüklendi`);
+                
+                loadFromURL();
+                
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+                document.querySelector('.route-info').innerHTML = '<div class="info-item" style="border-left-color: var(--danger-color);"><strong style="color: var(--danger-color);">❌ Veri Yükleme Hatası</strong><div class="info-detail">Durak ve rota verileri yüklenirken hata oluştu.</div></div>';
+            }
+        }
+
+        map.on('click', function(e) {
+            if (selectedPoints.length >= 2) {
+                selectedPoints = [];
+                markers.forEach(marker => map.removeLayer(marker));
+                routeMarkers.forEach(marker => map.removeLayer(marker));
+                routeLines.forEach(line => map.removeLayer(line));
+                markers = [];
+                routeMarkers = [];
+                routeLines = [];
+                
+                const url = new URL(window.location);
+                url.searchParams.delete('start');
+                url.searchParams.delete('end');
+                window.history.replaceState({}, '', url);
+                
+                document.getElementById('shareButton').style.display = 'none';
+                // "Nasıl Kullanılır" bölümünü tekrar göster
+                document.getElementById('usage-info').style.display = 'block';
+            }
+
+            const marker = L.marker([e.latlng.lat, e.latlng.lng], {
+                icon: L.divIcon({
+                    className: 'user-marker',
+                    html: `<div style="background: var(--primary-color); color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 3px solid white; box-shadow: var(--shadow);">${selectedPoints.length + 1}</div>`,
+                    iconSize: [28, 28]
+                })
+            }).addTo(map).bindPopup(`Seçilen Nokta ${selectedPoints.length + 1}`);
+            
+            markers.push(marker);
+            selectedPoints.push({ lat: e.latlng.lat, lng: e.latlng.lng });
+
+            updateURL();
+            updateInfo();
+
+            if (selectedPoints.length === 2) {
+                calculateRoute();
+            }
+        });
+
+        function updateInfo() {
+            const pointsDiv = document.getElementById('selected-points');
+            if (selectedPoints.length > 0) {
+                pointsDiv.innerHTML = `
+                    <div style="background: var(--card-background); border-radius: var(--radius); padding: 12px; margin-bottom: 16px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; font-size: 0.85rem; font-weight: 500; color: var(--text-primary); margin-right: 4px;">
+                                <i class="fas fa-map-pin" style="color: var(--primary-color); margin-right: 6px; font-size: 0.9rem;"></i>
+                                Seçilen Konumlar:
+                            </div>
+                            ${selectedPoints.map((point, idx) => `
+                                <div style="display: inline-flex; align-items: center; background: ${idx === 0 ? 'var(--success-light)' : 'var(--danger-light)'}; border: 1px solid ${idx === 0 ? 'var(--success-border)' : 'var(--danger-border)'}; border-radius: 20px; padding: 4px 10px; font-size: 0.75rem;">
+                                    <div style="background: ${idx === 0 ? 'var(--success-color)' : 'var(--danger-color)'}; color: white; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 6px; font-size: 9px;">
+                                        ${idx === 0 ? 'B' : 'S'}
+                                    </div>
+                                    <span style="color: ${idx === 0 ? 'var(--success-color)' : 'var(--danger-color)'}; font-weight: 500; margin-right: 6px;">
+                                        ${idx === 0 ? 'Başlangıç' : 'Bitiş'}
+                                    </span>
+                                    <span style="color: var(--text-muted); font-family: monospace; font-size: 0.7rem;">
+                                        ${point.lat.toFixed(4)}, ${point.lng.toFixed(4)}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                pointsDiv.innerHTML = '';
+            }
+        }
+
+        function updateInfoWithStops(startStop, endStop) {
+            const pointsDiv = document.getElementById('selected-points');
+            if (selectedPoints.length === 2) {
+                pointsDiv.innerHTML = `
+                    <div style="background: var(--card-background); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <i class="fas fa-route" style="color: var(--primary-color); margin-right: 8px; font-size: 1rem;"></i>
+                            <span style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">Seçilen Rota</span>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center;">
+                            <!-- Başlangıç -->
+                            <div style="text-align: center;">
+                                <div style="background: var(--success-light); border: 1px solid var(--success-border); border-radius: var(--radius); padding: 10px;">
+                                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                                        <div style="background: var(--success-color); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 6px; font-size: 10px;">B</div>
+                                        <span style="font-weight: 600; color: var(--success-color); font-size: 0.8rem;">Başlangıç</span>
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: var(--text-primary); font-weight: 500; margin-bottom: 4px; line-height: 1.2;">${startStop.stop.stopName}</div>
+                                    <div style="display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-secondary);">
+                                        <i class="fas fa-walking" style="margin-right: 4px;"></i>
+                                        ${Math.round(startStop.distance)}m
+                                    </div>
+                                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-family: monospace;">
+                                        ${selectedPoints[0].lat.toFixed(3)}, ${selectedPoints[0].lng.toFixed(3)}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Ok işareti -->
+                            <div style="display: flex; justify-content: center;">
+                                <div style="background: var(--primary-color); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-arrow-right" style="font-size: 10px;"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Bitiş -->
+                            <div style="text-align: center;">
+                                <div style="background: var(--danger-light); border: 1px solid var(--danger-border); border-radius: var(--radius); padding: 10px;">
+                                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                                        <div style="background: var(--danger-color); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 6px; font-size: 10px;">S</div>
+                                        <span style="font-weight: 600; color: var(--danger-color); font-size: 0.8rem;">Bitiş</span>
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: var(--text-primary); font-weight: 500; margin-bottom: 4px; line-height: 1.2;">${endStop.stop.stopName}</div>
+                                    <div style="display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-secondary);">
+                                        <i class="fas fa-walking" style="margin-right: 4px;"></i>
+                                        ${Math.round(endStop.distance)}m
+                                    </div>
+                                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-family: monospace;">
+                                        ${selectedPoints[1].lat.toFixed(3)}, ${selectedPoints[1].lng.toFixed(3)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function calculateRoute() {
+            const start = selectedPoints[0];
+            const end = selectedPoints[1];
+
+            console.log('Rota hesaplanıyor...');
+            
+            const bestResult = findBestRoute(
+                start.lat, start.lng, end.lat, end.lng,
+                stops, routes, map, routeMarkers, routeLines,
+                makeRouteNumberClickable, displayRouteOnMap
+            );
+            
+            displayRouteResult(bestResult, start, end);
+        }
+
+        function displayRouteResult(bestResult, start, end) {
+            let resultHtml = '';
+
+            if (bestResult) {
+                const { route: routeData, startStop, endStop, score } = bestResult;
+                
+                // "Nasıl Kullanılır" bölümünü gizle
+                document.getElementById('usage-info').style.display = 'none';
+                
+                // Seçilen konumları durak bilgileriyle birlikte güncelle
+                updateInfoWithStops(startStop, endStop);
+
+                if (routeData.type === 'same_stop') {
+                    resultHtml += createSameStopResult();
+                } else {
+                    displayRouteOnMap(routeData, startStop, endStop, stops, map, routeMarkers, routeLines);
+
+                    // createSelectedPointsInfo artık boş döneceği için kaldırdık
+
+                    if (routeData.type === 'direct') {
+                        const route = routeData.routes[0];
+                        const alternatives = findAlternativeRoutes(
+                            startStop.stop.stopId, 
+                            endStop.stop.stopId, 
+                            route.routeNumber,
+                            routes
+                        );
+                        resultHtml += createDirectRouteResult(route, routeData, alternatives, makeRouteNumberClickable);
+                    } else if (routeData.type === 'transfer') {
+                        const transferStopId = routeData.transferStops[0];
+                        const transferStop = stops.find(s => s.stopId === transferStopId);
+                        const route1 = routeData.routes[0];
+                        const route2 = routeData.routes[1];
+                        
+                        const alternatives1 = findAlternativeRoutes(
+                            startStop.stop.stopId, 
+                            transferStopId, 
+                            route1.routeNumber,
+                            routes
+                        );
+                        const alternatives2 = findAlternativeRoutes(
+                            transferStopId, 
+                            endStop.stop.stopId, 
+                            route2.routeNumber,
+                            routes
+                        );
+                        
+                        resultHtml += createTransferRouteResult(route1, route2, transferStop, routeData, alternatives1, alternatives2, makeRouteNumberClickable);
+                    } else if (routeData.type === 'multi_transfer') {
+                        resultHtml += createMultiTransferRouteResult(routeData, stops, routes, makeRouteNumberClickable);
+                    }
+                    
+                    resultHtml += createMapLegend(routeData);
+                    document.getElementById('shareButton').style.display = 'flex';
+                }
+            } else {
+                // "Nasıl Kullanılır" bölümünü gizle
+                document.getElementById('usage-info').style.display = 'none';
+                
+                const startNearest = findNearestStops(start.lat, start.lng, stops);
+                const endNearest = findNearestStops(end.lat, end.lng, stops);
+                resultHtml += createNoRouteFoundResult(startNearest, endNearest);
+            }
+            
+            document.getElementById('route-result').innerHTML = resultHtml;
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
