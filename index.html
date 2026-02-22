@@ -3,337 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    
     <title>Gökhan Özen</title>
     <link rel="icon" href="https://gman.dev/favicon.ico" type="image/x-icon">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'], // Kodlar için özel font
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        primary: '#6366f1', // Indigo 500
-                        secondary: '#a855f7', // Purple 500
-                        dark: '#0f172a',    // Slate 900
-                        card: '#1e293b',    // Slate 800 (Yetenek kutusu rengi)
+                        dark: '#050505',     
+                        surface: '#0f0f0f',  
+                        border: '#27272a',   
+                        accent: '#10b981',   
+                        muted: '#a1a1aa',    
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Özel scrollbar tasarımı */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #27272a; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
         
-        /* Video Aspect Ratio Fix */
+        body { font-family: 'JetBrains Mono', monospace; }
+        
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%; 
             height: 0;
             overflow: hidden;
+            border: 1px solid #27272a;
+            background-color: #000;
         }
         .video-container iframe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .grayscale-hover img {
+            filter: grayscale(100%) contrast(1.2);
+            transition: filter 0.3s ease;
+        }
+        .grayscale-hover:hover img {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        .lang-btn.active {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Advanced Modal Styles */
+        #modalImg {
+            transition: transform 0.1s ease-out;
+            cursor: grab;
+            user-select: none;
+            will-change: transform;
+        }
+        #modalImg:active {
+            cursor: grabbing;
+        }
+        .modal-control-btn {
+            background: #0f0f0f;
+            border: 1px solid #27272a;
+            color: #a1a1aa;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
+        }
+        .modal-control-btn:hover {
+            border-color: #10b981;
+            color: #fff;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
-<body class="bg-dark text-slate-300 font-sans antialiased selection:bg-primary selection:text-white">
+<body class="bg-dark text-muted antialiased selection:bg-accent selection:text-black overflow-x-hidden">
 
-    <nav class="fixed w-full z-50 top-0 start-0 border-b border-slate-800 bg-dark/90 backdrop-blur-md">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="#" class="flex items-center space-x-2 rtl:space-x-reverse group">
-                <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-lg group-hover:rotate-12 transition-transform shadow-lg shadow-indigo-500/30">G</div>
-                <span class="self-center text-xl font-bold whitespace-nowrap text-white">gman<span class="text-primary">.dev</span></span>
+    <nav class="fixed w-full z-50 top-0 start-0 bg-dark/95 border-b border-border backdrop-blur-sm">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 md:px-8">
+            <a href="#" class="flex items-center space-x-2 text-white hover:text-accent transition-colors">
+                <span class="font-bold text-xl tracking-tighter">gman.dev</span>
+                <span class="cursor-blink w-2 h-5 bg-accent inline-block ml-1"></span>
             </a>
-            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-slate-400 rounded-lg md:hidden hover:bg-slate-800 focus:outline-none" aria-controls="navbar-default" aria-expanded="false" id="menu-btn">
-                <span class="sr-only">Menüyü aç</span>
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+            
+            <div class="flex items-center gap-4">
+                <div class="flex gap-2 text-xs font-bold">
+                    <button onclick="setLang('tr')" id="lang-tr" class="lang-btn active hover:text-white transition-colors">[TR]</button>
+                    <button onclick="setLang('en')" id="lang-en" class="lang-btn hover:text-white transition-colors">[EN]</button>
+                    <button onclick="setLang('de')" id="lang-de" class="lang-btn hover:text-white transition-colors">[DE]</button>
+                </div>
+
+                <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 justify-center text-sm text-muted hover:text-white md:hidden focus:outline-none" id="menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-slate-800 rounded-lg bg-slate-900 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent">
-                    <li><a href="#home" class="block py-2 px-3 text-white bg-primary rounded md:bg-transparent md:text-primary md:p-0">Home</a></li>
-                    <li><a href="#about" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">About</a></li>
-                    <li><a href="#skills" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Skills</a></li>
-                    <li><a href="#projects" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Projects</a></li>
-                    <li><a href="#media" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Media</a></li>
-                    <li><a href="#contact" class="block py-2 px-3 text-slate-300 rounded hover:bg-slate-800 md:hover:bg-transparent md:border-0 md:hover:text-primary md:p-0 transition-colors">Contact</a></li>
+                <ul class="flex flex-col p-4 md:p-0 mt-4 bg-surface border border-border md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent text-sm">
+                    <li><a href="#home" class="block py-2 px-3 text-white hover:text-accent md:p-0 transition-colors">~/home</a></li>
+                    <li><a href="#about" data-i18n="nav_about" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./hakkimda</a></li>
+                    <li><a href="#skills" data-i18n="nav_skills" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./yetenekler</a></li>
+                    <li><a href="#projects" data-i18n="nav_projects" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./projeler</a></li>
+                    <li><a href="#media" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./media</a></li>
+                    <li><a href="#contact" data-i18n="nav_contact" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./iletisim</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-<section id="home" class="min-h-screen flex items-center justify-center pt-24 pb-12 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-            <div class="absolute top-1/4 left-1/4 w-48 h-48 md:w-64 md:h-64 bg-primary/20 rounded-full blur-3xl opacity-60"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-96 md:h-96 bg-purple-600/10 rounded-full blur-3xl opacity-60"></div>
-        </div>
-
-        <div class="text-center px-4 max-w-5xl mx-auto relative z-10 flex flex-col items-center">
+    <section id="home" class="min-h-screen flex items-center pt-24 pb-12">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-12">
             
-            <div class="relative inline-block mb-6 md:mb-10">
-                <div class="absolute -inset-1.5 bg-gradient-to-r from-primary to-purple-600 rounded-full blur opacity-75 animate-pulse"></div>
-                <img class="relative w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60 rounded-full border-4 border-slate-800 object-cover shadow-2xl transition-transform duration-300 hover:scale-105" 
-                     src="https://gman.dev/vesikadusuk.png" 
-                     alt="Gökhan Özen">
-            </div>
-            
-            <h1 class="mb-4 text-3xl font-extrabold tracking-tight leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-                Merhaba, ben <br class="block sm:hidden" />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400 whitespace-nowrap">Gökhan Özen</span>
-            </h1>
-            
-            <p class="mb-8 text-base font-normal text-slate-400 sm:text-xl md:text-2xl sm:px-16 lg:px-48 leading-relaxed max-w-3xl">
-                Backend Developer & Computer Science Student.
-                <span class="hidden sm:inline"><br>Karmaşık problemleri basit, ölçeklenebilir kodlara dönüştürüyorum.</span>
-                <span class="block sm:hidden mt-2 text-sm text-slate-500">Karmaşık problemleri basit kodlara dönüştürüyorum.</span>
-            </p>
-            
-            <div class="flex flex-col w-full sm:w-auto sm:flex-row gap-4 justify-center items-center">
-                <a href="#projects" class="w-full sm:w-auto inline-flex justify-center items-center py-3.5 px-8 text-base font-semibold text-white rounded-full bg-primary hover:bg-indigo-600 focus:ring-4 focus:ring-indigo-900 transition-all shadow-lg hover:shadow-indigo-500/25">
-                    Projelerimi Gör
-                    <i class="fas fa-arrow-right ml-2"></i>
-                </a>
-                <a href="#contact" class="w-full sm:w-auto inline-flex justify-center items-center py-3.5 px-8 text-base font-semibold text-slate-300 rounded-full border border-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-600 focus:ring-4 focus:ring-slate-800 transition-all">
-                    İletişime Geç
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="py-20 bg-slate-900/50">
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Hakkımda</h2>
-                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
-            </div>
-            <div class="max-w-3xl mx-auto text-slate-300 leading-relaxed text-lg space-y-6 bg-card p-8 rounded-2xl border border-slate-800 shadow-xl relative">
-                <i class="fas fa-quote-left absolute top-6 left-6 text-4xl text-slate-700 opacity-50"></i>
-                <div class="pl-6">
-                    <p>
-                        Merhaba! Ben <strong>Gökhan Özen</strong>. Yazılım geliştirme dünyasındaki yolculuğuma yeni başlamış olmama rağmen, bu heyecan verici alana olan tutkum her geçen gün artıyor. Özellikle <strong>Backend Development</strong> ve <strong>Yapay Zeka modelleri</strong> ile ilgileniyor, sürekli yeni projeler üzerinde çalışıyorum.
-                    </p>
-                    <p class="mt-4">
-                        Bu yolculukta, farklı ihtiyaçlara yönelik benzersiz çözümler üretmek için kendimi geliştirmeye adadım. <strong>API tasarımı</strong>, verimli <strong>veritabanı yapıları</strong> oluşturma ve sistemlerin sorunsuz çalışmasını sağlama konularında uzmanlaşıyorum.
-                    </p>
+            <div class="flex-1 w-full">
+                    <span class="text-accent">mrander@cachyos</span><span class="text-white">:</span><span class="text-blue-400">~</span><span class="text-white">$</span> whoami
+                <div class="mb-4 text-xs sm:text-sm">
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills" class="py-20">
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Yetenekler</h2>
-                <p class="mt-4 text-slate-400">Kullandığım teknolojiler ve araçlar</p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-indigo-400 font-semibold hover:border-indigo-500 hover:bg-indigo-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-js text-xl me-2"></i>JavaScript</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-cyan-400 font-semibold hover:border-cyan-500 hover:bg-cyan-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-golang text-xl me-2"></i>Go</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-yellow-400 font-semibold hover:border-yellow-500 hover:bg-yellow-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-python text-xl me-2"></i>Python</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-orange-400 font-semibold hover:border-orange-500 hover:bg-orange-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-git-alt text-xl me-2"></i>Git</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-blue-400 font-semibold hover:border-blue-500 hover:bg-blue-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fas fa-database text-xl me-2"></i>MySQL</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-blue-500 font-semibold hover:border-blue-600 hover:bg-blue-600/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-docker text-xl me-2"></i>Docker</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-green-400 font-semibold hover:border-green-500 hover:bg-green-500/10 transition-all cursor-default shadow-lg flex items-center"><i class="fab fa-linux text-xl me-2"></i>Linux</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-green-500 font-semibold hover:border-green-600 hover:bg-green-600/10 transition-all cursor-default shadow-lg flex items-center"><i class="fas fa-leaf text-xl me-2"></i>MongoDB</span>
-                <span class="px-6 py-3 rounded-full bg-slate-800 border border-slate-700 text-orange-500 font-semibold hover:border-orange-600 hover:bg-orange-600/10 transition-all cursor-default shadow-lg flex items-center"><i class="fas fa-server text-xl me-2"></i>Proxmox</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="py-20 bg-slate-900/50">
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Projeler</h2>
-                <div class="w-20 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <h1 class="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+                    Gökhan Özen
+                </h1>
+                <p data-i18n="hero_desc" class="mb-8 text-base text-muted sm:text-lg max-w-2xl border-l-2 border-border pl-4">
+                    Backend Developer & Computer Science Student.<br>
+                    Karmaşık problemleri basit, ölçeklenebilir kodlara dönüştürüyorum.
+                </p>
                 
-                <div class="group relative">
-                    <div class="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
-                    
-                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-indigo-400">
-                                <i class="fas fa-server text-xl"></i>
-                            </div>
-                            <div class="flex gap-2">
-                                <a href="https://gman.dev/api" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-primary transition-colors">Live</a>
-                            </div>
-                        </div>
-                        
-                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">Eldoia API</h3>
-                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
-                            Gerçek zamanlı deprem verilerinden günlük yaşamı kolaylaştıran pratik veri iletim sistemlerine kadar geniş bir yelpazede bilgi sağlayan çok yönlü bir API servisi.
-                        </p>
-                        
-                        <div class="border-t border-slate-700 pt-4 mt-auto">
-                            <div class="flex flex-wrap gap-2 font-mono text-xs">
-                                <span class="text-indigo-400">#NodeJS</span>
-                                <span class="text-indigo-400">#Express</span>
-                                <span class="text-indigo-400">#REST</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <a href="#projects" data-i18n="hero_btn" class="inline-flex justify-center items-center py-3 px-6 text-sm font-bold text-black bg-accent hover:bg-emerald-400 transition-colors">
+                        [ Projeleri Gör ]
+                    </a>
+                    <a href="https://github.com/gokhazen" target="_blank" class="inline-flex justify-center items-center py-3 px-6 text-sm font-bold text-white border border-border hover:bg-surface transition-colors">
+                        <i class="fab fa-github mr-2"></i> GitHub
+                    </a>
                 </div>
+            </div>
 
-                <div class="group relative">
-                    <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
-                    
-                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-purple-400">
-                                <i class="fab fa-discord text-xl"></i>
-                            </div>
-                            <div class="flex gap-2">
-                                <a href="https://gman.dev/lucy" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-purple-500 transition-colors">Live</a>
-                            </div>
-                        </div>
-                        
-                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Lucy Discord Bot</h3>
-                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
-                            Sunucu moderasyonunu geliştiren, mini oyunlarla kullanıcı etkileşimini artıran ve yapay zeka yeteneklerini Discord topluluklarına entegre eden gelişmiş bot.
-                        </p>
-                        
-                        <div class="border-t border-slate-700 pt-4 mt-auto">
-                            <div class="flex flex-wrap gap-2 font-mono text-xs">
-                                <span class="text-purple-400">#Python</span>
-                                <span class="text-purple-400">#Discord.py</span>
-                                <span class="text-purple-400">#AI</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 grayscale-hover relative">
+                <div class="absolute inset-0 border border-accent translate-x-2 translate-y-2 -z-10"></div>
+                <img class="w-full h-full object-cover border border-border" src="https://gman.dev/vesikadusuk.png" alt="Gökhan Özen">
+            </div>
 
-                <div class="group relative">
-                    <div class="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
-                    
-                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-green-400">
-                                <i class="fas fa-network-wired text-xl"></i>
-                            </div>
-                            <div class="flex gap-2">
-                                <a href="https://gman.dev/proxmox" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-green-500 transition-colors">View</a>
-                            </div>
-                        </div>
-                        
-                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-green-400 transition-colors">Gökhan Hosting</h3>
-                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
-                            Docker, Linux ve sanallaştırma teknolojilerini deneyimlemek, kendi projelerimi host etmek için kurduğum 2-node Proxmox kümesi.
-                        </p>
-                        
-                        <div class="border-t border-slate-700 pt-4 mt-auto">
-                            <div class="flex flex-wrap gap-2 font-mono text-xs">
-                                <span class="text-green-400">#Proxmox</span>
-                                <span class="text-green-400">#Docker</span>
-                                <span class="text-green-400">#Linux</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </section>
 
-                <div class="group relative">
-                    <div class="absolute -inset-0.5 bg-gradient-to-r from-orange-400 to-red-500 rounded-2xl opacity-0 group-hover:opacity-30 blur transition duration-500"></div>
-                    
-                    <div class="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 h-full flex flex-col hover:border-slate-600 transition-colors">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600 text-orange-400">
-                                <i class="fas fa-bus text-xl"></i>
-                            </div>
-                            <div class="flex gap-2">
-                                <a href="https://gman.dev/ekogokhan" target="_blank" class="text-xs font-mono bg-slate-700/50 border border-slate-600 px-3 py-1 rounded text-slate-300 hover:text-white hover:border-orange-500 transition-colors">Live</a>
-                            </div>
-                        </div>
-                        
-                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">EkoGökhan</h3>
-                        <p class="text-slate-400 text-sm mb-4 leading-relaxed flex-grow">
-                            Kentkart açık API'sini kullanarak şehir otobüslerinin gerçek zamanlı takibini sağlayan ve toplu taşıma deneyimini verimli hale getiren platform.
-                        </p>
-                        
-                        <div class="border-t border-slate-700 pt-4 mt-auto">
-                            <div class="flex flex-wrap gap-2 font-mono text-xs">
-                                <span class="text-orange-400">#API</span>
-                                <span class="text-orange-400">#RealTime</span>
-                                <span class="text-orange-400">#Web</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+    <section id="about" class="py-20 border-t border-border">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="about_title">Hakkımda</span></h2>
+            </div>
+            
+            <div class="bg-surface border border-border p-6 md:p-8 text-muted leading-relaxed text-sm md:text-base">
+                <p class="mb-4">
+                    <span class="text-accent">></span> <span data-i18n="about_p1">Merhaba! Ben <strong class="text-white">Gökhan Özen</strong>. Yazılım geliştirme dünyasındaki yolculuğuma yeni başlamış olmama rağmen, bu heyecan verici alana olan tutkum her geçen gün artıyor. Özellikle <strong class="text-white">Backend Development</strong> ve <strong class="text-white">Yapay Zeka modelleri</strong> ile ilgileniyor, sürekli yeni projeler üzerinde çalışıyorum.</span>
+                </p>
+                <p>
+                    <span class="text-accent">></span> <span data-i18n="about_p2">Bu yolculukta, farklı ihtiyaçlara yönelik benzersiz çözümler üretmek için kendimi geliştirmeye adadım. <strong class="text-white">API tasarımı</strong>, verimli <strong class="text-white">veritabanı yapıları</strong> oluşturma ve sistemlerin sorunsuz çalışmasını sağlama konularında uzmanlaşıyorum.</span>
+                </p>
             </div>
         </div>
     </section>
 
-    <section id="media" class="py-20">
+    <section id="skills" class="py-20 border-t border-border">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Fotoğraf & Video</h2>
-                <p class="mt-4 text-slate-400">Yazılımın ötesindeki yaratıcı dünyam</p>
+            <div class="mb-10 flex justify-between items-end">
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="skills_title">Yetenekler</span></h2>
+                <span class="text-xs text-muted hidden sm:block">ls -la /usr/local/skills</span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fab fa-python text-2xl group-hover:text-yellow-500 transition-colors"></i><span class="text-sm text-white">Python</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fab fa-golang text-2xl group-hover:text-cyan-400 transition-colors"></i><span class="text-sm text-white">Go</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fab fa-js text-2xl group-hover:text-yellow-300 transition-colors"></i><span class="text-sm text-white">JavaScript</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fab fa-docker text-2xl group-hover:text-blue-500 transition-colors"></i><span class="text-sm text-white">Docker</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fas fa-leaf text-2xl group-hover:text-green-500 transition-colors"></i><span class="text-sm text-white">MongoDB</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fas fa-database text-2xl group-hover:text-blue-400 transition-colors"></i><span class="text-sm text-white">MySQL</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fab fa-git-alt text-2xl group-hover:text-orange-500 transition-colors"></i><span class="text-sm text-white">Git</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group">
+                    <i class="fab fa-linux text-2xl group-hover:text-white transition-colors"></i><span class="text-sm text-white">Linux</span>
+                </div>
+                <div class="border border-border p-4 hover:border-accent hover:bg-surface transition-colors flex flex-col items-center justify-center gap-2 group col-span-2 sm:col-span-1">
+                    <i class="fas fa-server text-2xl group-hover:text-orange-400 transition-colors"></i><span class="text-sm text-white">Proxmox</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 border-t border-border">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="projects_title">Projeler</span></h2>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                
-                <div class="lg:col-span-2">
-                    <div class="rounded-xl overflow-hidden border border-slate-700 bg-slate-900 shadow-2xl">
-                        <div class="h-8 bg-slate-800 flex items-center px-4 space-x-2 border-b border-slate-700">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            <div class="flex-1 text-center text-xs text-slate-500 font-mono">youtube.com/watch?v=OFDs0qDjW6Y</div>
-                        </div>
-                        <div class="video-container bg-black">
-                            <iframe src="https://www.youtube.com/embed/OFDs0qDjW6Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border border-border bg-surface p-6 hover:border-accent transition-colors flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">Eldoia_API</h3>
+                        <a href="https://gman.dev/api" target="_blank" class="text-xs border border-border px-2 py-1 hover:bg-white hover:text-black transition-colors">[ LIVE ]</a>
                     </div>
-                    
-                    <div class="mt-4 flex items-center justify-between text-sm text-slate-400 px-1">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-play-circle text-primary"></i>
-                            <span>Video Düzenleme Çalışmam</span>
-                        </div>
+                    <p data-i18n="proj_eldoia" class="text-muted text-sm mb-6 flex-grow">
+                        Gerçek zamanlı deprem verilerinden günlük yaşamı kolaylaştıran pratik veri iletim sistemlerine kadar geniş bir yelpazede bilgi sağlayan çok yönlü bir API servisi.
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-xs text-accent">
+                        <span>[NodeJS]</span> <span>[Express]</span> <span>[REST]</span>
                     </div>
                 </div>
+
+                <div class="border border-border bg-surface p-6 hover:border-accent transition-colors flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">Lucy_Discord_Bot</h3>
+                        <a href="https://gman.dev/lucy" target="_blank" class="text-xs border border-border px-2 py-1 hover:bg-white hover:text-black transition-colors">[ LIVE ]</a>
+                    </div>
+                    <p data-i18n="proj_lucy" class="text-muted text-sm mb-6 flex-grow">
+                        Sunucu moderasyonunu geliştiren, mini oyunlarla kullanıcı etkileşimini artıran ve yapay zeka yeteneklerini Discord topluluklarına entegre eden gelişmiş bot.
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-xs text-accent">
+                        <span>[Python]</span> <span>[Discord.py]</span> <span>[AI]</span>
+                    </div>
+                </div>
+
+                <div class="border border-border bg-surface p-6 hover:border-accent transition-colors flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">Gökhan_Hosting</h3>
+                        <a href="https://gman.dev/proxmox" target="_blank" class="text-xs border border-border px-2 py-1 hover:bg-white hover:text-black transition-colors">[ VIEW ]</a>
+                    </div>
+                    <p data-i18n="proj_hosting" class="text-muted text-sm mb-6 flex-grow">
+                        Docker, Linux ve sanallaştırma teknolojilerini deneyimlemek, kendi projelerimi host etmek için kurduğum 2-node Proxmox kümesi.
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-xs text-accent">
+                        <span>[Proxmox]</span> <span>[Docker]</span> <span>[Linux]</span>
+                    </div>
+                </div>
+
+                <div class="border border-border bg-surface p-6 hover:border-accent transition-colors flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">EkoGökhan</h3>
+                        <a href="https://gman.dev/ekogokhan" target="_blank" class="text-xs border border-border px-2 py-1 hover:bg-white hover:text-black transition-colors">[ LIVE ]</a>
+                    </div>
+                    <p data-i18n="proj_eko" class="text-muted text-sm mb-6 flex-grow">
+                        Kentkart açık API'sini kullanarak şehir otobüslerinin gerçek zamanlı takibini sağlayan ve toplu taşıma deneyimini verimli hale getiren platform.
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-xs text-accent">
+                        <span>[API]</span> <span>[RealTime]</span> <span>[Web]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="media" class="py-20 border-t border-border bg-[#0a0a0a]">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="media_title">Fotoğraf_&_Video</span></h2>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            <div class="lg:col-span-2">
+                <a href="https://www.youtube.com/watch?v=OFDs0qDjW6Y" target="_blank" class="video-container flex items-center justify-center bg-black group relative">
+                    <img src="https://img.youtube.com/vi/OFDs0qDjW6Y/maxresdefault.jpg"
+                         class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300" alt="Video Thumbnail">
+                    <div class="absolute inset-0 flex items-center justify-center z-10">
+                        <div class="w-16 h-16 border-2 border-accent flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                            <i class="fas fa-play text-accent group-hover:text-black text-xl ml-1"></i>
+                        </div>
+                    </div>
+                </a>
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="text-xs text-muted truncate pr-4">
+                        > ./play_video.sh --source "youtube" --title "<span data-i18n="media_vid_desc">Video Düzenleme Çalışmam</span>"
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=OFDs0qDjW6Y" target="_blank" class="text-xs border border-border px-3 py-1 hover:bg-red-600 hover:text-white hover:border-red-600 transition-colors whitespace-nowrap">
+                        <i class="fab fa-youtube mr-1"></i> <span data-i18n="media_watch">İzle</span>
+                    </a>
+                </div>
+            </div>
 
                 <div class="lg:col-span-1">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
-                            <img src="https://gman.dev/a/portoflio1" alt="Portfolio 1" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fas fa-expand text-white text-2xl"></i>
-                            </div>
+                    <div class="grid grid-cols-2 gap-2 grayscale-hover">
+                        <div class="border border-border aspect-square cursor-pointer overflow-hidden bg-surface" onclick="openModal(0)">
+                            <img src="https://api.gman.dev/a/portoflio1" alt="Portfolio 1" class="object-cover w-full h-full" loading="lazy">
                         </div>
-                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
-                            <img src="https://gman.dev/a/portoflio2" alt="Portfolio 2" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fas fa-expand text-white text-2xl"></i>
-                            </div>
+                        <div class="border border-border aspect-square cursor-pointer overflow-hidden bg-surface" onclick="openModal(1)">
+                            <img src="https://api.gman.dev/a/portoflio2" alt="Portfolio 2" class="object-cover w-full h-full" loading="lazy">
                         </div>
-                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
-                            <img src="https://gman.dev/a/portoflio3" alt="Portfolio 3" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fas fa-expand text-white text-2xl"></i>
-                            </div>
+                        <div class="border border-border aspect-square cursor-pointer overflow-hidden bg-surface" onclick="openModal(2)">
+                            <img src="https://api.gman.dev/a/portoflio3" alt="Portfolio 3" class="object-cover w-full h-full" loading="lazy">
                         </div>
-                        <div class="group relative overflow-hidden rounded-xl border border-slate-800 aspect-square cursor-pointer bg-slate-800">
-                            <img src="https://gman.dev/a/portoflio4" alt="Portfolio 4" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" loading="lazy" onclick="openModal(this.src)">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <i class="fas fa-expand text-white text-2xl"></i>
-                            </div>
+                        <div class="border border-border aspect-square cursor-pointer overflow-hidden bg-surface" onclick="openModal(3)">
+                            <img src="https://api.gman.dev/a/portoflio4" alt="Portfolio 4" class="object-cover w-full h-full" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -341,94 +336,302 @@
         </div>
     </section>
 
-    <section id="contact" class="py-20 bg-slate-900/50">
-        <div class="max-w-screen-md mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">İletişim</h2>
-                <p class="mt-4 text-slate-400">Harika bir şey inşa etmek için birlikte çalışalım.</p>
+    <section id="contact" class="py-20 border-y border-border">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 text-center">
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="contact_title">İletişim</span></h2>
+                <p data-i18n="contact_desc" class="mt-2 text-sm text-muted">Ağıma katılmak için bağlantıları kullan.</p>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <a href="https://github.com/gokhazen" target="_blank" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
-                    <i class="fab fa-github text-4xl text-slate-400 group-hover:text-white mb-3 transition-colors"></i>
-                    <h3 class="text-sm font-semibold text-slate-300">GitHub</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <a href="https://github.com/gokhazen" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-white hover:text-white transition-all group">
+                    <i class="fab fa-github text-3xl mb-3 text-muted group-hover:text-white transition-colors"></i>
+                    <span class="font-bold text-sm">GitHub</span>
                 </a>
-                <a href="https://x.com/gokhazen" target="_blank" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
-                    <i class="fab fa-x-twitter text-4xl text-slate-400 group-hover:text-white mb-3 transition-colors"></i>
-                    <h3 class="text-sm font-semibold text-slate-300">Twitter</h3>
+                <a href="https://www.linkedin.com/in/g%C3%B6khan-%C3%B6zen-481a993b2/" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-blue-500 hover:text-white transition-all group">
+                    <i class="fab fa-linkedin text-3xl mb-3 text-muted group-hover:text-blue-500 transition-colors"></i>
+                    <span class="font-bold text-sm">LinkedIn</span>
                 </a>
-                <a href="https://api.gman.dev/links/discord" target="_blank" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
-                    <i class="fab fa-discord text-4xl text-slate-400 group-hover:text-indigo-400 mb-3 transition-colors"></i>
-                    <h3 class="text-sm font-semibold text-slate-300">Discord</h3>
+                <a href="https://x.com/gokhazen" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-white hover:text-white transition-all group">
+                    <i class="fab fa-x-twitter text-3xl mb-3 text-muted group-hover:text-white transition-colors"></i>
+                    <span class="font-bold text-sm">Twitter</span>
                 </a>
-                <a href="mailto:contact@gman.dev" class="p-6 bg-card rounded-2xl border border-slate-700 hover:border-primary hover:bg-slate-800 hover:-translate-y-1 transition-all group">
-                    <i class="fas fa-envelope text-4xl text-slate-400 group-hover:text-red-400 mb-3 transition-colors"></i>
-                    <h3 class="text-sm font-semibold text-slate-300">Email</h3>
+                <a href="https://api.gman.dev/links/discord" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-indigo-500 hover:text-white transition-all group">
+                    <i class="fab fa-discord text-3xl mb-3 text-muted group-hover:text-indigo-400 transition-colors"></i>
+                    <span class="font-bold text-sm">Discord</span>
                 </a>
-            </div>
-            
-            <div class="mt-12 text-center p-8 bg-black/40 rounded-2xl border border-slate-800 font-mono text-sm">
-                <div class="flex items-center justify-center gap-2 text-slate-500 mb-2">
-                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                    <span class="ml-2">terminal</span>
-                </div>
-                <div class="text-left max-w-sm mx-auto">
-                    <span class="text-primary">gokhan@dev:~$</span> <span class="text-white">echo "Let's connect!"</span><br>
-                    <span class="text-slate-400">Sending invitation...</span><br>
-                    <span class="text-green-400">Success! Looking forward to it.</span><span class="animate-pulse">_</span>
-                </div>
+                <a href="mailto:contact@gman.dev" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-red-500 hover:text-white transition-all group col-span-2 md:col-span-1">
+                    <i class="fas fa-envelope text-3xl mb-3 text-muted group-hover:text-red-400 transition-colors"></i>
+                    <span class="font-bold text-sm">Email</span>
+                </a>
             </div>
         </div>
     </section>
 
-    <footer class="bg-dark border-t border-slate-800 py-8">
-        <div class="max-w-screen-xl mx-auto px-4 text-center">
-            <p class="text-slate-500 text-sm">
-                &copy; 2025 Gökhan Özen. All rights reserved. <br>
-                <span class="text-xs mt-2 block opacity-50">Built with HTML5 & Tailwind CSS</span>
-            </p>
+    <footer class="bg-dark py-8">
+        <div class="max-w-screen-xl mx-auto px-4 text-center text-xs text-muted flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="text-accent">echo</span> "&copy; 2026 Gökhan Özen. All rights reserved."
+            </div>
+            <div>
+                [ Status: Online ] | [ Built w/ Tailwind CSS ]
+            </div>
         </div>
     </footer>
 
-    <div id="imageModal" class="fixed inset-0 z-[60] hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeModal()">
-        <span class="absolute top-5 right-5 text-white text-4xl cursor-pointer hover:text-primary z-50">&times;</span>
-        <img id="modalImg" src="" alt="Full view" class="max-h-[90vh] max-w-full rounded-lg shadow-2xl border border-slate-700">
+    <div id="imageModal" class="fixed inset-0 z-[100] hidden bg-dark/95 flex-col items-center justify-center border border-border">
+        
+        <div class="absolute top-0 w-full p-4 flex justify-between items-center z-50 bg-gradient-to-b from-black/80 to-transparent">
+            <div class="text-white text-sm font-mono" id="modalCounter">[ 1 / 4 ]</div>
+            <button class="text-muted hover:text-red-500 focus:outline-none font-bold text-xl transition-colors" onclick="closeModal()">[X]</button>
+        </div>
+
+        <button class="absolute left-4 top-1/2 -translate-y-1/2 text-muted hover:text-white text-4xl z-50 p-4 transition-colors hidden sm:block" onclick="changeImage(-1)">&#10094;</button>
+
+        <div class="relative w-full h-[80vh] overflow-hidden flex items-center justify-center no-scrollbar" id="modalImgContainer">
+            <img id="modalImg" src="" alt="Full view" class="max-h-full max-w-full border border-border" draggable="false">
+        </div>
+
+        <button class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-white text-4xl z-50 p-4 transition-colors hidden sm:block" onclick="changeImage(1)">&#10095;</button>
+
+        <div class="absolute bottom-6 flex gap-2 z-50 bg-dark/80 p-2 border border-border rounded">
+            <button class="modal-control-btn px-3 sm:hidden" onclick="changeImage(-1)">&#10094; Prev</button>
+            <button class="modal-control-btn" onclick="handleZoom(0.2)" title="Zoom In">[+]</button>
+            <button class="modal-control-btn" onclick="resetZoomPan()" title="Reset">[O]</button>
+            <button class="modal-control-btn" onclick="handleZoom(-0.2)" title="Zoom Out">[-]</button>
+            <button class="modal-control-btn px-3 sm:hidden" onclick="changeImage(1)">Next &#10095;</button>
+        </div>
     </div>
 
     <script>
-        // Mobile Menu Toggle
+        const translations = {
+            tr: {
+                nav_about: "./hakkimda",
+                nav_skills: "./yetenekler",
+                nav_projects: "./projeler",
+                nav_contact: "./iletisim",
+                hero_desc: "Backend Developer & Computer Science Student.<br>Karmaşık problemleri basit, ölçeklenebilir kodlara dönüştürüyorum.",
+                hero_btn: "[ Projeleri Gör ]",
+                about_title: "Hakkımda",
+                about_p1: "Merhaba! Ben <strong class='text-white'>Gökhan Özen</strong>. Yazılım geliştirme dünyasındaki yolculuğuma yeni başlamış olmama rağmen, bu heyecan verici alana olan tutkum her geçen gün artıyor. Özellikle <strong class='text-white'>Backend Development</strong> ve <strong class='text-white'>Yapay Zeka modelleri</strong> ile ilgileniyor, sürekli yeni projeler üzerinde çalışıyorum.",
+                about_p2: "Bu yolculukta, farklı ihtiyaçlara yönelik benzersiz çözümler üretmek için kendimi geliştirmeye adadım. <strong class='text-white'>API tasarımı</strong>, verimli <strong class='text-white'>veritabanı yapıları</strong> oluşturma ve sistemlerin sorunsuz çalışmasını sağlama konularında uzmanlaşıyorum.",
+                skills_title: "Yetenekler",
+                projects_title: "Projeler",
+                proj_eldoia: "Gerçek zamanlı deprem verilerinden günlük yaşamı kolaylaştıran pratik veri iletim sistemlerine kadar geniş bir yelpazede bilgi sağlayan çok yönlü bir API servisi.",
+                proj_lucy: "Sunucu moderasyonunu geliştiren, mini oyunlarla kullanıcı etkileşimini artıran ve yapay zeka yeteneklerini Discord topluluklarına entegre eden gelişmiş bot.",
+                proj_hosting: "Docker, Linux ve sanallaştırma teknolojilerini deneyimlemek, kendi projelerimi host etmek için kurduğum 2-node Proxmox kümesi.",
+                proj_eko: "Kentkart açık API'sini kullanarak şehir otobüslerinin gerçek zamanlı takibini sağlayan ve toplu taşıma deneyimini verimli hale getiren platform.",
+                media_title: "Fotoğraf_&_Video",
+                media_vid_desc: "Video Düzenleme Çalışmam",
+                media_watch: "İzle",
+                contact_title: "İletişim",
+                contact_desc: "Ağıma katılmak için bağlantıları kullan."
+            },
+            en: {
+                nav_about: "./about",
+                nav_skills: "./skills",
+                nav_projects: "./projects",
+                nav_contact: "./contact",
+                hero_desc: "Backend Developer & Computer Science Student.<br>I turn complex problems into simple, scalable code.",
+                hero_btn: "[ View Projects ]",
+                about_title: "About Me",
+                about_p1: "Hello! I'm <strong class='text-white'>Gökhan Özen</strong>. Although I have just started my journey in software development, my passion for this exciting field grows every day. I'm particularly interested in <strong class='text-white'>Backend Development</strong> and <strong class='text-white'>AI models</strong>, constantly working on new projects.",
+                about_p2: "On this journey, I've dedicated myself to improving my skills to create unique solutions for different needs. I specialize in <strong class='text-white'>API design</strong>, creating efficient <strong class='text-white'>database structures</strong>, and ensuring systems run smoothly.",
+                skills_title: "Skills",
+                projects_title: "Projects",
+                proj_eldoia: "A versatile API service providing a wide range of information, from real-time earthquake data to practical data transmission systems that make daily life easier.",
+                proj_lucy: "An advanced bot that improves server moderation, increases user engagement with mini-games, and integrates AI capabilities into Discord communities.",
+                proj_hosting: "A 2-node Proxmox cluster I built to experience Docker, Linux, and virtualization technologies, and to host my own projects.",
+                proj_eko: "A platform that provides real-time tracking of city buses using the Kentkart open API, making the public transportation experience more efficient.",
+                media_title: "Photo_&_Video",
+                media_vid_desc: "My Video Editing Work",
+                media_watch: "Watch",
+                contact_title: "Contact",
+                contact_desc: "Use the links to join my network."
+            },
+            de: {
+                nav_about: "./ueber_mich",
+                nav_skills: "./faehigkeiten",
+                nav_projects: "./projekte",
+                nav_contact: "./kontakt",
+                hero_desc: "Backend-Entwickler & Informatikstudent.<br>Ich verwandle komplexe Probleme in einfachen, skalierbaren Code.",
+                hero_btn: "[ Projekte ansehen ]",
+                about_title: "Über mich",
+                about_p1: "Hallo! Ich bin <strong class='text-white'>Gökhan Özen</strong>. Obwohl ich meine Reise in der Softwareentwicklung gerade erst begonnen habe, wächst meine Leidenschaft für diesen Bereich jeden Tag. Ich interessiere mich besonders für die <strong class='text-white'>Backend-Entwicklung</strong> und <strong class='text-white'>KI-Modelle</strong>.",
+                about_p2: "Auf dieser Reise habe ich mich darauf konzentriert, einzigartige Lösungen für verschiedene Bedürfnisse zu schaffen. Ich bin spezialisiert auf <strong class='text-white'>API-Design</strong>, effiziente <strong class='text-white'>Datenbankstrukturen</strong> und reibungslose Systeme.",
+                skills_title: "Fähigkeiten",
+                projects_title: "Projekte",
+                proj_eldoia: "Ein vielseitiger API-Dienst, der eine breite Palette von Informationen bereitstellt, von Echtzeit-Erdbebendaten bis hin zu praktischen Datenübertragungssystemen.",
+                proj_lucy: "Ein fortschrittlicher Bot, der die Servermoderation verbessert, das Nutzerengagement durch Minispiele steigert und KI-Funktionen in Discord integriert.",
+                proj_hosting: "Ein 2-Node-Proxmox-Cluster, den ich aufgebaut habe, um Docker-, Linux- und Virtualisierungstechnologien zu testen und eigene Projekte zu hosten.",
+                proj_eko: "Eine Plattform, die mithilfe der offenen Kentkart-API eine Echtzeitverfolgung von Stadtbussen ermöglicht und das ÖPNV-Erlebnis effizienter macht.",
+                media_title: "Foto_&_Video",
+                media_vid_desc: "Meine Videobearbeitungsarbeit",
+                media_watch: "Ansehen",
+                contact_title: "Kontakt",
+                contact_desc: "Nutzen Sie die Links, um meinem Netzwerk beizutreten."
+            }
+        };
+
+        function setLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
         const menuBtn = document.getElementById('menu-btn');
         const navMenu = document.getElementById('navbar-default');
         
-        menuBtn.addEventListener('click', () => {
+        menuBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
             navMenu.classList.toggle('hidden');
         });
 
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('#navbar-default a').forEach(link => {
-            link.addEventListener('click', () => {
+        document.addEventListener('click', (event) => {
+            const isClickInsideMenu = navMenu.contains(event.target);
+            const isClickOnButton = menuBtn.contains(event.target);
+            if (!isClickInsideMenu && !isClickOnButton && !navMenu.classList.contains('hidden')) {
                 navMenu.classList.add('hidden');
+            }
+        });
+
+        document.querySelectorAll('#navbar-default a, a[href="#projects"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    if (!navMenu.classList.contains('hidden')) navMenu.classList.add('hidden');
+                    const targetElement = document.querySelector(this.getAttribute('href'));
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
             });
         });
 
-        // Simple Lightbox Logic
-        function openModal(src) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImg');
-            modalImg.src = src;
+        const portfolioImages = [
+            "https://api.gman.dev/a/portoflio1",
+            "https://api.gman.dev/a/portoflio2",
+            "https://api.gman.dev/a/portoflio3",
+            "https://api.gman.dev/a/portoflio4"
+        ];
+        
+        let currentImageIndex = 0;
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalCounter = document.getElementById('modalCounter');
+        
+        let scale = 1;
+        let isDragging = false;
+        let startX, startY;
+        let translateX = 0, translateY = 0;
+
+        function updateImageTransform() {
+            modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        function resetZoomPan() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateImageTransform();
+        }
+
+        function openModal(index) {
+            currentImageIndex = index;
+            modalImg.src = portfolioImages[currentImageIndex];
+            modalCounter.innerText = `[ ${currentImageIndex + 1} / ${portfolioImages.length} ]`;
+            resetZoomPan();
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
-            const modal = document.getElementById('imageModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.body.style.overflow = 'auto'; // Restore scrolling
+            document.body.style.overflow = 'auto'; 
+            resetZoomPan();
         }
+
+        function changeImage(step) {
+            currentImageIndex += step;
+            if (currentImageIndex < 0) currentImageIndex = portfolioImages.length - 1;
+            if (currentImageIndex >= portfolioImages.length) currentImageIndex = 0;
+            
+            modalImg.src = portfolioImages[currentImageIndex];
+            modalCounter.innerText = `[ ${currentImageIndex + 1} / ${portfolioImages.length} ]`;
+            resetZoomPan();
+        }
+
+        function handleZoom(zoomStep) {
+            scale += zoomStep;
+            if (scale < 0.5) scale = 0.5; 
+            if (scale > 5) scale = 5;     
+            updateImageTransform();
+        }
+
+        document.getElementById('modalImgContainer').addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomStep = e.deltaY < 0 ? 0.2 : -0.2;
+            handleZoom(zoomStep);
+        });
+
+        modalImg.addEventListener('mousedown', dragStart);
+        modalImg.addEventListener('touchstart', dragStart, {passive: false});
+
+        window.addEventListener('mousemove', drag);
+        window.addEventListener('touchmove', drag, {passive: false});
+
+        window.addEventListener('mouseup', dragEnd);
+        window.addEventListener('touchend', dragEnd);
+
+        function dragStart(e) {
+            if (e.type === "touchstart") {
+                if(e.touches.length === 1) { 
+                    startX = e.touches[0].clientX - translateX;
+                    startY = e.touches[0].clientY - translateY;
+                    isDragging = true;
+                }
+            } else {
+                e.preventDefault();
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            e.preventDefault(); 
+            if (e.type === "touchmove") {
+                translateX = e.touches[0].clientX - startX;
+                translateY = e.touches[0].clientY - startY;
+            } else {
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+            }
+            updateImageTransform();
+        }
+
+        function dragEnd() {
+            isDragging = false;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('hidden')) {
+                if (e.key === "Escape") closeModal();
+                if (e.key === "ArrowRight") changeImage(1);
+                if (e.key === "ArrowLeft") changeImage(-1);
+                if (e.key === "+" || e.key === "=") handleZoom(0.2);
+                if (e.key === "-") handleZoom(-0.2);
+            }
+        });
     </script>
 </body>
 </html>
