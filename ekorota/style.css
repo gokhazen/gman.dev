@@ -1,0 +1,2008 @@
+:root {
+  /* === MAIN COLORS === */
+  --primary-color: #0d9488; /* Derin ve zengin teal */
+  --primary-light: #14b8a6; /* Daha canlı teal */
+  --primary-soft: rgba(13, 148, 136, 0.1); /* Çok açık teal arkaplanlar için */
+  --accent-color: #f97316; /* Canlı mercan turuncusu */
+  
+  /* === BACKGROUND COLORS === */
+  --background-main: #f8fafc; 
+  --background-secondary: #f1f5f9;
+  --background-soft: #e2e8f0;
+
+  /* === THE GLASS SYSTEM - Optimized for Performance === */
+  --card-background: rgba(255, 255, 255, 0.88); /* Increased opacity for mobile readability */
+  --card-secondary: rgba(255, 255, 255, 0.55);
+  --glass-blur: blur(12px); /* Reduced from 20px for mobile performance */
+  --glass-blur-sm: blur(8px);
+  --glass-webkit-blur: saturate(140%) blur(12px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 4px 16px rgba(13, 148, 136, 0.05); /* Softer shadows for faster paint */
+  
+  /* === TEXT COLORS === */
+  --text-primary: #1e293b; /* Koyu gri, okunabilir */
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  /* === BORDER COLORS === */
+  --border-color: #cbd5e1;
+  --border-light: #e2e8f0;
+  --border-accent: #2dd4bf;
+  
+  /* === STATUS COLORS === */
+  --success-color: #22c55e;
+  --success-light: #dcfce7;
+  --success-border: #bbf7d0;
+  
+  --danger-color: #ef4444;
+  --danger-light: #fee2e2;
+  --danger-border: #fecaca;
+  
+  --warning-color: #f59e0b;
+  --warning-light: #fffbeb;
+  --warning-border: #fde68a;
+  
+  /* === TRACKING COLORS === */
+  --tracking-active-bg: #fff7ed;
+  --tracking-active-border: var(--accent-color);
+  --tracking-active-shadow: rgba(249, 115, 22, 0.15);
+  
+  /* === MISSED TIME COLORS === */
+  --missed-bg: var(--danger-light);
+  --missed-border: var(--danger-border);
+  --missed-text: var(--text-muted);
+  
+  /* === CURRENT TIME COLORS === */
+  --current-time-bg: #ecfdf5;
+  --current-time-border: var(--success-color);
+  --current-time-shadow: rgba(34, 197, 94, 0.15);
+  
+  /* === STOP BADGE COLORS === */
+  --start-badge-bg: var(--success-light);
+  --start-badge-color: var(--success-color);
+  --start-badge-border: var(--success-border);
+  
+  --end-badge-bg: var(--danger-light);
+  --end-badge-color: var(--danger-color);
+  --end-badge-border: var(--danger-border);
+  
+  --nearest-badge-bg: var(--warning-light);
+  --nearest-badge-color: var(--warning-color);
+  --nearest-badge-border: var(--warning-border);
+  
+  /* === STOP HIGHLIGHT COLORS === */
+  --nearest-stop-bg: #f5f6ff; /* Hafif bir mor-mavi vurgu */
+  --buses-at-stop-bg: #f0fdf4;
+  --buses-at-stop-border: var(--success-border);
+  
+  /* === BUS PLATE COLORS === */
+  --bus-plate-at-stop-bg: var(--success-color);
+  --bus-plate-between-stops-bg: var(--primary-color);
+  
+  /* === SEGMENT COLORS === */
+  --segment-bg: var(--background-soft);
+  --segment-border: var(--primary-soft);
+  
+  /* === LEAFLET OVERRIDE COLORS === */
+  --leaflet-control-bg: var(--card-background);
+  --leaflet-control-border: var(--border-light);
+  --leaflet-control-text: var(--text-secondary);
+  --leaflet-control-hover-bg: var(--primary-color);
+  --leaflet-control-hover-text: white;
+  --leaflet-attribution-bg: rgba(255, 255, 255, 0.9);
+  --leaflet-attribution-text: var(--text-muted);
+  --leaflet-attribution-link: var(--primary-color);
+  
+  /* === SPACING & SIZING === */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+
+  
+  /* === MOBILE SIZES === */
+  --header-padding: 12px 16px;
+  --route-title-size: 1rem;
+  --btn-size: 36px;
+  --btn-font-size: 0.875rem;
+  --content-padding: 16px;
+  --section-title-size: 0.95rem;
+  --section-title-margin: 12px;
+  --info-item-padding: 12px;
+  --info-item-margin: 10px;
+  --bus-item-margin: 4px;
+  --bus-main-padding: 6px 8px;
+  --bus-status-panel-width: 25%;
+  --bus-status-panel-padding: 4px 2px;
+  --bus-status-panel-height: 50px;
+  --bus-status-panel-min-width: 45px;
+  --bus-status-panel-font: 0.6rem;
+  --bus-status-text-font: 0.55rem;
+  --bus-status-value-font: 0.65rem;
+  --nearest-stop-padding: 6px 8px;
+  --nearest-stop-margin: 4px;
+  --nearest-stop-title-font: 0.75rem;
+  --nearest-stop-detail-font: 0.65rem;
+  --bus-plate-font: 0.9rem;
+  --destination-text-font: 0.75rem;
+  --destination-distance-font: 0.65rem;
+  --destination-distance-padding: 1px 4px;
+  --bus-user-status-font: 0.6rem;
+  --bus-user-status-padding: 2px 4px;
+  --bus-user-status-margin: 2px;
+  --bus-user-status-gap: 3px;
+  --user-status-icon-size: 5px;
+  --bus-info-font: 0.8rem;
+  --bus-info-padding: 8px 12px;
+  --tab-font: 0.8rem;
+  --tab-padding: 6px 8px;
+  --time-item-padding: 10px 12px;
+  --time-item-margin: 6px;
+  --time-display-font: 0.875rem;
+  --time-badge-font: 0.7rem;
+  --time-badge-padding: 3px 6px;
+  --stop-item-padding: 10px 12px;
+  --stop-item-margin: 6px;
+  --stop-name-font: 0.875rem;
+  --stop-index-font: 0.8rem;
+  --stop-index-margin: 6px;
+  --stop-index-width: 20px;
+  --stop-badge-padding: 2px 4px;
+  --stop-badge-font: 0.7rem;
+  --stop-badge-margin: 4px;
+  --buses-at-stop-padding: 6px 10px;
+  --buses-at-stop-font: 0.75rem;
+  --buses-at-stop-gap: 6px;
+  --buses-at-stop-margin: 8px;
+  --segment-padding: 8px 12px;
+  --segment-margin: 6px;
+  --segment-gap: 6px;
+  --expand-btn-font: 0.8rem;
+  --expand-btn-padding: 6px 12px;
+  --map-control-size: 36px;
+  --map-control-font: 14px;
+  --map-control-margin: 6px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: radial-gradient(circle at top right, rgba(20, 184, 166, 0.08), transparent 600px),
+              radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.05), transparent 400px),
+              var(--background-main);
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  min-height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  will-change: transform; /* Hint for browser optimization */
+}
+
+/* === HEADER === */
+.route-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--header-padding);
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-webkit-blur);
+  border-bottom: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  z-index: 100;
+}
+
+.route-title {
+  font-size: var(--route-title-size);
+  font-weight: 600;
+  color: var(--primary-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100vw - 160px);
+}
+
+.route-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.direction-btn, .search-btn, .back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: var(--btn-font-size);
+}
+
+.direction-btn:hover, .search-btn:hover, .back-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.bus-track-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bus-track-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+/* === MAP === */
+.map-container {
+  height: 38vh;
+  position: relative;
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  filter: brightness(1.05) contrast(1.1) saturate(1.1);
+}
+
+/* === CONTENT === */
+.route-info {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--content-padding);
+  background: var(--card-secondary);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-webkit-blur);
+}
+
+.section-container {
+  margin-bottom: 40px;
+  position: relative;
+  padding-left: 20px;
+  border-left: 4px solid var(--primary-color);
+  border-radius: 4px;
+}
+
+.section-container.first-section {
+  margin-top: 20px;
+}
+
+.section-meta-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-transform: none;
+  letter-spacing: -0.01em;
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.section-title i {
+  display: none; /* Temiz görünüm için başlık ikonu kalksın, sol çizgi yetiyor */
+}
+
+.section-title .count-badge {
+  background: var(--primary-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-left: 12px;
+  box-shadow: 0 4px 15px rgba(13, 148, 136, 0.2);
+}
+
+.section-title i {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.1);
+}
+
+.section-title .count-badge {
+  background: var(--background-soft);
+  color: var(--text-muted);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: auto; /* Sağa yasla */
+  border: 1px solid var(--border-light);
+}
+
+/* Başlık başı çizgiyi kaldıralım, ikon kutusu daha iyi */
+.section-title::before { display: none; }
+
+/* === KONUM BİLGİSİ === */
+.nearest-user-stop {
+  padding: var(--nearest-stop-padding) !important;
+  margin-bottom: var(--nearest-stop-margin) !important;
+}
+
+.nearest-user-stop strong {
+  font-size: var(--nearest-stop-title-font);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.nearest-user-stop .info-detail {
+  font-size: var(--nearest-stop-detail-font);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.nearest-user-stop .info-detail i {
+  font-size: 0.65rem;
+  margin-right: 4px;
+}
+
+/* === CARDS & INFO ITEMS === */
+.info-item {
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: var(--info-item-padding);
+  margin-bottom: 12px; /* Azıcık boşluk eklendi */
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--glass-shadow);
+}
+
+.info-item:hover {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow);
+}
+
+.info-item[data-plate] {
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: 0;
+  margin-bottom: var(--bus-item-margin);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  overflow: hidden;
+}
+
+.info-item[data-plate]:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow);
+}
+
+.info-item[data-plate].tracking-active {
+  border-color: var(--tracking-active-border);
+  background: var(--tracking-active-bg);
+  box-shadow: 0 0 0 3px var(--tracking-active-shadow);
+}
+
+/* === BUS INFO === */
+.bus-main-content {
+  flex: 1;
+  padding: var(--bus-main-padding);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.bus-status-panel {
+  width: var(--bus-status-panel-width);
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--bus-status-panel-padding);
+  color: white;
+  font-size: var(--bus-status-panel-font);
+  font-weight: 600;
+  text-align: center;
+  min-height: var(--bus-status-panel-height);
+  min-width: var(--bus-status-panel-min-width);
+}
+
+.bus-status-panel .status-text {
+  font-size: var(--bus-status-text-font);
+  margin-bottom: 2px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bus-status-panel .status-value {
+  font-size: var(--bus-status-value-font);
+  font-weight: 700;
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+.info-item[data-plate].tracking-active .bus-status-panel {
+  background: linear-gradient(135deg, var(--warning-color) 0%, #f59e0b 100%);
+}
+
+.bus-plate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.bus-plate-number {
+  font-size: var(--bus-plate-font);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.info-item[data-plate].tracking-active .bus-plate-number {
+  color: var(--warning-color);
+}
+
+.bus-status-badge {
+  display: none;
+}
+
+.bus-status-badge.at-stop {
+  background: var(--success-light);
+  color: var(--success-color);
+  border: 1px solid var(--success-border);
+}
+
+.bus-status-badge.in-route {
+  background: var(--background-soft);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-soft);
+}
+
+.bus-destination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 3px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.destination-icon {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.destination-text {
+  font-size: var(--destination-text-font);
+  color: var(--text-primary);
+  font-weight: 400;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.destination-distance {
+  font-size: var(--destination-distance-font);
+  color: var(--primary-color);
+  font-weight: 500;
+  background: var(--background-soft);
+  padding: var(--destination-distance-padding);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.bus-user-status {
+  display: flex;
+  align-items: center;
+  gap: var(--bus-user-status-gap);
+  padding: var(--bus-user-status-padding);
+  border-radius: var(--radius-sm);
+  font-size: var(--bus-user-status-font);
+  font-weight: 400;
+  margin-top: var(--bus-user-status-margin);
+}
+
+.bus-user-status.approaching {
+  background: var(--success-light);
+  color: var(--success-color);
+  border: 1px solid var(--success-border);
+}
+
+.bus-user-status.passed {
+  background: var(--danger-light);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-border);
+}
+
+.user-status-icon {
+  width: var(--user-status-icon-size);
+  height: var(--user-status-icon-size);
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* --- UNIFIED SCHEDULE BAR --- */
+.sched-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: var(--card-secondary);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  padding: 6px;
+  border-radius: 16px;
+  border: var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.sched-chips-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+.sched-chips-scroll::-webkit-scrollbar { display: none; }
+
+.sched-chip {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.sched-chip.active {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 4px 10px rgba(13,148,136,0.25);
+}
+
+.sched-actions {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  border-left: 1px solid var(--border-light);
+}
+
+.sched-inline-expand {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+  background: var(--card-background);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.sched-inline-expand:hover {
+  background: var(--primary-soft);
+  transform: scale(1.05);
+}
+.sched-inline-expand.is-expanded {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* --- MODERN BUS CARDS --- */
+.bus-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.bus-info-card {
+  position: relative;
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: var(--glass-border);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.bus-info-card:hover {
+  border-color: var(--primary-soft);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.bus-info-card:active {
+  transform: scale(0.97);
+  transition: transform 0.1s;
+}
+
+.bus-info-card.tracking-active {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--card-background) 0%, rgba(13, 148, 136, 0.05) 100%);
+  box-shadow: 0 8px 32px rgba(13, 148, 136, 0.18);
+  animation: activePulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes activePulse {
+  0%   { transform: scale(0.97); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); }
+  50%  { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); }
+  100% { transform: scale(1); }
+}
+
+.card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px; /* Genişletildi */
+  height: 100%;
+  opacity: 0.9;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sequence-mini {
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 800;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  letter-spacing: 1px;
+}
+
+.card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding-left: 18px; /* sequence-mini için boşluk */
+}
+
+.bus-id-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bus-icon-pill {
+  width: 32px;
+  height: 32px;
+  background: var(--background-soft);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+.plate-number {
+  font-size: 1.05rem;
+  font-weight: 800; /* Daha kalın ve belirgin */
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.route-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.next-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.next-stop-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px; /* Belirli bir genişlik sınırı ekleyelim */
+}
+
+.card-status-orb {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.status-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--background-soft);
+  color: var(--text-muted);
+}
+
+.card-status-orb.at-stop .status-label {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success-color);
+}
+
+.card-status-orb.in-motion .status-label {
+  background: rgba(13, 148, 136, 0.15);
+  color: var(--primary-color);
+}
+
+.status-dist {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section Containers */
+.section-container {
+  margin-bottom: 30px;
+}
+
+.count-badge {
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+/* User Status inside card */
+.bus-user-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.bus-user-status.approaching {
+  background: rgba(13, 148, 136, 0.08);
+  color: var(--primary-color);
+}
+.bus-user-status.passed {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-muted);
+}
+.sched-now-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13,148,136,0.25);
+  animation: nowPulse 2s infinite;
+  flex-shrink: 0;
+}
+@keyframes nowPulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(13,148,136,0.25); }
+  50%      { box-shadow: 0 0 0 7px rgba(13,148,136,0.08); }
+}
+.sched-now-text {
+  font-size: 0.83rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+.sched-now-text strong {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Saat satırı */
+.sched-hour-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.15s;
+}
+.sched-hour-row:last-child { border-bottom: none; }
+.sched-hour-row.past-hour { opacity: 0.45; }
+.sched-hour-row.current-hour .sched-hour-label {
+  color: var(--primary-color);
+  font-weight: 800;
+}
+
+.sched-hour-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 28px;
+  text-align: right;
+  padding-top: 4px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-minutes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+/* Dakika pill */
+.sched-min-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: default;
+  transition: all 0.2s;
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-min-pill.upcoming-departure {
+  background: var(--card-background);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+.sched-min-pill.upcoming-departure:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.sched-min-pill.past-departure {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-light);
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+.sched-min-pill.current-departure {
+  background: var(--primary-color);
+  color: white;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(13,148,136,0.2), 0 4px 12px rgba(13,148,136,0.35);
+  animation: pillPulse 2s infinite;
+  transform: scale(1.08);
+}
+@keyframes pillPulse {
+  0%,100% { box-shadow: 0 0 0 4px rgba(13,148,136,0.2), 0 4px 12px rgba(13,148,136,0.35); }
+  50%      { box-shadow: 0 0 0 8px rgba(13,148,136,0.1), 0 4px 12px rgba(13,148,136,0.4); }
+}
+
+.sched-empty {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* === STOPS === */
+.stop-item {
+  margin-bottom: var(--stop-item-margin);
+  padding: var(--stop-item-padding);
+}
+
+.stop-main-info {
+  display: flex;
+  align-items: center;
+}
+
+.stop-name-and-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  font-size: var(--stop-name-font);
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.stop-index {
+  font-size: var(--stop-index-font);
+  color: var(--text-muted);
+  margin-right: var(--stop-index-margin);
+  min-width: var(--stop-index-width);
+  text-align: right;
+}
+
+.stop-name-and-badges strong {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-right: 8px;
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.stop-badge {
+  display: inline-block;
+  padding: var(--stop-badge-padding);
+  border-radius: var(--radius-sm);
+  font-size: var(--stop-badge-font);
+  font-weight: 500;
+  margin-left: var(--stop-badge-margin);
+  white-space: nowrap;
+}
+
+.start-badge {
+  background: var(--start-badge-bg);
+  color: var(--start-badge-color);
+  border: 1px solid var(--start-badge-border);
+}
+
+.end-badge {
+  background: var(--end-badge-bg);
+  color: var(--end-badge-color);
+  border: 1px solid var(--end-badge-border);
+}
+
+.nearest-badge {
+  background: var(--nearest-badge-bg);
+  color: var(--nearest-badge-color);
+  border: 1px solid var(--nearest-badge-border);
+}
+
+.nearest-stop-highlight {
+  border-color: var(--warning-color);
+  background: var(--nearest-stop-bg);
+}
+
+.buses-at-stop-indicator {
+  background: var(--buses-at-stop-bg);
+  border: 1px solid var(--buses-at-stop-border);
+  border-radius: var(--radius);
+  padding: var(--buses-at-stop-padding);
+  font-size: var(--buses-at-stop-font);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--buses-at-stop-gap);
+  margin-top: var(--buses-at-stop-margin);
+}
+
+.buses-at-stop-indicator .fas {
+  color: var(--success-color);
+  margin-right: 5px;
+}
+
+.bus-plate-tag-at-stop {
+  background: var(--bus-plate-at-stop-bg);
+  color: white;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.segment-buses-summary {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--segment-padding);
+  margin-bottom: var(--segment-margin);
+  background: var(--segment-bg);
+  border: 1px solid var(--segment-border);
+  border-radius: var(--radius);
+  gap: var(--segment-gap);
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.segment-arrow {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.segment-bus-plates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.bus-plate-tag-between-stops {
+  background: var(--bus-plate-between-stops-bg);
+  color: white;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.segment-distance-info {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+/* === SCROLLBAR === */
+.route-info::-webkit-scrollbar {
+  width: 6px;
+}
+
+.route-info::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+.route-info::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.route-info::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* === LEAFLET OVERRIDES === */
+.leaflet-div-icon {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* === LEAFLET ZOOM CONTROLS === */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  font-size: var(--map-control-font) !important;
+  font-weight: 600 !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  line-height: 34px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  border-radius: 0 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-control-zoom a:first-child {
+  border-top-left-radius: var(--radius) !important;
+  border-top-right-radius: var(--radius) !important;
+  border-bottom: none !important;
+}
+
+.leaflet-control-zoom a:last-child {
+  border-bottom-left-radius: var(--radius) !important;
+  border-bottom-right-radius: var(--radius) !important;
+  border-top: none !important;
+}
+
+/* === LEAFLET LAYERS CONTROL === */
+.leaflet-control-layers {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-control-layers-toggle {
+  background: var(--leaflet-control-bg) !important;
+  border: none !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  background-image: none !important;
+  position: relative;
+  transition: all 0.15s ease !important;
+}
+
+.leaflet-control-layers-toggle::before {
+  content: "🗺️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--map-control-font);
+  color: var(--leaflet-control-text);
+  transition: all 0.15s ease;
+}
+
+.leaflet-control-layers-toggle:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+}
+
+.leaflet-control-layers-toggle:hover::before {
+  color: var(--leaflet-control-hover-text);
+}
+
+.leaflet-control-layers-expanded {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 12px !important;
+  min-width: 160px !important;
+}
+
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+  display: none !important;
+}
+
+.leaflet-control-layers-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.leaflet-control-layers-base label,
+.leaflet-control-layers-overlays label {
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 0 !important;
+  margin: 0 !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease !important;
+  border-bottom: 1px solid var(--border-light) !important;
+}
+
+.leaflet-control-layers-base label:last-child,
+.leaflet-control-layers-overlays label:last-child {
+  border-bottom: none !important;
+}
+
+.leaflet-control-layers-base label:hover,
+.leaflet-control-layers-overlays label:hover {
+  color: var(--primary-color) !important;
+}
+
+.leaflet-control-layers-base input,
+.leaflet-control-layers-overlays input {
+  margin-right: 6px !important;
+  margin-left: 0 !important;
+  width: 14px !important;
+  height: 14px !important;
+  accent-color: var(--primary-color) !important;
+}
+
+.leaflet-control-layers-separator {
+  height: 1px !important;
+  background: var(--border-light) !important;
+  margin: 8px 0 !important;
+  border: none !important;
+}
+
+/* === LEAFLET ATTRIBUTION === */
+.leaflet-control-attribution {
+  background: var(--leaflet-attribution-bg) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-sm) !important;
+  backdrop-filter: blur(8px) !important;
+  font-size: 0.7rem !important;
+  color: var(--leaflet-attribution-text) !important;
+  padding: 3px 6px !important;
+  margin: var(--map-control-margin) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--leaflet-attribution-link) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.leaflet-control-attribution a:hover {
+  text-decoration: underline !important;
+}
+
+/* === CUSTOM MAP CONTROL BUTTONS === */
+.custom-map-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--map-control-margin);
+}
+
+.map-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--map-control-size);
+  height: var(--map-control-size);
+  background: var(--card-background);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow);
+  font-size: var(--map-control-font);
+}
+
+.map-control-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.map-control-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* === LOCATION CONTROL BUTTON === */
+.leaflet-control-locate {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.leaflet-control-locate a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: var(--map-control-font) !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-locate a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+}
+
+.leaflet-control-locate.requesting a {
+  background: var(--warning-color) !important;
+  border-color: var(--warning-color) !important;
+  color: white !important;
+  animation: pulse-locate 1.5s infinite;
+}
+
+.leaflet-control-locate.active a {
+  background: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  color: white !important;
+}
+
+@keyframes pulse-locate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* === FULLSCREEN CONTROL === */
+.leaflet-control-fullscreen {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.leaflet-control-fullscreen a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: var(--map-control-font) !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-fullscreen a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+}
+
+/* === CUSTOM MAP CONTROLS (ZOOM ONLY) === */
+.custom-map-controls-frame {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  margin-bottom: 25px;
+  margin-right: 20px;
+  z-index: 1000;
+  width: 42px;
+}
+
+.map-ctrl-btn {
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--primary-color);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.map-ctrl-btn:last-child {
+  border-bottom: none;
+}
+
+.map-ctrl-btn:hover {
+  background: var(--background-secondary);
+  color: var(--accent-color);
+}
+
+/* === TOP RIGHT INTERACTIVE BADGE === */
+.custom-map-name-frame {
+  margin: 15px !important;
+  position: relative;
+  z-index: 1001;
+}
+
+.active-map-name {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-primary);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.active-map-name:hover {
+  background: var(--card-background);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.map-type-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  min-width: 160px;
+  display: none;
+  flex-direction: column;
+  z-index: 1002;
+  backdrop-filter: blur(10px);
+}
+
+.map-type-dropdown.show {
+  display: flex;
+  animation: menuFadeIn 0.2s ease-out;
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.map-type-option {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.map-type-option:hover {
+  background: var(--background-secondary);
+  color: var(--primary-color);
+}
+
+.map-type-option.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* === STOP TIMELINE REDESIGN (MULTI-BUS BUG FIX) === */
+.stop-entry {
+  display: flex;
+  align-items: center; /* Verdyikal merkezi hizalama */
+  margin-left: 5px;
+  gap: 12px;
+}
+
+.stop-node-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Yatay hizada da ortalayalım */
+  width: 28px;
+  position: relative;
+  align-self: stretch; /* Kart boyuna uzasın ki çizgi devam etsin */
+}
+
+.stop-node {
+  width: 26px;
+  height: 26px;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  z-index: 5;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.stop-node.start { border-color: var(--success-color); color: var(--success-color); }
+.stop-node.end { border-color: var(--danger-color); color: var(--danger-color); }
+.stop-node.nearest { 
+  border-color: var(--primary-color); 
+  background: var(--primary-color); 
+  color: white;
+  box-shadow: 0 0 12px rgba(13, 148, 136, 0.35);
+}
+
+.stop-line {
+  position: absolute;
+  width: 2px;
+  background: var(--border-light);
+  top: 50%; /* Node merkezinden başla */
+  height: calc(100% + 8px); /* Bir sonraki daka binmesi için (gap dahil) */
+  z-index: 1;
+}
+
+.stop-entry:last-child .stop-line {
+  display: none; /* Son duraktan sonra çizgi olmasın */
+}
+
+.stop-content-card {
+  flex: 1;
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stop-content-card:hover {
+  border-color: var(--primary-light);
+  transform: translateX(4px);
+  box-shadow: var(--shadow);
+}
+
+.stop-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stop-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sbadge {
+  font-size: 8px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+.sbadge.start { background: var(--success-light); color: var(--success-color); }
+.sbadge.end { background: var(--danger-light); color: var(--danger-color); }
+
+/* Multi-Bus Indicator (Dock) */
+.buses-dock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.bus-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.bus-badge.at-stop {
+  background: var(--success-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
+}
+
+.bus-badge.moving {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(13, 148, 136, 0.2);
+  margin-bottom: 4px;
+}
+
+.bus-badge .dist {
+  font-size: 9px;
+  opacity: 0.85;
+  margin-left: 2px;
+}
+
+/* Between Stops Segment */
+.segment-container {
+  display: flex;
+  margin-left: 5px;
+  min-height: 20px;
+  gap: 12px;
+}
+
+.segment-line-container {
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  align-self: stretch;
+}
+
+.segment-line {
+  width: 2px;
+  height: calc(100% + 8px);
+  background: var(--border-light);
+  border-radius: 1px;
+}
+
+.segment-buses {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 0 12px 0;
+}
+
+.nearest-stop-highlight {
+  background: rgba(13, 148, 136, 0.05) !important;
+  border-left: 3px solid var(--primary-color) !important;
+}
+
+/* === MAP STOP LABELS (PROFESSIONAL BLUEPRINT STYLE) === */
+.stop-marker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.stop-dot {
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  z-index: 10;
+}
+
+.stop-name-label {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-35deg); /* Profesyonel 35 derece açı */
+  transform-origin: left center;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 3px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  white-space: nowrap;
+  margin-left: 4px; /* Yuvarlağa daha da yaklaştırıldı (8px -> 4px) */
+  display: none; /* Varsayılan gizli */
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Zoom seviyesine göre aşamalı gösterim (Açılı Tasarım) */
+.stop-name-label {
+  display: flex !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-50%) rotate(var(--angle, -45deg)) scale(0.7);
+  pointer-events: none;
+  transform-origin: left center;
+}
+
+/* Kalabalık bölgelerde isimleri küçült */
+.crowded-label .stop-name-label .name {
+  font-size: 0.65rem !important;
+  max-width: 60px !important;
+  opacity: 0.9;
+}
+
+.crowded-label .stop-name-label .idx {
+  font-size: 0.6rem !important;
+}
+
+/* Aşama 1: Sadece Numaraları Göster (Zoom 14+) */
+.show-stop-numbers .stop-name-label {
+  opacity: 1;
+  visibility: visible;
+  padding: 4px 6px;
+  transform: translateY(-50%) rotate(var(--angle, -45deg)) scale(0.9);
+}
+
+.show-stop-numbers .stop-name-label .name {
+  display: none; /* İsimleri gizle */
+}
+
+/* Aşama 2: Tüm İsmi ve Bilgileri Göster (Zoom 16+) */
+.show-stop-labels .stop-name-label {
+  opacity: 1;
+  visibility: visible;
+  padding: 3px 10px;
+  transform: translateY(-50%) rotate(var(--angle, -45deg)) scale(1);
+}
+
+.show-stop-labels .stop-name-label .name {
+  display: inline-block;
+  max-width: 75px; /* Daha fazla kısaltma (130px -> 75px) */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes labelFadeIn {
+  from { opacity: 0; transform: translateY(-50%) rotate(-35deg) scale(0.8); }
+  to { opacity: 1; transform: translateY(-50%) rotate(-35deg) scale(1); }
+}
+
+.stop-name-label .idx {
+  font-weight: 800;
+  color: var(--primary-color);
+  font-size: 10px;
+  min-width: 14px;
+}
+
+.stop-name-label .name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Başlangıç ve bitiş durakları için etiketleri daha belirgin yap */
+.stop-node.start + .stop-name-label, .stop-node.end + .stop-name-label {
+  background: var(--card-background);
+  border-color: var(--primary-light);
+}
+
+/* === PREMIUM SCHEDULE (SAATLER) REDESIGN === */
+#schedule-section {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ background: var(--glass-background);
+ backdrop-filter: var(--glass-blur);
+ border-radius: 20px;
+ padding: 16px;
+ border: 1px solid var(--glass-border);
+ box-shadow: var(--shadow-lg);
+ margin-top: 8px;
+}
+
+#schedule-tabs {
+ width: 100%;
+}
+
+.tab-buttons {
+ display: grid;
+ grid-template-columns: 1fr 1fr 1fr;
+ gap: 8px;
+ background: rgba(0, 0, 0, 0.03);
+ padding: 4px;
+ border-radius: 12px;
+ margin-bottom: 20px;
+}
+
+.tab-btn {
+ background: transparent;
+ border: none;
+ padding: 10px 4px;
+ border-radius: 10px;
+ font-size: 0.8rem;
+ font-weight: 600;
+ color: var(--text-secondary);
+ cursor: pointer;
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+ text-align: center;
+}
+
+.tab-btn.active {
+ background: white;
+ color: var(--primary-color);
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+ transform: scale(1.02);
+}
+
+.next-bus-highlight {
+ background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+ border-radius: 16px;
+ padding: 20px;
+ color: white;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 8px;
+ margin-bottom: 24px;
+ box-shadow: 0 10px 25px rgba(13, 148, 136, 0.3);
+ position: relative;
+ overflow: hidden;
+}
+
+.next-bus-label {
+ font-size: 0.75rem;
+ text-transform: uppercase;
+ letter-spacing: 1.5px;
+ opacity: 0.9;
+ font-weight: 700;
+}
+
+.next-bus-time {
+ font-size: 3rem;
+ font-weight: 800;
+ letter-spacing: -1px;
+ line-height: 1;
+}
+
+.next-bus-countdown {
+ background: rgba(255, 255, 255, 0.2);
+ padding: 4px 12px;
+ border-radius: 20px;
+ font-size: 0.85rem;
+ font-weight: 600;
+ backdrop-filter: blur(4px);
+}
+
+.time-group-section {
+ margin-bottom: 20px;
+}
+
+.time-group-title {
+ font-size: 0.7rem;
+ font-weight: 800;
+ color: var(--text-muted);
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ margin-bottom: 12px;
+ padding-left: 4px;
+ display: flex;
+ align-items: center;
+ gap: 8px;
+}
+
+.time-group-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-light);
+}
+
+.time-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+ gap: 10px;
+}
+
+.time-card {
+ background: white;
+ border: 1px solid var(--border-light);
+ padding: 10px 6px;
+ border-radius: 12px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ transition: all 0.2s ease;
+ position: relative;
+}
+
+.time-card.past {
+ opacity: 0.4;
+ background: rgba(0, 0, 0, 0.02);
+}
+
+.time-card.active {
+ border-color: var(--primary-color);
+ background: rgba(13, 148, 136, 0.05);
+ box-shadow: 0 4px 10px rgba(13, 148, 136, 0.1);
+}
+
+.time-val {
+ font-size: 0.95rem;
+ font-weight: 700;
+ color: var(--text-primary);
+}
+
+.time-status {
+ font-size: 0.6rem;
+ font-weight: 600;
+ color: var(--text-muted);
+ text-transform: uppercase;
+}
+
+.time-card.active .time-val { color: var(--primary-color); }
+.time-card.active .time-status { color: var(--primary-color); opacity: 0.8; }
+
+.tab-panel {
+ display: none;
+ animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tab-panel.active {
+ display: block;
+}
+
+@keyframes slideUp {
+ from { opacity: 0; transform: translateY(15px); }
+ to { opacity: 1; transform: translateY(0); }
+}
