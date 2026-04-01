@@ -1,0 +1,25 @@
+{
+  "name": "EkoGokhan",
+  "short_name": "EkoGokhan",
+  "description": "Hat sorgulama ve otobüs takip uygulaması",
+  "start_url": "./ekogokhan/",
+  "display": "standalone",
+  "scope": "./",
+  "background_color": "#0d9488",
+  "theme_color": "#0d9488",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "ekodata/icon-512.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "ekodata/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
