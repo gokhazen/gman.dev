@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2025 Love Wrapped - Masterpiece</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800;900&family=Playfair+Display:ital,wght@1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #1ed760;
+            --accent: #ff4757;
+        }
+
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            margin: 0; background-color: var(--bg-dark); color: white;
+            font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        #start-screen {
+            position: fixed; inset: 0; z-index: 1000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: #000; overflow: hidden;
+        }
+        
+        .aurora-bg {
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, #4a00e0, #8e2de2, #000);
+            filter: blur(60px); opacity: 0.6;
+            animation: auroraSpin 15s linear infinite; z-index: 0;
+        }
+        @keyframes auroraSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .start-card {
+            z-index: 10; width: 85%; max-width: 350px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px;
+            padding: 40px 20px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.9); opacity: 0; animation: popIn 1s forwards 0.5s;
+        }
+        @keyframes popIn { to { transform: scale(1); opacity: 1; } }
+
+        .start-btn {
+            margin-top: 30px; padding: 18px 50px;
+            background: white; color: black; border: none; border-radius: 100px;
+            font-weight: 900; font-size: 1.1rem; letter-spacing: 1px; cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            transition: transform 0.2s;
+        }
+        .start-btn:active { transform: scale(0.95); }
+
+        .progress-wrapper {
+            position: absolute; top: 0; left: 0; width: 100%;
+            display: flex; gap: 4px; z-index: 100; padding: 10px 5px;
+        }
+        .p-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.3); border-radius: 10px; overflow: hidden; }
+        .p-fill { height: 100%; width: 0%; border-radius: 10px; background: white; }
+
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            overflow: hidden; background: #111;
+        }
+        .slide.active { display: flex; }
+
+        .intro-text-container h1 {
+            font-size: 3.5rem; line-height: 1; margin: 0;
+            background: linear-gradient(to right, #fff, #aaa); -webkit-background-clip: text; color: transparent;
+            filter: blur(10px); opacity: 0; animation: cinematicBlurIn 1s forwards 0.3s;
+        }
+        .intro-text-container p {
+            font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; color: var(--primary);
+            opacity: 0; animation: fadeIn 1s forwards 1s;
+        }
+        @keyframes cinematicBlurIn { to { filter: blur(0); opacity: 1; } }
+
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 24px;
+            padding: 25px; width: 90%; max-width: 360px; margin-bottom: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4); text-align: center;
+            position: relative; z-index: 10;
+        }
+
+        /* --- ZAMAN EKRANI --- */
+        .orbital-time-container {
+            width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .orbital-bg {
+            position: absolute; inset: 0; background: radial-gradient(circle at center, #1a0033 0%, #000 70%);
+            overflow: hidden;
+        }
+        .orbit-ring {
+            position: absolute; border: 2px solid rgba(255, 71, 87, 0.3);
+            border-radius: 50%; animation: rotateOrbit 20s linear infinite;
+        }
+        .orbit-1 { width: 250px; height: 250px; }
+        .orbit-2 { width: 350px; height: 350px; animation-duration: 30s; border-color: rgba(30, 215, 96, 0.3); }
+        .orbit-3 { width: 450px; height: 450px; animation-duration: 40s; border-color: rgba(138, 43, 226, 0.3); }
+        @keyframes rotateOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .orbit-planet {
+            position: absolute; width: 15px; height: 15px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, #ff4757);
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.8);
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+        }
+        
+        .time-center {
+            position: relative; z-index: 10; text-align: center;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px;
+            padding: 40px 30px; width: 85%; max-width: 320px;
+        }
+        .time-counter {
+            font-size: 5rem; font-weight: 900; line-height: 1;
+            background: linear-gradient(135deg, #ff4757, #1ed760, #8e2de2);
+            background-size: 200% 200%; -webkit-background-clip: text; color: transparent;
+            animation: gradientShift 5s ease infinite;
+            margin: 15px 0;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .time-label {
+            font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5); margin-bottom: 5px;
+        }
+        .time-description {
+            font-size: 0.95rem; color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6; margin-top: 20px; font-weight: 300;
+        }
+
+        /* --- SONSUZ FOTO SCROLL --- */
+        .infinite-scroll-wrapper {
+            position: absolute; inset: 0; overflow: hidden; z-index: 0;
+            display: flex; gap: 15px; padding: 0 10px;
+        }
+        .scroll-column {
+            display: flex; flex-direction: column; gap: 15px; min-width: 45%;
+            animation: infiniteScroll 30s linear infinite;
+        }
+        .scroll-column:nth-child(2) { animation-duration: 40s; }
+        .scroll-column img {
+            width: 100%; border-radius: 15px; object-fit: cover;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5); filter: brightness(0.7);
+        }
+        @keyframes infiniteScroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        /* --- YENİ DETAYLI ÖZET CARD --- */
+        .summary-wrapper {
+            width: 90%; max-width: 380px; position: relative;
+            overflow: hidden; touch-action: pan-y;
+        }
+        .summary-cards-container {
+            display: flex; transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .summary-card {
+            min-width: 100%; padding: 35px 25px; border-radius: 25px; min-height: 580px;
+            display: flex; flex-direction: column; gap: 20px;
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        
+        /* Tema Renkleri */
+        .theme-1 { background: linear-gradient(135deg, #1db954, #191414); color: white; }
+        .theme-1 .accent-text { color: #1db954; }
+        .theme-1 .stat-badge { background: rgba(29, 185, 84, 0.2); border: 1px solid rgba(29, 185, 84, 0.4); }
+        
+        .theme-2 { background: linear-gradient(135deg, #ff4757, #2f3542); color: white; }
+        .theme-2 .accent-text { color: #ff6b7a; }
+        .theme-2 .stat-badge { background: rgba(255, 71, 87, 0.2); border: 1px solid rgba(255, 71, 87, 0.4); }
+        
+        .theme-3 { background: linear-gradient(135deg, #ffa502, #000000); color: white; }
+        .theme-3 .accent-text { color: #ffc048; }
+        .theme-3 .stat-badge { background: rgba(255, 165, 2, 0.2); border: 1px solid rgba(255, 165, 2, 0.4); }
+        
+        .theme-4 { background: linear-gradient(135deg, #ffffff, #dfe6e9); color: black; }
+        .theme-4 .accent-text { color: #2d3436; }
+        .theme-4 .stat-badge { background: rgba(0, 0, 0, 0.08); border: 1px solid rgba(0, 0, 0, 0.15); }
+        .theme-4 p, .theme-4 .stat-label { color: #555 !important; }
+        .theme-4 h1, .theme-4 h2, .theme-4 h3 { color: black !important; }
+
+        /* Özet Header */
+        .summary-header {
+            text-align: center; padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        .summary-header h2 {
+            margin: 0; font-size: 1.4rem; font-weight: 900;
+            letter-spacing: 2px; opacity: 0.9;
+        }
+        .summary-header p {
+            margin: 5px 0 0 0; font-size: 0.85rem;
+            opacity: 0.6; letter-spacing: 1px;
+        }
+
+        /* Ana Emoji */
+        .summary-emoji {
+            text-align: center; font-size: 4rem;
+            margin: 10px 0; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        /* İstatistik Grid */
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 15px; text-align: center;
+        }
+        .stat-value {
+            font-size: 1.8rem; font-weight: 900; margin: 5px 0;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1px; opacity: 0.7;
+        }
+
+        /* Özellikler Badge */
+        .features-section {
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 15px;
+        }
+        .features-title {
+            font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 1px; opacity: 0.7; margin-bottom: 10px;
+        }
+        .features-tags {
+            display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+        }
+        .stat-badge {
+            padding: 6px 14px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 600;
+        }
+
+        /* Alt Bilgi */
+        .summary-footer {
+            text-align: center; padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+        .summary-footer p {
+            margin: 0; font-size: 0.75rem; opacity: 0.5;
+            font-style: italic; line-height: 1.4;
+        }
+
+        /* Navigasyon Butonları */
+        .theme-nav-buttons {
+            display: flex; justify-content: center; gap: 15px;
+            margin-top: 20px; align-items: center;
+            
+            /* EKLEMEN GEREKEN KISIM BURASI */
+            position: relative;
+            z-index: 100; 
+            /* --------------------------- */
+        }
+        .theme-nav-btn {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white; font-size: 1.3rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .theme-nav-btn:active { transform: scale(0.9); }
+        .theme-nav-btn:hover { background: rgba(255,255,255,0.2); }
+
+        .slider-dots {
+            display: flex; justify-content: center; gap: 8px;
+        }
+        .slider-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); cursor: pointer;
+            transition: all 0.3s;
+        }
+        .slider-dot.active {
+            width: 24px; border-radius: 4px; background: white;
+        }
+
+        .restart-btn {
+            margin-top: 20px; background: transparent; border: 1px solid rgba(255,255,255,0.3);
+            color: white; padding: 12px 30px; border-radius: 30px; cursor: pointer; 
+            font-weight: 600; letter-spacing: 0.5px;
+            
+            /* BURADAKİ z-index'i 50'den 100'e çıkarıyoruz */
+            z-index: 100; 
+            position: relative;
+        }
+
+        .slide-cinematic { justify-content: flex-end; }
+        .blur-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            filter: blur(40px) brightness(0.6); transform: scale(1.2); z-index: 0;
+        }
+        .main-image-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 80%;
+            display: flex; align-items: center; justify-content: center; z-index: 1; padding: 20px;
+        }
+        .main-image-container img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6); border-radius: 16px;
+        }
+        .cinematic-overlay {
+            z-index: 2; position: relative;
+            background: linear-gradient(to top, #000 10%, transparent 100%);
+            padding: 40px 25px 90px 25px; width: 100%; text-align: left;
+        }
+
+        .glass-btn {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: rgba(255, 71, 87, 0.2); border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px); color: white; font-weight: 900; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.2); margin: 20px auto; cursor: pointer;
+            position: relative; overflow: hidden; z-index: 50;
+        }
+        .glass-progress-container {
+            width: 100%; height: 30px; background: rgba(255,255,255,0.1);
+            border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden; position: relative; margin-top: 20px;
+        }
+        .glass-progress-fill {
+            height: 100%; width: 0%; background: linear-gradient(90deg, #ff9a9e 0%, #ff4757 100%);
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.5); transition: width 0.05s linear;
+        }
+        
+        .reset-donkey-btn {
+            margin-top: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;
+            font-size: 0.85rem; font-weight: 600;
+        }
+
+        .tap { position: absolute; top: 0; bottom: 0; width: 35%; z-index: 50; }
+        .left { left: 0; } .right { right: 0; }
+        
+        h1 { margin: 0; font-weight: 900; font-size: 2.2rem; line-height: 1.1; letter-spacing: -1px; }
+        h2 { font-family: 'Playfair Display', serif; font-style: italic; color: #ddd; margin-bottom: 5px; font-size: 1.3rem; }
+        p { font-size: 1rem; color: #bbb; margin-top: 10px; line-height: 1.5; font-weight: 300; }
+        
+        .shake { animation: shake 0.5s infinite; }
+        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; max-width: 360px; margin-top: 10px; }
+        .loc-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 15px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loc-icon { font-size: 2rem; margin-bottom: 5px; }
+
+        .graph-bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.03); text-align: center; line-height: 0.9; width: 100%; z-index: 0; pointer-events: none; }
+        .graph-container-new { width: 90%; height: 250px; position: relative; z-index: 2; display: flex; align-items: flex-end; padding-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.2); border-left: 2px solid rgba(255,255,255,0.2); margin: 0 auto; }
+        .graph-line-svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
+        .graph-path { stroke: var(--primary); stroke-width: 4; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 3s forwards ease-in-out; filter: drop-shadow(0 0 10px var(--primary)); }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        
+        .note-wrapper { background: #fff; color: #111; width: 85%; max-width: 340px; padding: 30px; border-radius: 5px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: rotate(-2deg); position: relative; }
+        .note-text { font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.8; color: #333; font-weight: 500; }
+        .note-signature { font-family: 'Dancing Script', cursive; font-size: 2rem; margin-top: 20px; text-align: right; color: var(--accent); }
+
+    </style>
+</head>
+<body>
+
+    <audio id="music" loop>
+        <source src="https://audio.jukehost.co.uk/0d4/a3Z4Qy8fG5x8b1x3Z4Qy8fG5x8b1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="start-screen">
+        <div class="aurora-bg"></div>
+        <div class="start-card">
+            <h2 style="font-family:'Playfair Display'; font-style:italic; font-size:1.2rem; color:#aaa; margin-bottom:10px;">GÖKHAN & MISRA</h2>
+            <h1 style="font-size:3.5rem; font-weight:900;">WRAPPED</h1>
+            <h1 style="font-size:4rem; font-weight:900; color:var(--primary);">2025</h1>
+            <button class="start-btn" onclick="startApp()">HİKAYEYİ BAŞLAT</button>
+        </div>
+    </div>
+
+    <div class="progress-wrapper" id="p-wrapper"></div>
+    <div class="tap left" id="tap-left" onclick="prev()"></div>
+    <div class="tap right" id="tap-right" onclick="next()"></div>
+
+    <div class="slide active" style="background: linear-gradient(135deg, #000000, #111111);">
+        <div class="intro-text-container" style="text-align: center;">
+            <p>VERİLER İŞLENDİ</p>
+            <h1>BU YILIN<br>RAPORU HAZIR.</h1>
+        </div>
+    </div>
+
+    <div class="slide slide-cinematic">
+        <div class="blur-bg" style="background-image: url('https://api.gman.dev/a/1771150844');"></div>
+        <div class="main-image-container">
+            <img src="https://api.gman.dev/a/1771150844" alt="Biz">
+        </div>
+        <div class="cinematic-overlay">
+            <h2>Başlangıç Noktası</h2>
+            <h1>HER ŞEY BURADA<br>BAŞLADI.</h1>
+            <p>O anı hatırlıyor musun? Gözlerinin içi gülüyordu.</p>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="orbital-time-container">
+            <div class="orbital-bg"></div>
+            <div class="orbit-ring orbit-1"><div class="orbit-planet" style="animation: orbitRotate1 10s linear infinite;"></div></div>
+            <div class="orbit-ring orbit-2"><div class="orbit-planet" style="animation: orbitRotate2 15s linear infinite; background: radial-gradient(circle at 30% 30%, #fff, #1ed760);"></div></div>
+            <div class="orbit-ring orbit-3"><div class="orbit-planet" style="animation: orbitRotate3 20s linear infinite; background: radial-gradient(circle at 30% 30%, #fff, #8e2de2);"></div></div>
+            
+            <div class="time-center">
+                <div class="time-label">BİRLİKTE GEÇİRİLEN</div>
+                <div class="time-counter">∞</div>
+                <div class="time-label">SANİYE</div>
+                <div class="time-description">
+                    Her an seninle paylaştığımız zaman, sonsuzluğun kendisi.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide slide-cinematic">
+        <div class="blur-bg" style="background-image: url('https://api.gman.dev/a/1771150886');"></div>
+        <div class="main-image-container">
+            <img src="https://api.gman.dev/a/1771150886" alt="Tatlılık">
+        </div>
+        <div class="cinematic-overlay">
+            <h2>Favori Karem</h2>
+            <h1>SENİN EN DOĞAL<br>HALİN.</h1>
+            <p>Bu fotoğrafa her baktığımda yeniden aşık oluyorum.</p>
+        </div>
+    </div>
+
+    <div class="slide" style="background: #111;">
+        <h2 style="margin-top: 40px;">Mesaj İstatistikleri</h2>
+        <h1>KİM DAHA ÇOK<br>YAZDI?</h1>
+        <div class="glass-card" style="margin-top:20px; display:flex; gap:20px; align-items:flex-end; height:300px;">
+             <div style="flex:1; background:#555; height:40%; border-radius:10px 10px 0 0; display:flex; align-items:flex-end; justify-content:center; padding:10px; font-weight:bold;">BEN (%40)</div>
+             <div style="flex:1; background:#ff4757; height:60%; border-radius:10px 10px 0 0; display:flex; align-items:flex-end; justify-content:center; padding:10px; font-weight:bold; box-shadow:0 0 20px rgba(255, 71, 87, 0.4);">SEN (%60)</div>
+        </div>
+        <p>Ben dinlemeyi, sen anlatmayı seviyorsun ❤️</p>
+    </div>
+
+    <div class="slide" style="background: linear-gradient(to bottom right, #0a1f2e, #000);">
+        <div class="glass-card">
+            <h2>En Büyük Sorunumuz</h2>
+            <h1>"GİZLİCE<br>BULUŞMAK"</h1>
+            <p>Ailelerden habersiz operasyon düzenliyoruz resmen.</p>
+        </div>
+        
+        <div class="location-grid">
+            <div class="loc-card"><div class="loc-icon">⛴️</div><div>KADIKÖY</div></div>
+            <div class="loc-card"><div class="loc-icon">🛣️</div><div>İZMİT</div></div>
+            <div class="loc-card"><div class="loc-icon">🚄</div><div>YHT</div></div>
+            <div class="loc-card"><div class="loc-icon">🚌</div><div>BEYLİKDÜZÜ</div></div>
+        </div>
+    </div>
+
+    <div class="slide slide-cinematic">
+        <div class="blur-bg" style="background-image: url('https://api.gman.dev/a/1771154693');"></div>
+        <div class="main-image-container">
+            <img src="https://api.gman.dev/a/1771154693" alt="Manzara">
+        </div>
+        <div class="cinematic-overlay">
+            <h1>ŞU GÜZELLİĞE<br>BİR BAK...</h1>
+            <p>Manzara çok güzel ama sen manzaradan daha güzelsin.</p>
+        </div>
+    </div>
+
+    <div class="slide" style="background: #000;">
+        <img src="https://misc.scdn.co/liked-songs/liked-songs-300.png" style="width: 180px; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        <div class="glass-card" style="margin-top: 30px;">
+            <h2>Top Şarkımız</h2>
+            <h1 class="highlight">SENİ SEVİYORUM</h1>
+            <p>Gökhan Özen</p>
+        </div>
+    </div>
+
+    <div class="slide" style="background: #000;">
+        <div class="infinite-scroll-wrapper">
+            <div class="scroll-column" id="col1"></div>
+            <div class="scroll-column" id="col2"></div>
+        </div>
+        <div style="z-index: 10; text-align: center;">
+            <div class="glass-card">
+                <h1>SEN BENİM<br>EN BÜYÜK<br>DOSTUMSUN</h1>
+                <p>Sevgili olmaktan öte, seninle her şeyi paylaşmak paha biçilemez.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="donkey-slide" style="background: linear-gradient(135deg, #111, #2a0000);">
+        <div class="glass-card">
+            <h1>DÜRÜSTLÜK VAKTİ</h1>
+            <p>Ne kadar eşşeklik yaptım?</p>
+        </div>
+        <div id="donkey-emoji" style="font-size: 6rem; margin:10px;">😇</div>
+        <h2 id="donkey-text" style="color:white; margin:0; font-size: 1.5rem; height: 30px;">Melek Gibiyim</h2>
+        <div style="width: 80%; max-width: 300px; margin-top: 20px; background: rgba(255,255,255,0.1); height: 30px; border-radius: 30px; overflow: hidden;">
+            <div id="power-fill" class="glass-progress-fill"></div>
+        </div>
+        <div id="hold-btn" class="glass-btn">BASILI<br>TUT</div>
+        <button class="reset-donkey-btn" onclick="resetDonkeyOnly()">Sıfırla</button>
+    </div>
+
+    <div class="slide" style="background: #000;">
+        <div class="graph-bg-text">SENİNLE<br>BERABER</div>
+        <div class="glass-card" style="margin-bottom: 40px;"><h1>MUTLULUK<br>GRAFİĞİ</h1></div>
+        <div class="graph-container-new">
+            <svg class="graph-line-svg" viewBox="0 0 300 150" preserveAspectRatio="none">
+                <path class="graph-path" d="M0,150 C50,140 100,100 150,80 C200,60 250,20 300,5" />
+            </svg>
+            <div style="position: absolute; right: 0; top: 0; transform:translateY(5px); width: 20px; height: 20px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 20px var(--primary);"></div>
+        </div>
+        <p style="margin-top: 20px;">Sen hayatıma girdiğinden beri...</p>
+    </div>
+
+    <div class="slide slide-cinematic">
+        <div class="blur-bg" style="background-image: url('https://api.gman.dev/a/1771154721');"></div>
+        <div class="main-image-container">
+            <img src="https://api.gman.dev/a/1771154721" alt="Aura">
+        </div>
+        <div class="cinematic-overlay">
+            <h1>AURA RENGİN</h1>
+            <h2 style="color: var(--primary);">IŞIL IŞIL.</h2>
+        </div>
+    </div>
+
+    <div class="slide" style="background: url('https://www.transparenttextures.com/patterns/cubes.png'), #111;">
+        <div class="note-wrapper">
+            <div class="note-text">
+                "Mısra,<br><br>Bu yıl harikaydı ama eminim ki omuz omuza vereceğimiz önümüzdeki yıllar çok daha güzel olacak.<br><br>İyi ki varsın, iyi ki!"
+            </div>
+            <div class="note-signature">Gökhan</div>
+        </div>
+    </div>
+
+    <div class="slide slide-cinematic">
+        <div class="blur-bg" style="background-image: url('https://api.gman.dev/a/1771151293');"></div>
+        <div class="main-image-container">
+            <img src="https://api.gman.dev/a/1771151293" alt="Sonsuz">
+        </div>
+        <div class="cinematic-overlay">
+            <h1>İYİ Kİ VARSIN.</h1>
+            <p>Sen ve ben. Başka hiçbir şeye gerek yok.</p>
+        </div>
+    </div>
+
+    <div class="slide" style="background: #000;">
+        <div class="summary-wrapper" id="summary-wrapper">
+            <div class="summary-cards-container" id="cards-container">
+                <!-- TEMA 1: SPOTIFY YEŞİL -->
+                <div class="summary-card theme-1">
+                    <div class="summary-header">
+                        <h2>LOVE WRAPPED 2025</h2>
+                        <p>GÖKHAN & MISRA</p>
+                    </div>
+                    
+                    <div class="summary-emoji">💚</div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Birlikte</div>
+                            <div class="stat-value accent-text">∞</div>
+                            <div class="stat-label">Saniye</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Eşşeklik</div>
+                            <div class="stat-value accent-text" id="ds1">%0</div>
+                            <div class="stat-label">Skoru</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Mesaj</div>
+                            <div class="stat-value">60%</div>
+                            <div class="stat-label">Sen</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Top Şarkı</div>
+                            <div class="stat-value">🎵</div>
+                            <div class="stat-label">Seni Seviyorum</div>
+                        </div>
+                    </div>
+                    
+                    <div class="features-section">
+                        <div class="features-title">EN İYİ ÖZELLİKLERİN</div>
+                        <div class="features-tags">
+                            <span class="stat-badge">Gülüşün 🌟</span>
+                            <span class="stat-badge">Kalbin ❤️</span>
+                            <span class="stat-badge">Sohbetin 💬</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-footer">
+                        <p>"Her şey seninle daha güzel"</p>
+                    </div>
+                </div>
+                
+                <!-- TEMA 2: KIRMIZI TUTKU -->
+                <div class="summary-card theme-2">
+                    <div class="summary-header">
+                        <h2>LOVE WRAPPED 2025</h2>
+                        <p>GÖKHAN & MISRA</p>
+                    </div>
+                    
+                    <div class="summary-emoji">❤️</div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Birlikte</div>
+                            <div class="stat-value accent-text">∞</div>
+                            <div class="stat-label">Saniye</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Eşşeklik</div>
+                            <div class="stat-value accent-text" id="ds2">%0</div>
+                            <div class="stat-label">Skoru</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Mesaj</div>
+                            <div class="stat-value">60%</div>
+                            <div class="stat-label">Sen</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Top Şarkı</div>
+                            <div class="stat-value">🎵</div>
+                            <div class="stat-label">Seni Seviyorum</div>
+                        </div>
+                    </div>
+                    
+                    <div class="features-section">
+                        <div class="features-title">EN İYİ ÖZELLİKLERİN</div>
+                        <div class="features-tags">
+                            <span class="stat-badge">Gülüşün 🌟</span>
+                            <span class="stat-badge">Kalbin ❤️</span>
+                            <span class="stat-badge">Sohbetin 💬</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-footer">
+                        <p>"Her şey seninle daha güzel"</p>
+                    </div>
+                </div>
+                
+                <!-- TEMA 3: ALTIN SAR -->
+                <div class="summary-card theme-3">
+                    <div class="summary-header">
+                        <h2>LOVE WRAPPED 2025</h2>
+                        <p>GÖKHAN & MISRA</p>
+                    </div>
+                    
+                    <div class="summary-emoji">🧡</div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Birlikte</div>
+                            <div class="stat-value accent-text">∞</div>
+                            <div class="stat-label">Saniye</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Eşşeklik</div>
+                            <div class="stat-value accent-text" id="ds3">%0</div>
+                            <div class="stat-label">Skoru</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Mesaj</div>
+                            <div class="stat-value">60%</div>
+                            <div class="stat-label">Sen</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Top Şarkı</div>
+                            <div class="stat-value">🎵</div>
+                            <div class="stat-label">Seni Seviyorum</div>
+                        </div>
+                    </div>
+                    
+                    <div class="features-section">
+                        <div class="features-title">EN İYİ ÖZELLİKLERİN</div>
+                        <div class="features-tags">
+                            <span class="stat-badge">Gülüşün 🌟</span>
+                            <span class="stat-badge">Kalbin ❤️</span>
+                            <span class="stat-badge">Sohbetin 💬</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-footer">
+                        <p>"Her şey seninle daha güzel"</p>
+                    </div>
+                </div>
+                
+                <!-- TEMA 4: BEYAZ MİNİMAL -->
+                <div class="summary-card theme-4">
+                    <div class="summary-header">
+                        <h2>LOVE WRAPPED 2025</h2>
+                        <p>GÖKHAN & MISRA</p>
+                    </div>
+                    
+                    <div class="summary-emoji">🤍</div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Birlikte</div>
+                            <div class="stat-value accent-text">∞</div>
+                            <div class="stat-label">Saniye</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Eşşeklik</div>
+                            <div class="stat-value accent-text" id="ds4">%0</div>
+                            <div class="stat-label">Skoru</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Mesaj</div>
+                            <div class="stat-value">60%</div>
+                            <div class="stat-label">Sen</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Top Şarkı</div>
+                            <div class="stat-value">🎵</div>
+                            <div class="stat-label">Seni Seviyorum</div>
+                        </div>
+                    </div>
+                    
+                    <div class="features-section">
+                        <div class="features-title">EN İYİ ÖZELLİKLERİN</div>
+                        <div class="features-tags">
+                            <span class="stat-badge">Gülüşün 🌟</span>
+                            <span class="stat-badge">Kalbin ❤️</span>
+                            <span class="stat-badge">Sohbetin 💬</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-footer">
+                        <p>"Her şey seninle daha güzel"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="theme-nav-buttons">
+            <button class="theme-nav-btn" onclick="prevTheme()">←</button>
+            <div class="slider-dots">
+                <div class="slider-dot active" data-index="0"></div>
+                <div class="slider-dot" data-index="1"></div>
+                <div class="slider-dot" data-index="2"></div>
+                <div class="slider-dot" data-index="3"></div>
+            </div>
+            <button class="theme-nav-btn" onclick="nextTheme()">→</button>
+        </div>
+        
+        <button class="restart-btn" onclick="resetAll()">BAŞA DÖN</button>
+    </div>
+
+    <style>
+        @keyframes orbitRotate1 { from { transform: rotate(0deg) translateX(125px) rotate(0deg); } to { transform: rotate(360deg) translateX(125px) rotate(-360deg); } }
+        @keyframes orbitRotate2 { from { transform: rotate(0deg) translateX(175px) rotate(0deg); } to { transform: rotate(360deg) translateX(175px) rotate(-360deg); } }
+        @keyframes orbitRotate3 { from { transform: rotate(0deg) translateX(225px) rotate(0deg); } to { transform: rotate(360deg) translateX(225px) rotate(-360deg); } }
+    </style>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const wrapper = document.getElementById('p-wrapper');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        let bars = [];
+        
+        let startTime, pausedTime = 0, pauseStart = 0, isPaused = false, animationFrameId, currentDuration = 5000;
+        let isDonkeyScoreSet = false, donkeyScore = 0;
+
+        function startApp() {
+            document.getElementById('start-screen').style.display = 'none';
+            const music = document.getElementById('music');
+            music.volume = 0.6;
+            music.play().catch(e => console.log("Otomatik oynatma engellendi."));
+            
+            wrapper.innerHTML = '';
+            bars = [];
+            for (let i = 0; i < totalSlides; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'p-bar';
+                const fill = document.createElement('div');
+                fill.className = 'p-fill';
+                bar.appendChild(fill);
+                wrapper.appendChild(bar);
+                bars.push(fill);
+            }
+            
+            initInfiniteScroll();
+            initSwipeSlider();
+            goToSlide(0);
+        }
+
+        function initInfiniteScroll() {
+            const photos = [
+                'https://api.gman.dev/a/1771151191',
+                'https://api.gman.dev/a/1771150841',
+                'https://api.gman.dev/a/1771150880',
+                'https://api.gman.dev/a/1771150883',
+                'https://api.gman.dev/a/1771151405'
+            ];
+            
+            const col1 = document.getElementById('col1');
+            const col2 = document.getElementById('col2');
+            
+            for(let j = 0; j < 3; j++) {
+                photos.forEach((url, idx) => {
+                    const img1 = document.createElement('img');
+                    img1.src = url;
+                    col1.appendChild(img1);
+                    
+                    const img2 = document.createElement('img');
+                    img2.src = photos[(idx + 2) % photos.length];
+                    col2.appendChild(img2);
+                });
+            }
+        }
+
+        // --- TEMA NAVİGASYON ---
+        let currentTheme = 0;
+        let startX = 0;
+        let isDragging = false;
+        
+        function initSwipeSlider() {
+            const wrapper = document.getElementById('summary-wrapper');
+            const container = document.getElementById('cards-container');
+            const dots = document.querySelectorAll('.slider-dot');
+            
+            wrapper.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+            
+            wrapper.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const currentX = e.touches[0].clientX;
+                const diff = currentX - startX;
+                container.style.transition = 'none';
+                container.style.transform = `translateX(calc(-${currentTheme * 100}% + ${diff}px))`;
+            });
+            
+            wrapper.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                const endX = e.changedTouches[0].clientX;
+                const diff = endX - startX;
+                
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0 && currentTheme > 0) {
+                        currentTheme--;
+                    } else if (diff < 0 && currentTheme < 3) {
+                        currentTheme++;
+                    }
+                }
+                
+                updateThemeView();
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentTheme = index;
+                    updateThemeView();
+                });
+            });
+        }
+
+        function prevTheme() {
+            if (currentTheme > 0) {
+                currentTheme--;
+                updateThemeView();
+            }
+        }
+
+        function nextTheme() {
+            if (currentTheme < 3) {
+                currentTheme++;
+                updateThemeView();
+            }
+        }
+
+        function updateThemeView() {
+            const container = document.getElementById('cards-container');
+            const dots = document.querySelectorAll('.slider-dot');
+            
+            container.style.transition = 'transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)';
+            container.style.transform = `translateX(-${currentTheme * 100}%)`;
+            
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === currentTheme);
+            });
+        }
+
+        function goToSlide(index) {
+            if (index >= totalSlides) return;
+            if (index < 0) index = 0;
+
+            cancelAnimationFrame(animationFrameId);
+            isPaused = false;
+            pausedTime = 0;
+
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+
+            bars.forEach((fill, i) => {
+                if (i < index) fill.style.width = '100%';
+                else fill.style.width = '0%';
+            });
+
+            currentSlide = index;
+            handleControls(index);
+            
+            currentDuration = 5000;
+            if (slides[index].classList.contains('slide-cinematic')) currentDuration = 6500;
+            
+            let isInfinite = false;
+            if (slides[index].id === 'donkey-slide' && !isDonkeyScoreSet) isInfinite = true;
+            if (index === totalSlides - 1) isInfinite = true;
+
+            if (!isInfinite) {
+                startTime = Date.now();
+                loop();
+            }
+        }
+
+        function loop() {
+            if (!isPaused) {
+                const now = Date.now();
+                const elapsed = now - startTime - pausedTime;
+                const progress = Math.min((elapsed / currentDuration) * 100, 100);
+                
+                bars[currentSlide].style.width = progress + '%';
+
+                if (progress >= 100) {
+                    next();
+                    return;
+                }
+            }
+            animationFrameId = requestAnimationFrame(loop);
+        }
+
+        function next() { if(currentSlide < totalSlides - 1) goToSlide(currentSlide + 1); }
+        function prev() { if(currentSlide > 0) goToSlide(currentSlide - 1); }
+
+        function handleControls(index) {
+            const tapRight = document.getElementById('tap-right');
+            const isDonkey = slides[index].id === 'donkey-slide';
+            
+            if (isDonkey && !isDonkeyScoreSet) tapRight.style.display = 'none';
+            else tapRight.style.display = 'block';
+        }
+
+        function startPause(e) {
+            if (slides[currentSlide].id === 'donkey-slide' && !isDonkeyScoreSet) return;
+            if (e.target.closest('button') || e.target.closest('.slider-dot') || e.target.closest('.summary-wrapper')) return;
+
+            isPaused = true;
+            pauseStart = Date.now();
+            slides[currentSlide].style.filter = "brightness(0.8)";
+        }
+
+        function endPause() {
+            if (!isPaused) return;
+            isPaused = false;
+            pausedTime += Date.now() - pauseStart;
+            slides[currentSlide].style.filter = "none";
+        }
+
+        // --- EŞŞEKLİK ---
+        const holdBtn = document.getElementById('hold-btn');
+        const powerFill = document.getElementById('power-fill');
+        const dText = document.getElementById('donkey-text');
+        const dEmoji = document.getElementById('donkey-emoji');
+        const dSlide = document.getElementById('donkey-slide');
+        let holdInterval;
+
+        function increasePower(e) {
+            e.stopPropagation();
+            if(isDonkeyScoreSet) return;
+
+            donkeyScore += 1;
+            if (donkeyScore > 100) donkeyScore = 100;
+
+            powerFill.style.width = donkeyScore + "%";
+            dText.innerText = "%" + donkeyScore + " - " + getComment(donkeyScore);
+            dEmoji.innerText = getEmoji(donkeyScore);
+            dEmoji.style.fontSize = (6 + (donkeyScore/20)) + "rem";
+            
+            if(donkeyScore > 30) dSlide.classList.add("shake");
+            if(donkeyScore > 80) dSlide.style.background = `linear-gradient(135deg, #111, rgb(${donkeyScore*2}, 0, 0))`;
+        }
+
+        function stopPower(e) {
+            e.stopPropagation();
+            clearInterval(holdInterval);
+            if(donkeyScore === 0) return;
+
+            isDonkeyScoreSet = true;
+            document.getElementById('ds1').innerText = "%" + donkeyScore;
+            document.getElementById('ds2').innerText = "%" + donkeyScore;
+            document.getElementById('ds3').innerText = "%" + donkeyScore;
+            document.getElementById('ds4').innerText = "%" + donkeyScore;
+            
+            dSlide.classList.remove("shake");
+            holdBtn.style.opacity = "0.5"; holdBtn.style.pointerEvents = "none";
+            
+            currentDuration = 3000;
+            startTime = Date.now();
+            document.getElementById('tap-right').style.display = 'block';
+            loop();
+        }
+
+        function getComment(val) { return val < 20 ? "Melek" : val < 50 ? "Ufak Hatalar" : val < 80 ? "Bayağı Eşşek" : "KATIKSIZ EŞŞEK!"; }
+        function getEmoji(val) { return val < 20 ? "😇" : val < 50 ? "🤔" : val < 80 ? "🐴" : "🫏"; }
+
+        function resetDonkeyOnly() {
+            donkeyScore = 0;
+            isDonkeyScoreSet = false;
+            powerFill.style.width = "0%";
+            dText.innerText = "Melek Gibiyim";
+            dEmoji.innerText = "😇";
+            dEmoji.style.fontSize = "6rem";
+            dSlide.style.background = "linear-gradient(135deg, #111, #2a0000)";
+            dSlide.classList.remove("shake");
+            holdBtn.style.opacity = "1";
+            holdBtn.style.pointerEvents = "auto";
+            document.getElementById('tap-right').style.display = 'none';
+        }
+
+        function resetAll() {
+            resetDonkeyOnly();
+            document.getElementById('start-screen').style.display = 'flex';
+        }
+
+        document.addEventListener('mousedown', startPause);
+        document.addEventListener('mouseup', endPause);
+        document.addEventListener('touchstart', startPause);
+        document.addEventListener('touchend', endPause);
+
+        holdBtn.addEventListener('mousedown', (e) => { e.stopPropagation(); holdInterval = setInterval(() => increasePower(e), 30); });
+        holdBtn.addEventListener('mouseup', (e) => stopPower(e));
+        holdBtn.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); holdInterval = setInterval(() => increasePower(e), 30); });
+        holdBtn.addEventListener('touchend', (e) => stopPower(e));
+    </script>
+</body>
+</html>
