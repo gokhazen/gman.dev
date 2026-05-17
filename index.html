@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    
+
     <title>Gökhan Özen</title>
     <link rel="icon" href="https://gman.dev/favicon.ico" type="image/x-icon">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    
+
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
@@ -23,49 +25,75 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        dark: '#050505',     
-                        surface: '#0f0f0f',  
-                        border: '#27272a',   
-                        accent: '#10b981',   
-                        muted: '#a1a1aa',    
+                        dark: '#050505',
+                        surface: '#0f0f0f',
+                        border: '#27272a',
+                        accent: '#10b981',
+                        muted: '#a1a1aa',
                     }
                 }
             }
         }
     </script>
     <style>
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #27272a; }
-        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
-        
-        body { font-family: 'JetBrains Mono', monospace; }
-        
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; 
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border: 1px solid #27272a;
             background-color: #000;
         }
+
         .video-container iframe {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .cursor-blink {
             animation: blink 1s step-end infinite;
         }
+
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
 
         .grayscale-hover img {
             filter: grayscale(100%) contrast(1.2);
             transition: filter 0.3s ease;
         }
+
         .grayscale-hover:hover img {
             filter: grayscale(0%) contrast(1);
         }
@@ -82,9 +110,11 @@
             user-select: none;
             will-change: transform;
         }
+
         #modalImg:active {
             cursor: grabbing;
         }
+
         .modal-control-btn {
             background: #0f0f0f;
             border: 1px solid #27272a;
@@ -92,19 +122,23 @@
             font-family: 'JetBrains Mono', monospace;
             transition: all 0.2s;
         }
+
         .modal-control-btn:hover {
             border-color: #10b981;
             color: #fff;
         }
+
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
     </style>
 </head>
+
 <body class="bg-dark text-muted antialiased selection:bg-accent selection:text-black overflow-x-hidden">
 
     <nav class="fixed w-full z-50 top-0 start-0 bg-dark/95 border-b border-border backdrop-blur-sm">
@@ -113,52 +147,70 @@
                 <span class="font-bold text-xl tracking-tighter">gman.dev</span>
                 <span class="cursor-blink w-2 h-5 bg-accent inline-block ml-1"></span>
             </a>
-            
+
             <div class="flex items-center gap-4">
                 <div class="flex gap-2 text-xs font-bold">
-                    <button onclick="setLang('tr')" id="lang-tr" class="lang-btn active hover:text-white transition-colors">[TR]</button>
-                    <button onclick="setLang('en')" id="lang-en" class="lang-btn hover:text-white transition-colors">[EN]</button>
-                    <button onclick="setLang('de')" id="lang-de" class="lang-btn hover:text-white transition-colors">[DE]</button>
+                    <button onclick="setLang('tr')" id="lang-tr"
+                        class="lang-btn active hover:text-white transition-colors">[TR]</button>
+                    <button onclick="setLang('en')" id="lang-en"
+                        class="lang-btn hover:text-white transition-colors">[EN]</button>
+                    <button onclick="setLang('de')" id="lang-de"
+                        class="lang-btn hover:text-white transition-colors">[DE]</button>
                 </div>
 
-                <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 justify-center text-sm text-muted hover:text-white md:hidden focus:outline-none" id="menu-btn">
+                <button data-collapse-toggle="navbar-default" type="button"
+                    class="inline-flex items-center p-2 justify-center text-sm text-muted hover:text-white md:hidden focus:outline-none"
+                    id="menu-btn">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
 
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-                <ul class="flex flex-col p-4 md:p-0 mt-4 bg-surface border border-border md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent text-sm">
-                    <li><a href="#home" class="block py-2 px-3 text-white hover:text-accent md:p-0 transition-colors">~/home</a></li>
-                    <li><a href="#about" data-i18n="nav.about" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./hakkimda</a></li>
-                    <li><a href="#skills" data-i18n="nav.skills" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./yetenekler</a></li>
-                    <li><a href="#projects" data-i18n="nav.projects" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./projeler</a></li>
-                    <li><a href="#media" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./media</a></li>
-                    <li><a href="#contact" data-i18n="nav.contact" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./iletisim</a></li>
+                <ul
+                    class="flex flex-col p-4 md:p-0 mt-4 bg-surface border border-border md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent text-sm">
+                    <li><a href="#home"
+                            class="block py-2 px-3 text-white hover:text-accent md:p-0 transition-colors">~/home</a>
+                    </li>
+                    <li><a href="#about" data-i18n="nav.about"
+                            class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./hakkimda</a></li>
+                    <li><a href="#skills" data-i18n="nav.skills"
+                            class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./yetenekler</a></li>
+                    <li><a href="#projects" data-i18n="nav.projects"
+                            class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./projeler</a></li>
+                    <li><a href="#media" class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./media</a>
+                    </li>
+                    <li><a href="#contact" data-i18n="nav.contact"
+                            class="block py-2 px-3 hover:text-white md:p-0 transition-colors">./iletisim</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <section id="home" class="min-h-screen flex items-center pt-24 pb-12">
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-12">
-            
+        <div
+            class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-12">
+
             <div class="flex-1 w-full">
-                    <span class="text-accent">mrander@cachyos</span><span class="text-white">:</span><span class="text-blue-400">~</span><span class="text-white">$</span> whoami
+                <span class="text-accent">mrander@cachyos</span><span class="text-white">:</span><span
+                    class="text-blue-400">~</span><span class="text-white">$</span> whoami
                 <div class="mb-4 text-xs sm:text-sm">
                 </div>
                 <h1 class="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
                     Gökhan Özen
                 </h1>
-                <p data-i18n="hero.desc" class="mb-8 text-base text-muted sm:text-lg max-w-2xl border-l-2 border-border pl-4">
+                <p data-i18n="hero.desc"
+                    class="mb-8 text-base text-muted sm:text-lg max-w-2xl border-l-2 border-border pl-4">
                     Backend Developer & Computer Science Student.<br>
                     Karmaşık problemleri basit, ölçeklenebilir kodlara dönüştürüyorum.
                 </p>
-                
+
                 <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                    <a href="#projects" data-i18n="hero.btn" class="inline-flex justify-center items-center py-3 px-6 text-sm font-bold text-black bg-accent hover:bg-emerald-400 transition-colors">
+                    <a href="#projects" data-i18n="hero.btn"
+                        class="inline-flex justify-center items-center py-3 px-6 text-sm font-bold text-black bg-accent hover:bg-emerald-400 transition-colors">
                         [ Projeleri Gör ]
                     </a>
-                    <a href="https://github.com/gokhazen" target="_blank" class="inline-flex justify-center items-center py-3 px-6 text-sm font-bold text-white border border-border hover:bg-surface transition-colors">
+                    <a href="https://github.com/gokhazen" target="_blank"
+                        class="inline-flex justify-center items-center py-3 px-6 text-sm font-bold text-white border border-border hover:bg-surface transition-colors">
                         <i class="fab fa-github mr-2"></i> GitHub
                     </a>
                 </div>
@@ -166,7 +218,8 @@
 
             <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 grayscale-hover relative">
                 <div class="absolute inset-0 border border-accent translate-x-2 translate-y-2 -z-10"></div>
-                <img class="w-full h-full object-cover border border-border" src="https://gman.dev/vesikadusuk.png" alt="Gökhan Özen">
+                <img class="w-full h-full object-cover border border-border" src="https://gman.dev/vesikadusuk.png"
+                    alt="Gökhan Özen">
             </div>
 
         </div>
@@ -175,15 +228,24 @@
     <section id="about" class="py-20 border-t border-border">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10">
-                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="titles.about">Hakkımda</span></h2>
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span
+                        data-i18n="titles.about">Hakkımda</span></h2>
             </div>
-            
+
             <div class="bg-surface border border-border p-6 md:p-8 text-muted leading-relaxed text-sm md:text-base">
                 <p class="mb-4">
-                    <span class="text-accent">></span> <span data-i18n="about.p1">Merhaba! Ben <strong class="text-white">Gökhan Özen</strong>. Yazılım geliştirme dünyasındaki yolculuğuma yeni başlamış olmama rağmen, bu heyecan verici alana olan tutkum her geçen gün artıyor. Özellikle <strong class="text-white">Backend Development</strong> ve <strong class="text-white">Yapay Zeka modelleri</strong> ile ilgileniyor, sürekli yeni projeler üzerinde çalışıyorum.</span>
+                    <span class="text-accent">></span> <span data-i18n="about.p1">Merhaba! Ben <strong
+                            class="text-white">Gökhan Özen</strong>. Yazılım geliştirme dünyasındaki yolculuğuma yeni
+                        başlamış olmama rağmen, bu heyecan verici alana olan tutkum her geçen gün artıyor. Özellikle
+                        <strong class="text-white">Backend Development</strong> ve <strong class="text-white">Yapay Zeka
+                            modelleri</strong> ile ilgileniyor, sürekli yeni projeler üzerinde çalışıyorum.</span>
                 </p>
                 <p>
-                    <span class="text-accent">></span> <span data-i18n="about.p2">Bu yolculukta, farklı ihtiyaçlara yönelik benzersiz çözümler üretmek için kendimi geliştirmeye adadım. <strong class="text-white">API tasarımı</strong>, verimli <strong class="text-white">veritabanı yapıları</strong> oluşturma ve sistemlerin sorunsuz çalışmasını sağlama konularında uzmanlaşıyorum.</span>
+                    <span class="text-accent">></span> <span data-i18n="about.p2">Bu yolculukta, farklı ihtiyaçlara
+                        yönelik benzersiz çözümler üretmek için kendimi geliştirmeye adadım. <strong
+                            class="text-white">API tasarımı</strong>, verimli <strong class="text-white">veritabanı
+                            yapıları</strong> oluşturma ve sistemlerin sorunsuz çalışmasını sağlama konularında
+                        uzmanlaşıyorum.</span>
                 </p>
             </div>
         </div>
@@ -192,10 +254,11 @@
     <section id="skills" class="py-20 border-t border-border">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10 flex justify-between items-end">
-                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="titles.skills">Yetenekler</span></h2>
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span
+                        data-i18n="titles.skills">Yetenekler</span></h2>
                 <span class="text-xs text-muted hidden sm:block">ls -la /usr/local/skills</span>
             </div>
-            
+
             <div id="skills-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             </div>
         </div>
@@ -204,7 +267,8 @@
     <section id="projects" class="py-20 border-t border-border">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10">
-                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="titles.projects">Projeler</span></h2>
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span
+                        data-i18n="titles.projects">Projeler</span></h2>
             </div>
 
             <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -215,24 +279,30 @@
     <section id="media" class="py-20 border-t border-border bg-[#0a0a0a]">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10">
-                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="titles.media">Fotoğraf_&_Video</span></h2>
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span
+                        data-i18n="titles.media">Fotoğraf_&_Video</span></h2>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                 <div class="lg:col-span-2">
-                    <a href="https://www.youtube.com/watch?v=OFDs0qDjW6Y" target="_blank" class="video-container flex items-center justify-center bg-black group relative">
+                    <a href="https://www.youtube.com/watch?v=OFDs0qDjW6Y" target="_blank"
+                        class="video-container flex items-center justify-center bg-black group relative">
                         <img src="https://img.youtube.com/vi/OFDs0qDjW6Y/maxresdefault.jpg"
-                             class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300" alt="Video Thumbnail">
+                            class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                            alt="Video Thumbnail">
                         <div class="absolute inset-0 flex items-center justify-center z-10">
-                            <div class="w-16 h-16 border-2 border-accent flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                            <div
+                                class="w-16 h-16 border-2 border-accent flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
                                 <i class="fas fa-play text-accent group-hover:text-black text-xl ml-1"></i>
                             </div>
                         </div>
                     </a>
                     <div class="mt-3 flex items-center justify-between">
                         <div class="text-xs text-muted truncate pr-4">
-                            > ./play_video.sh --source "youtube" --title "<span data-i18n="media.vid_desc">Video Düzenleme Çalışmam</span>"
+                            > ./play_video.sh --source "youtube" --title "<span data-i18n="media.vid_desc">Video
+                                Düzenleme Çalışmam</span>"
                         </div>
-                        <a href="https://www.youtube.com/watch?v=OFDs0qDjW6Y" target="_blank" class="text-xs border border-border px-3 py-1 hover:bg-red-600 hover:text-white hover:border-red-600 transition-colors whitespace-nowrap">
+                        <a href="https://www.youtube.com/watch?v=OFDs0qDjW6Y" target="_blank"
+                            class="text-xs border border-border px-3 py-1 hover:bg-red-600 hover:text-white hover:border-red-600 transition-colors whitespace-nowrap">
                             <i class="fab fa-youtube mr-1"></i> <span data-i18n="media.watch">İzle</span>
                         </a>
                     </div>
@@ -249,28 +319,35 @@
     <section id="contact" class="py-20 border-y border-border">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-10 text-center">
-                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span data-i18n="titles.contact">İletişim</span></h2>
+                <h2 class="text-2xl font-bold text-white"><span class="text-accent">#</span> <span
+                        data-i18n="titles.contact">İletişim</span></h2>
                 <p data-i18n="contact.desc" class="mt-2 text-sm text-muted">Ağıma katılmak için bağlantıları kullan.</p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <a href="https://github.com/gokhazen" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-white hover:text-white transition-all group">
+                <a href="https://github.com/gokhazen" target="_blank"
+                    class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-white hover:text-white transition-all group">
                     <i class="fab fa-github text-3xl mb-3 text-muted group-hover:text-white transition-colors"></i>
                     <span class="font-bold text-sm">GitHub</span>
                 </a>
-                <a href="https://www.linkedin.com/in/g%C3%B6khan-%C3%B6zen-481a993b2/" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-blue-500 hover:text-white transition-all group">
+                <a href="https://www.linkedin.com/in/g%C3%B6khan-%C3%B6zen-481a993b2/" target="_blank"
+                    class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-blue-500 hover:text-white transition-all group">
                     <i class="fab fa-linkedin text-3xl mb-3 text-muted group-hover:text-blue-500 transition-colors"></i>
                     <span class="font-bold text-sm">LinkedIn</span>
                 </a>
-                <a href="https://x.com/gokhazen" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-white hover:text-white transition-all group">
+                <a href="https://x.com/gokhazen" target="_blank"
+                    class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-white hover:text-white transition-all group">
                     <i class="fab fa-x-twitter text-3xl mb-3 text-muted group-hover:text-white transition-colors"></i>
                     <span class="font-bold text-sm">Twitter</span>
                 </a>
-                <a href="https://api.gman.dev/links/discord" target="_blank" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-indigo-500 hover:text-white transition-all group">
-                    <i class="fab fa-discord text-3xl mb-3 text-muted group-hover:text-indigo-400 transition-colors"></i>
+                <a href="https://api.gman.dev/links/discord" target="_blank"
+                    class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-indigo-500 hover:text-white transition-all group">
+                    <i
+                        class="fab fa-discord text-3xl mb-3 text-muted group-hover:text-indigo-400 transition-colors"></i>
                     <span class="font-bold text-sm">Discord</span>
                 </a>
-                <a href="mailto:contact@gman.dev" class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-red-500 hover:text-white transition-all group col-span-2 md:col-span-1">
+                <a href="mailto:contact@gman.dev"
+                    class="flex flex-col items-center justify-center p-6 border border-border bg-surface hover:border-red-500 hover:text-white transition-all group col-span-2 md:col-span-1">
                     <i class="fas fa-envelope text-3xl mb-3 text-muted group-hover:text-red-400 transition-colors"></i>
                     <span class="font-bold text-sm">Email</span>
                 </a>
@@ -279,7 +356,8 @@
     </section>
 
     <footer class="bg-dark py-8">
-        <div class="max-w-screen-xl mx-auto px-4 text-center text-xs text-muted flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div
+            class="max-w-screen-xl mx-auto px-4 text-center text-xs text-muted flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
                 <span class="text-accent">echo</span> "&copy; 2026 Gökhan Özen. All rights reserved."
             </div>
@@ -289,19 +367,28 @@
         </div>
     </footer>
 
-    <div id="imageModal" class="fixed inset-0 z-[100] hidden bg-dark/95 flex-col items-center justify-center border border-border">
-        <div class="absolute top-0 w-full p-4 flex justify-between items-center z-50 bg-gradient-to-b from-black/80 to-transparent">
+    <div id="imageModal"
+        class="fixed inset-0 z-[100] hidden bg-dark/95 flex-col items-center justify-center border border-border">
+        <div
+            class="absolute top-0 w-full p-4 flex justify-between items-center z-50 bg-gradient-to-b from-black/80 to-transparent">
             <div class="text-white text-sm font-mono" id="modalCounter">[ 1 / 4 ]</div>
-            <button class="text-muted hover:text-red-500 focus:outline-none font-bold text-xl transition-colors" onclick="closeModal()">[X]</button>
+            <button class="text-muted hover:text-red-500 focus:outline-none font-bold text-xl transition-colors"
+                onclick="closeModal()">[X]</button>
         </div>
 
-        <button class="absolute left-4 top-1/2 -translate-y-1/2 text-muted hover:text-white text-4xl z-50 p-4 transition-colors hidden sm:block" onclick="changeImage(-1)">&#10094;</button>
+        <button
+            class="absolute left-4 top-1/2 -translate-y-1/2 text-muted hover:text-white text-4xl z-50 p-4 transition-colors hidden sm:block"
+            onclick="changeImage(-1)">&#10094;</button>
 
-        <div class="relative w-full h-[80vh] overflow-hidden flex items-center justify-center no-scrollbar" id="modalImgContainer">
-            <img id="modalImg" src="" alt="Full view" class="max-h-full max-w-full border border-border" draggable="false">
+        <div class="relative w-full h-[80vh] overflow-hidden flex items-center justify-center no-scrollbar"
+            id="modalImgContainer">
+            <img id="modalImg" src="" alt="Full view" class="max-h-full max-w-full border border-border"
+                draggable="false">
         </div>
 
-        <button class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-white text-4xl z-50 p-4 transition-colors hidden sm:block" onclick="changeImage(1)">&#10095;</button>
+        <button
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-white text-4xl z-50 p-4 transition-colors hidden sm:block"
+            onclick="changeImage(1)">&#10095;</button>
 
         <div class="absolute bottom-6 flex gap-2 z-50 bg-dark/80 p-2 border border-border rounded">
             <button class="modal-control-btn px-3 sm:hidden" onclick="changeImage(-1)">&#10094; Prev</button>
@@ -326,8 +413,8 @@
                 { icon: "fab fa-linux", hover: "text-white", name: "Linux" },
                 { icon: "fas fa-server", hover: "text-orange-400", name: "Proxmox", extraClass: "col-span-2 sm:col-span-1" }
             ],
-            
-			projects: [
+
+            projects: [
                 {
                     title: "Hayalet_DPI",
                     link: "https://github.com/gokhazen/HayaletDPI",
@@ -375,10 +462,10 @@
             ],
 
             portfolioImages: [
-                "https://api.gman.dev/a/portoflio1",
-                "https://api.gman.dev/a/portoflio2",
-                "https://api.gman.dev/a/portoflio3",
-                "https://api.gman.dev/a/portoflio4"
+                "https://gman.dev/portfolio/1.jpg",
+                "https://gman.dev/portfolio/2.jpg",
+                "https://gman.dev/portfolio/3.jpg",
+                "https://gman.dev/portfolio/4.jpg"
             ]
         };
 
@@ -429,7 +516,7 @@
         };
 
         // --- 3. DİNAMİK RENDER FONKSİYONLARI ---
-        
+
         // İç içe geçmiş obje anahtarlarını çözen yardımcı fonksiyon (örneğin: "nav.about")
         function t(lang, key) {
             return key.split('.').reduce((obj, i) => obj ? obj[i] : null, translations[lang]) || key;
@@ -498,7 +585,7 @@
         // --- 4. ARA YÜZ (UI) ETKİLEŞİMLERİ ---
         const menuBtn = document.getElementById('menu-btn');
         const navMenu = document.getElementById('navbar-default');
-        
+
         menuBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             navMenu.classList.toggle('hidden');
@@ -530,7 +617,7 @@
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImg');
         const modalCounter = document.getElementById('modalCounter');
-        
+
         let scale = 1;
         let isDragging = false;
         let startX, startY;
@@ -552,13 +639,13 @@
             resetZoomPan();
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.body.style.overflow = 'auto'; 
+            document.body.style.overflow = 'auto';
             resetZoomPan();
         }
 
@@ -566,7 +653,7 @@
             currentImageIndex += step;
             if (currentImageIndex < 0) currentImageIndex = siteData.portfolioImages.length - 1;
             if (currentImageIndex >= siteData.portfolioImages.length) currentImageIndex = 0;
-            
+
             modalImg.src = siteData.portfolioImages[currentImageIndex];
             modalCounter.innerText = `[ ${currentImageIndex + 1} / ${siteData.portfolioImages.length} ]`;
             resetZoomPan();
@@ -574,8 +661,8 @@
 
         function handleZoom(zoomStep) {
             scale += zoomStep;
-            if (scale < 0.5) scale = 0.5; 
-            if (scale > 5) scale = 5;     
+            if (scale < 0.5) scale = 0.5;
+            if (scale > 5) scale = 5;
             updateImageTransform();
         }
 
@@ -586,17 +673,17 @@
         });
 
         modalImg.addEventListener('mousedown', dragStart);
-        modalImg.addEventListener('touchstart', dragStart, {passive: false});
+        modalImg.addEventListener('touchstart', dragStart, { passive: false });
 
         window.addEventListener('mousemove', drag);
-        window.addEventListener('touchmove', drag, {passive: false});
+        window.addEventListener('touchmove', drag, { passive: false });
 
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
 
         function dragStart(e) {
             if (e.type === "touchstart") {
-                if(e.touches.length === 1) { 
+                if (e.touches.length === 1) {
                     startX = e.touches[0].clientX - translateX;
                     startY = e.touches[0].clientY - translateY;
                     isDragging = true;
@@ -611,7 +698,7 @@
 
         function drag(e) {
             if (!isDragging) return;
-            e.preventDefault(); 
+            e.preventDefault();
             if (e.type === "touchmove") {
                 translateX = e.touches[0].clientX - startX;
                 translateY = e.touches[0].clientY - startY;
@@ -641,4 +728,5 @@
 
     </script>
 </body>
+
 </html>
