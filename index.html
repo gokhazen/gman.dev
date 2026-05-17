@@ -461,12 +461,7 @@
                 }
             ],
 
-            portfolioImages: [
-                "https://gman.dev/portfolio/1.jpg",
-                "https://gman.dev/portfolio/2.jpg",
-                "https://gman.dev/portfolio/3.jpg",
-                "https://gman.dev/portfolio/4.jpg"
-            ]
+            portfolioImages: []
         };
 
         // --- 2. DİL SİSTEMİ ÇEVİRİLERİ ---
@@ -574,9 +569,85 @@
             `).join('');
         }
 
+        // Portfolio klasöründeki resimleri otomatik tespit eden ve rastgele 4 tanesini gösteren fonksiyon
+        async function loadDynamicPortfolio() {
+            try {
+                // Sunucunun dizin listeleme özelliğini kullanarak dosyaları çekiyoruz
+                const response = await fetch('files/portfolio/');
+                if (!response.ok) throw new Error("Directory listing not supported or failed");
+                const text = await response.text();
+                
+                // HTML çıktısını parse ederek görsel dosyalarını süzüyoruz
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const links = Array.from(doc.querySelectorAll('a'));
+                
+                const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+                let images = links
+                    .map(link => {
+                        let href = link.getAttribute('href');
+                        if (!href) return null;
+                        
+                        // Query veya hash kısımlarını temizleyelim
+                        href = href.split('?')[0].split('#')[0];
+                        return href;
+                    })
+                    .filter(href => href && imageExtensions.some(ext => href.toLowerCase().endsWith(ext)))
+                    .map(href => {
+                        // Dosya adını çekip doğru relative yolu oluşturuyoruz
+                        const parts = href.split('/');
+                        const filename = parts[parts.length - 1];
+                        return `files/portfolio/${filename}`;
+                    });
+
+                // Set yardımıyla tekrarlanan dosyaları temizleyelim (bazı sunucular hem link hem ikon ekler)
+                images = [...new Set(images)];
+
+                // Eğer dizin listeleme boş döndüyse veya hata aldıysa yedek listeyi kullan
+                if (images.length === 0) {
+                    images = [
+                        "files/portfolio/1.jpg",
+                        "files/portfolio/2.jpg",
+                        "files/portfolio/3.jpg",
+                        "files/portfolio/4.jpg",
+                        "files/portfolio/5.jpg"
+                    ];
+                }
+
+                // Rastgele karıştırma (Fisher-Yates)
+                for (let i = images.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [images[i], images[j]] = [images[j], images[i]];
+                }
+
+                // Sadece 4 tanesini al
+                siteData.portfolioImages = images.slice(0, 4);
+
+            } catch (error) {
+                console.warn("Dinamik portfolyo yüklenirken hata oluştu (CDN/Vercel/GitHub Pages yedeğe geçiliyor):", error);
+                
+                // Hata durumunda statik yedek listeyi karıştırıp 4 tanesini seçiyoruz
+                let fallbackImages = [
+                    "files/portfolio/1.jpg",
+                    "files/portfolio/2.jpg",
+                    "files/portfolio/3.jpg",
+                    "files/portfolio/4.jpg",
+                    "files/portfolio/5.jpg"
+                ];
+                
+                for (let i = fallbackImages.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [fallbackImages[i], fallbackImages[j]] = [fallbackImages[j], fallbackImages[i]];
+                }
+                
+                siteData.portfolioImages = fallbackImages.slice(0, 4);
+            }
+        }
+
         // Sayfa yüklendiğinde içerikleri oluştur ve Türkçe'yi ayarla
-        function initSite() {
+        async function initSite() {
             renderSkills();
+            await loadDynamicPortfolio();
             renderPortfolio();
             setLang('tr');
         }
