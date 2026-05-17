@@ -218,7 +218,7 @@
 
             <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 grayscale-hover relative">
                 <div class="absolute inset-0 border border-accent translate-x-2 translate-y-2 -z-10"></div>
-                <img class="w-full h-full object-cover border border-border" src="https://gman.dev/vesikadusuk.png"
+                <img class="w-full h-full object-cover border border-border" src="files/me/vesika.png"
                     alt="Gökhan Özen">
             </div>
 
@@ -576,18 +576,18 @@
                 const response = await fetch('files/portfolio/');
                 if (!response.ok) throw new Error("Directory listing not supported or failed");
                 const text = await response.text();
-                
+
                 // HTML çıktısını parse ederek görsel dosyalarını süzüyoruz
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(text, 'text/html');
                 const links = Array.from(doc.querySelectorAll('a'));
-                
+
                 const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
                 let images = links
                     .map(link => {
                         let href = link.getAttribute('href');
                         if (!href) return null;
-                        
+
                         // Query veya hash kısımlarını temizleyelim
                         href = href.split('?')[0].split('#')[0];
                         return href;
@@ -625,7 +625,7 @@
 
             } catch (error) {
                 console.warn("Dinamik portfolyo yüklenirken hata oluştu (CDN/Vercel/GitHub Pages yedeğe geçiliyor):", error);
-                
+
                 // Hata durumunda statik yedek listeyi karıştırıp 4 tanesini seçiyoruz
                 let fallbackImages = [
                     "files/portfolio/1.jpg",
@@ -634,12 +634,12 @@
                     "files/portfolio/4.jpg",
                     "files/portfolio/5.jpg"
                 ];
-                
+
                 for (let i = fallbackImages.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [fallbackImages[i], fallbackImages[j]] = [fallbackImages[j], fallbackImages[i]];
                 }
-                
+
                 siteData.portfolioImages = fallbackImages.slice(0, 4);
             }
         }
