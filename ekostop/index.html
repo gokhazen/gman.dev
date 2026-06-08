@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../ekorota/style.css">
   <script src="../ekodata/models/vehicles.js"></script>
   <script src="../ekorota/map.js"></script>
+  <script src="../ekodata/location_engine.js"></script>
   <script src="../ekodata/project_loader.js"></script>
 </head>
 <body>
@@ -95,12 +96,16 @@ window.stopBusTracking = function() {
 };
 
 function openSearchPage() {
-  window.location.href = '../ekoarama/';
+  window.location.href = '../ekoarama/index.html';
 }
 
 function goBack() {
   const backLink = getQueryParam('back');
-  if(backLink) window.location.href = backLink;
+  if (backLink) {
+    window.location.href = decodeURIComponent(backLink);
+  } else {
+    window.history.back();
+  }
 }
 
 function getQueryParam(param) {
@@ -129,40 +134,18 @@ function centerOnStop() {
   }
 }
 
-window.locationWatchId = null;
-
 function getUserLocation() {
-  if ('geolocation' in navigator) {
-    if (window.locationWatchId !== null) {
-      navigator.geolocation.clearWatch(window.locationWatchId);
-    }
-    
-    window.locationWatchId = navigator.geolocation.watchPosition(position => {
-      const userPos = [position.coords.latitude, position.coords.longitude];
-      window.userLocation = userPos;
-      
-      window.addUserLocationToMap(userPos);
-      
-      fetch('../location', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lat: userPos[0],
-          lng: userPos[1]
-        })
-      })
-      .then(res => res.json())  
-      .then(data => console.log('Location API yanıtı:', data))
-      .catch(err => console.error('Location API hatası:', err));
+  if (!window.EkoLocation) return;
 
-    }, error => {
-      console.warn("Konum alınamadı: ", error.message);
-    }, {
-      enableHighAccuracy: true,
-      maximumAge: 10000,
-      timeout: 10000
-    });
-  }
+  window.EkoLocation.onUpdate((coords) => {
+    const userPos = [coords.lat, coords.lng];
+    window.userLocation = userPos;
+    window.addUserLocationToMap(userPos);
+  });
+
+  window.EkoLocation.onError((err) => {
+    console.warn('[EkoStop] Konum alınamadı:', err);
+  });
 }
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -247,7 +230,7 @@ function transferBus(route, direction) {
     if (found) type = found.split(',')[1];
   }
 
-  const targetUrl = `../ekorota/?region=${region}&route=${route}&direction=${direction}&type=${type}&back=${backLink}`;
+  const targetUrl = `../ekorota/index.html?region=${region}&route=${route}&direction=${direction}&type=${type}&back=${backLink}`;
   window.location.href = targetUrl;
 }
 
@@ -328,7 +311,7 @@ function updateBusListWithAnimation(sortedBuses, stopLat, stopLng, stopInfo) {
     else if (vehicleType === 4) iconClass = 'fa-cable-car';
 
     const isApproaching = bus.stopDiff <= 3;
-    const transferUrl = `../ekorota/?region=${window.currentRegion}&route=${bus.displayRouteCode || (bus.routeCode ? bus.routeCode.replace(/^41/, '') : 'N/A')}&direction=${bus.direction}`;
+    const transferUrl = `../ekorota/index.html?region=${window.currentRegion}&route=${bus.displayRouteCode || (bus.routeCode ? bus.routeCode.replace(/^41/, '') : 'N/A')}&direction=${bus.direction}&type=${vehicleType}&back=${encodeURIComponent(window.location.href)}`;
 
     const rightBoxHtml = `
       <div class="card-status-orb" onclick="event.stopPropagation(); window.location.href='${transferUrl}'" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:6px 10px; background:${isApproaching ? 'var(--success-light)' : 'transparent'}; border:${isApproaching ? '1px solid var(--success-border)' : '1px solid var(--border-light)'}; cursor:pointer; transition:all 0.2s;">

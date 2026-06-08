@@ -256,50 +256,20 @@ window.findNearestStop = function(userPos) {
   return nearest;
 };
 
-// Konum işlemleri
-window.locationWatchId = null;
-
+// Konum işlemleri — EkoLocation Engine kullanır
 window.getUserLocation = function() {
-  if ('geolocation' in navigator) {
-    // Mevcut bir watch varsa temizle
-    if (window.locationWatchId !== null) {
-      navigator.geolocation.clearWatch(window.locationWatchId);
-    }
-    
-    window.locationWatchId = navigator.geolocation.watchPosition(position => {
-      const userPos = [position.coords.latitude, position.coords.longitude];
-      window.userLocation = userPos;
+  if (!window.EkoLocation) return;
 
-      // Haritaya kullanıcı konumunu ekle
-      window.addUserLocationToMap(userPos);
+  window.EkoLocation.onUpdate((coords) => {
+    const userPos = [coords.lat, coords.lng];
+    window.userLocation = userPos;
+    window.addUserLocationToMap(userPos);
+    window.nearestStop = window.findNearestStop(userPos);
+  });
 
-      window.nearestStop = window.findNearestStop(userPos);
-
-      // Konum API çağrısı
-      fetch('../location', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            lat: userPos[0],
-            lng: userPos[1]
-          })
-        })
-        .then(res => res.json())
-        .then(data => console.log('Location API yanıtı:', data))
-        .catch(err => console.error('Location API hatası:', err));
-
-      // Harita üzerindeki en yakın durağı vb. yeniden render etmek gerekebilir,
-      // ama route info periyodik güncellendiği için orada yansıyacaktır.
-    }, error => {
-      console.warn("Konum alınamadı: ", error.message);
-    }, {
-      enableHighAccuracy: true,
-      maximumAge: 10000,
-      timeout: 10000
-    });
-  }
+  window.EkoLocation.onError((err) => {
+    console.warn('[EkoRota] Konum alınamadı:', err);
+  });
 };
 
 // Rota bilgilerini getirme ve gösterme

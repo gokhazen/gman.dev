@@ -56,14 +56,14 @@ function centerToUserLocation() {
 }
 
 function openSearchPage() {
-  window.location.href = '../ekoarama/';
+  window.location.href = '../ekoarama/index.html';
 }
 
 function redirectToStop(stopId) {
   const currentUrl = window.location.href;
   const regionMatch = currentUrl.match(/[?&]region=([^&#]*)/);
   const typeMatch = currentUrl.match(/[?&]type=([^&#]*)/);
-  let redirectUrl = "../ekostop/?";
+  let redirectUrl = "../ekostop/index.html?";
   if (regionMatch) {
     const region = regionMatch[1];
     redirectUrl += `region=${region}&`;

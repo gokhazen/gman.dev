@@ -165,7 +165,7 @@
     <!-- EkoGokhan Navbar (EkoRota Standardı) -->
     <div class="route-header" style="display:flex; align-items:center; justify-content:space-between;">
       <div style="display:flex; align-items:center; gap:10px;">
-        <button class="back-btn" onclick="window.location.href='../ekoarama/'" title="Geri Dön">
+        <button class="back-btn" onclick="window.location.href='../ekoarama/index.html'" title="Geri Dön">
           <i class="fas fa-arrow-left"></i>
         </button>
         <div class="route-title" style="margin:0;">Çevreyi Keşfet</div>
@@ -180,6 +180,7 @@
       </div>
     </div>
 
+    <script src="../ekodata/location_engine.js"></script>
     <script src="../ekodata/project_loader.js"></script>
 
     <!-- Harita -->
@@ -497,11 +498,11 @@
               document.getElementById('stop-details-btn-' + stop.stopId).addEventListener('click', function() {
                 const stopId = this.getAttribute('data-stop-id');
                 const currentPageUrl = encodeURIComponent(window.location.href);
-                let stopDetailsUrl = `../ekostop/?stop=${stopId}&back=${currentPageUrl}`;
+                let stopDetailsUrl = `../ekostop/index.html?stop=${stopId}&back=${currentPageUrl}`;
                 
                 // Region parametresi varsa ve 004 değilse ekle
                 if (currentRegion && currentRegion !== '004') {
-                  stopDetailsUrl = `../ekostop/?region=${currentRegion}&stop=${stopId}&back=${currentPageUrl}`;
+                  stopDetailsUrl = `../ekostop/index.html?region=${currentRegion}&stop=${stopId}&back=${currentPageUrl}`;
                 }
                 
                 window.location.href = stopDetailsUrl;
@@ -548,23 +549,18 @@
     // 2. Sayfa açılınca varsayılan bölgedeki noktaları çek
     fetchNearbyPlaces(DEFAULT_LAT, DEFAULT_LNG);
 
-    // 3. Arka planda konumu al, bulunca oraya kaydır
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          map.setView([latitude, longitude], 15); // Kullanıcının konumuna smooth zoom
-          fetchNearbyPlaces(latitude, longitude); // O bölgedeki yerleri çek
-          addUserLocationMarker(latitude, longitude);
-        },
-        (error) => {
-          console.warn('GPS İzni verilmedi veya alınamadı:', error);
-          // Harita zaten varsayılan konumla açıldığı için bir şey yapmaya gerek yok
-        },
-        { timeout: 15000, enableHighAccuracy: false } // Hızlı sonuç için ayarlar ama timeout'u artırdık
-      );
+    // 3. EkoLocation Engine ile konum — sıfır bekleme
+    let firstCenterDone = false;
+    if (window.EkoLocation) {
+      window.EkoLocation.onUpdate((coords) => {
+        addUserLocationMarker(coords.lat, coords.lng);
+        if (!firstCenterDone) {
+          firstCenterDone = true;
+          map.setView([coords.lat, coords.lng], 15);
+          fetchNearbyPlaces(coords.lat, coords.lng);
+        }
+      });
     }
-
 
     // "Burayı Ara" butonu
     searchCenterBtn.addEventListener('click', () => {
@@ -574,19 +570,11 @@
 
     // "Konumuma Git" butonu
     userLocationBtn.addEventListener('click', () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            map.setView([latitude, longitude], 16);
-            fetchNearbyPlaces(latitude, longitude);
-            addUserLocationMarker(latitude, longitude);
-          },
-          (error) => {
-            console.error('Konum alınamadı:', error);
-          },
-          { timeout: 15000, enableHighAccuracy: true } // Konumuma Git butonu için yüksek doğruluk ve yeterli süre
-        );
+      const last = window.EkoLocation && window.EkoLocation.getLast();
+      if (last) {
+        map.setView([last.lat, last.lng], 16);
+        fetchNearbyPlaces(last.lat, last.lng);
+        addUserLocationMarker(last.lat, last.lng);
       }
     });
   </script>
