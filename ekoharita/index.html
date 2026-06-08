@@ -15,6 +15,7 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
+      background: var(--background-main);
       overflow: hidden;
     }
 
@@ -27,269 +28,159 @@
     #map {
       height: 100%;
       width: 100%;
-      filter: brightness(1.05) contrast(1.1) saturate(1.1);
     }
 
-    /* Loading Indicator */
-    #loading-indicator {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(248, 250, 252, 0.95);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      backdrop-filter: blur(8px);
-    }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--border-color);
-      border-top: 3px solid var(--primary-color);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 16px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    #loading-indicator span {
-      color: var(--text-primary);
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-
-    /* Toast Bildirimleri */
-    #toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--card-background);
-      color: var(--text-primary);
-      padding: 12px 20px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-lg);
-      z-index: 9999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      font-size: 0.875rem;
-      font-weight: 500;
-      max-width: calc(100vw - 40px);
-      text-align: center;
-    }
-
-    #toast.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(-10px);
-    }
-
-    /* Harita Popup Stilleri */
-    .popup-content {
-      padding: 12px;
-      min-width: 200px;
-    }
-
-    .popup-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .popup-title i {
-      color: var(--primary-color);
-      font-size: 0.8rem;
-    }
-
-    .popup-address {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .popup-address i {
-      color: var(--text-muted);
-      font-size: 0.75rem;
-    }
-
-    .popup-button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .popup-button:hover {
-      background: var(--primary-light);
-      box-shadow: var(--shadow);
-    }
-
-    .popup-button i {
-      font-size: 0.75rem;
-    }
-
-    /* Harita Marker İkonları */
-    .kiosk-icon,
-    .stop-icon,
-    .place-icon,
-    .user-location-icon {
+    /* Apple Maps Tarzı Harita Etiketleri */
+    .custom-map-label {
       background: transparent !important;
       border: none !important;
-      box-shadow: none !important;
     }
+    
+    .map-label-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(4px);
+      border-radius: 8px;
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.2s ease;
+    }
+    
+    .map-label-content:hover {
+      background: white;
+      transform: scale(1.05);
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .map-label-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+    }
+    
+    .map-label-text {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #334155;
+      white-space: nowrap;
+      max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.2px;
+    }
+
+    .map-label-dot.stop { background: var(--primary-color); }
+    .map-label-dot.kiosk { background: #ea580c; }
+    .map-label-dot.place { background: #3b82f6; }
 
     /* Leaflet Popup Özelleştirmeleri */
     .leaflet-popup-content-wrapper {
       background: var(--card-background);
       border: 1px solid var(--border-light);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
       padding: 0;
+      overflow: hidden;
     }
 
     .leaflet-popup-content {
       margin: 0;
-      padding: 0;
+      padding: 14px;
+      min-width: 220px;
     }
 
     .leaflet-popup-tip {
       background: var(--card-background);
-      border: 1px solid var(--border-light);
-      border-top: none;
-      border-right: none;
+      border-bottom: 1px solid var(--border-light);
+      border-right: 1px solid var(--border-light);
     }
 
     .leaflet-popup-close-button {
       color: var(--text-muted) !important;
-      font-size: 18px !important;
-      font-weight: bold !important;
-      padding: 8px !important;
-      transition: color 0.15s ease !important;
+      font-size: 16px !important;
+      padding: 10px !important;
     }
 
-    .leaflet-popup-close-button:hover {
-      color: var(--primary-color) !important;
+    .popup-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
     }
 
-    /* Leaflet Zoom Control Özelleştirmeleri */
-    .leaflet-control-zoom {
-      border: none !important;
-      box-shadow: var(--shadow) !important;
-      border-radius: var(--radius) !important;
-      overflow: hidden;
+    .popup-title-row i {
+      font-size: 0.9rem;
     }
 
-    .leaflet-control-zoom a {
-      background: var(--card-background) !important;
-      border: 1px solid var(--border-light) !important;
-      color: var(--text-secondary) !important;
-      font-size: 14px !important;
-      font-weight: 600 !important;
-      width: 36px !important;
-      height: 36px !important;
-      line-height: 34px !important;
-      text-align: center !important;
-      text-decoration: none !important;
-      transition: all 0.15s ease !important;
-      border-radius: 0 !important;
+    .popup-title-row i.stop { color: var(--primary-color); }
+    .popup-title-row i.kiosk { color: #ea580c; }
+    .popup-title-row i.place { color: #3b82f6; }
+
+    .popup-name {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.95rem;
     }
 
-    .leaflet-control-zoom a:hover {
-      background: var(--primary-color) !important;
-      border-color: var(--primary-color) !important;
-      color: white !important;
-      box-shadow: none !important;
+    .popup-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      line-height: 1.3;
     }
 
-    .leaflet-control-zoom a:first-child {
-      border-top-left-radius: var(--radius) !important;
-      border-top-right-radius: var(--radius) !important;
-      border-bottom: none !important;
+    .popup-btn {
+      width: 100%;
+      background: var(--background-soft);
+      border: 1px solid var(--border-light);
+      color: var(--primary-color);
+      font-weight: 600;
+      font-size: 0.8rem;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      margin-top: 4px;
     }
 
-    .leaflet-control-zoom a:last-child {
-      border-bottom-left-radius: var(--radius) !important;
-      border-bottom-right-radius: var(--radius) !important;
-      border-top: none !important;
+    .popup-btn:hover {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
     }
 
-    /* Attribution Özelleştirmeleri */
-    .leaflet-control-attribution {
-      background: rgba(255, 255, 255, 0.9) !important;
-      border: 1px solid var(--border-light) !important;
-      border-radius: var(--radius-sm) !important;
-      backdrop-filter: blur(8px) !important;
-      font-size: 0.7rem !important;
-      color: var(--text-muted) !important;
-      padding: 3px 6px !important;
-      margin: 6px !important;
-      box-shadow: var(--shadow-sm) !important;
-    }
-
-    .leaflet-control-attribution a {
-      color: var(--primary-color) !important;
-      text-decoration: none !important;
-      font-weight: 500 !important;
-    }
-
-    .leaflet-control-attribution a:hover {
-      text-decoration: underline !important;
-    }
   </style>
 </head>
 <body>
-  <div id="loading-indicator">
-    <div class="spinner"></div>
-    <span>Yükleniyor...</span>
-  </div>
-
-  <div id="toast"></div>
-
   <div class="map-page-container">
-    <!-- Header -->
-    <div class="route-header">
-      <div class="route-title project-name">EkoGokhan</div>
-  <script src="../ekodata/project_loader.js"></script>
-      <div class="route-actions">
-        <button id="search-btn" class="search-btn" title="Arama">
-          <i class="fas fa-search"></i>
+    <!-- EkoGokhan Navbar (EkoRota Standardı) -->
+    <div class="route-header" style="display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="back-btn" onclick="window.location.href='../ekoarama/'" title="Geri Dön">
+          <i class="fas fa-arrow-left"></i>
         </button>
-        <button id="search-center-area" class="direction-btn" title="Burayı Ara">
-          <i class="fas fa-map-marker-alt"></i>
+        <div class="route-title" style="margin:0;">Çevreyi Keşfet</div>
+      </div>
+      <div class="route-actions" style="display:flex; gap:6px;">
+        <button class="direction-btn" id="search-center-area" title="Bu Alanı Tara" style="background:var(--primary-soft); color:var(--primary-color); border-color:var(--primary-soft);">
+          <i class="fas fa-radar"></i>
         </button>
-        <button id="user-location-btn" class="back-btn" title="Konumuma Git">
-          <i class="fas fa-location-arrow"></i>
+        <button class="direction-btn" id="user-location-btn" title="Konumuma Git">
+          <i class="fas fa-location-crosshairs"></i>
         </button>
       </div>
     </div>
+
+    <script src="../ekodata/project_loader.js"></script>
 
     <!-- Harita -->
     <div class="map-main-content">
@@ -342,95 +233,40 @@
 
     const [DEFAULT_LAT, DEFAULT_LNG] = getDefaultCoordinates(currentRegion);
 
-    function showToast(message, duration = 3000) {
-      toast.textContent = message;
-      toast.classList.add('show');
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, duration);
-    }
-
-    function showLoading() {
-      loadingIndicator.style.display = 'flex';
-    }
-
-    function hideLoading() {
-      loadingIndicator.style.display = 'none';
-    }
-
-    function createKioskIcon() {
+    // Apple Maps Tarzı İkonlar
+    function createKioskIcon(name) {
       return L.divIcon({
-        className: 'kiosk-icon',
-        html: `
-          <div style="
-            width: 36px; 
-            height: 36px; 
-            background: linear-gradient(135deg, #f97316, #ea580c); 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            font-size: 16px;
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
-            border: 2px solid white;
-          ">
-            <i class="fas fa-credit-card"></i>
-          </div>
-        `,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18]
+        className: 'custom-map-label',
+        html: `<div class="map-label-content">
+          <div class="map-label-dot kiosk"></div>
+          <span class="map-label-text">💳 Büfe: ${name || 'Bilinmiyor'}</span>
+        </div>`,
+        iconSize: [null, null],
+        iconAnchor: [12, 12]
       });
     }
 
-    function createStopIcon() {
+    function createStopIcon(name) {
       return L.divIcon({
-        className: 'stop-icon',
-        html: `
-          <div style="
-            width: 36px; 
-            height: 36px; 
-            background: linear-gradient(135deg, #0d9488, #0f766e); 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            font-size: 16px;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
-            border: 2px solid white;
-          ">
-            <i class="fas fa-bus"></i>
-          </div>
-        `,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18]
+        className: 'custom-map-label',
+        html: `<div class="map-label-content">
+          <div class="map-label-dot stop"></div>
+          <span class="map-label-text">🚏 Durak: ${name || 'Bilinmiyor'}</span>
+        </div>`,
+        iconSize: [null, null],
+        iconAnchor: [12, 12]
       });
     }
 
-    function createPlaceIcon() {
+    function createPlaceIcon(name) {
       return L.divIcon({
-        className: 'place-icon',
-        html: `
-          <div style="
-            width: 36px; 
-            height: 36px; 
-            background: linear-gradient(135deg, #3b82f6, #2563eb); 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            font-size: 16px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-            border: 2px solid white;
-          ">
-            <i class="fas fa-map-marker-alt"></i>
-          </div>
-        `,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18]
+        className: 'custom-map-label',
+        html: `<div class="map-label-content">
+          <div class="map-label-dot place"></div>
+          <span class="map-label-text">📍 Yer: ${name || 'Bilinmiyor'}</span>
+        </div>`,
+        iconSize: [null, null],
+        iconAnchor: [12, 12]
       });
     }
 
@@ -609,7 +445,6 @@
     async function fetchNearbyPlaces(lat, lng) {
       const apiUrl = `https://service.kentkart.com/rl1/web/nearest/place?region=${currentRegion}&lang=tr&authType=4&lat=${lat}&lng=${lng}&version=Web_1.8.1(32)_1.0_FIREFOX_kentkart.web.mkentkart`;
       try {
-        showLoading();
         clearMarkers();
 
         const response = await fetch(apiUrl);
@@ -618,30 +453,16 @@
         if (data.kioskList) {
           data.kioskList.forEach(kiosk => {
             const marker = L.marker([parseFloat(kiosk.lat), parseFloat(kiosk.lng)], {
-              icon: createKioskIcon()
+              icon: createKioskIcon(kiosk.title)
             }).addTo(map);
             
             marker.bindPopup(
               '<div class="popup-content">' +
-                '<div class="popup-header">' +
-                  '<div class="popup-icon kiosk">' +
-                    '<i class="fas fa-credit-card"></i>' +
-                  '</div>' +
-                  '<div class="popup-title">' +
-                    '<div class="popup-name">Yükleme Noktası</div>' +
-                    '<div class="popup-subtitle">Kart Dolum</div>' +
-                  '</div>' +
+                '<div class="popup-title-row">' +
+                  '<i class="fas fa-credit-card kiosk"></i>' +
+                  '<span class="popup-name">Yükleme Noktası</span>' +
                 '</div>' +
-                '<div class="popup-info">' +
-                  '<div class="popup-detail">' +
-                    '<i class="fas fa-building"></i>' +
-                    '<span class="popup-detail-text">' + kiosk.title + '</span>' +
-                  '</div>' +
-                  '<div class="popup-detail">' +
-                    '<i class="fas fa-map-marker-alt"></i>' +
-                    '<span class="popup-detail-text">' + kiosk.address + '</span>' +
-                  '</div>' +
-                '</div>' +
+                '<div class="popup-subtitle">' + kiosk.title + '<br><span style="opacity:0.7">' + kiosk.address + '</span></div>' +
               '</div>'
             );
             
@@ -652,7 +473,7 @@
         if (data.stopList) {
           data.stopList.forEach(stop => {
             const marker = L.marker([parseFloat(stop.lat), parseFloat(stop.lng)], {
-              icon: createStopIcon()
+              icon: createStopIcon(stop.stopName)
             }).addTo(map);
             
             // Hat listesini kısalt
@@ -660,23 +481,13 @@
             
             const popupContent = 
               '<div class="popup-content">' +
-                '<div class="popup-header">' +
-                  '<div class="popup-icon stop">' +
-                    '<i class="fas fa-bus"></i>' +
-                  '</div>' +
-                  '<div class="popup-title">' +
-                    '<div class="popup-name">' + (stop.stopName.length > 25 ? stop.stopName.substring(0, 25) + '...' : stop.stopName) + '</div>' +
-                    '<div class="popup-subtitle">Otobüs Durağı</div>' +
-                  '</div>' +
+                '<div class="popup-title-row">' +
+                  '<i class="fas fa-bus stop"></i>' +
+                  '<span class="popup-name">Durak: ' + (stop.stopName.length > 25 ? stop.stopName.substring(0, 25) + '...' : stop.stopName) + '</span>' +
                 '</div>' +
-                '<div class="popup-info">' +
-                  '<div class="popup-detail">' +
-                    '<i class="fas fa-route"></i>' +
-                    '<span class="popup-detail-text">' + routes + '</span>' +
-                  '</div>' +
-                '</div>' +
-                '<button id="stop-details-btn-' + stop.stopId + '" class="popup-button" data-stop-id="' + stop.stopId + '">' +
-                  '<i class="fas fa-info-circle"></i> Detayları Gör' +
+                '<div class="popup-subtitle">Geçen Hatlar: ' + routes + '</div>' +
+                '<button id="stop-details-btn-' + stop.stopId + '" class="popup-btn" data-stop-id="' + stop.stopId + '">' +
+                  '<i class="fas fa-external-link-alt"></i> Bu Durağa Git' +
                 '</button>' +
               '</div>';
             
@@ -704,23 +515,19 @@
         if (data.placeList) {
           data.placeList.forEach(place => {
           const marker = L.marker([parseFloat(place.lat), parseFloat(place.lng)], {
-            icon: createPlaceIcon()
+            icon: createPlaceIcon(place.name)
           }).addTo(map);
           
           marker.bindPopup(
             '<div class="popup-content">' +
-              '<div class="popup-header">' +
-                '<div class="popup-icon place">' +
-                  '<i class="fas fa-map-marker-alt"></i>' +
-                '</div>' +
-                '<div class="popup-title">' +
-                  '<div class="popup-name">' + (place.name.length > 25 ? place.name.substring(0, 25) + '...' : place.name) + '</div>' +
-                  '<div class="popup-subtitle">Önemli Yer</div>' +
-                '</div>' +
+              '<div class="popup-title-row">' +
+                '<i class="fas fa-map-marker-alt place"></i>' +
+                '<span class="popup-name">Yer: ' + (place.name.length > 25 ? place.name.substring(0, 25) + '...' : place.name) + '</span>' +
               '</div>' +
+              '<div class="popup-subtitle">Önemli Lokasyon</div>' +
               (place.website ? 
-                '<button onclick="window.open(\'' + place.website + '\', \'_blank\')" class="popup-button secondary">' +
-                  '<i class="fas fa-external-link-alt"></i> Web Sitesi' +
+                '<button onclick="window.open(\'' + place.website + '\', \'_blank\')" class="popup-btn">' +
+                  '<i class="fas fa-link"></i> Web Sitesini Aç' +
                 '</button>' : ''
               ) +
             '</div>'
@@ -729,43 +536,35 @@
           currentMarkers.push(marker);
         });
         }
-
-        hideLoading();
-        const total = (data.kioskList ? data.kioskList.length : 0) + 
-                      (data.stopList ? data.stopList.length : 0) + 
-                      (data.placeList ? data.placeList.length : 0);
-        showToast(`Toplam ${total} nokta bulundu`);
         
       } catch (error) {
         console.error('API isteğinde hata:', error);
-        hideLoading();
-        showToast('Yerler yüklenirken bir hata oluştu');
       }
     }
 
-    // Sayfa yüklendiğinde kullanıcı konumunu al
+    // 1. Önce Haritayı HEMEN Başlat (Tarayıcıyı Bekletme)
+    initMap(DEFAULT_LAT, DEFAULT_LNG);
+    
+    // 2. Sayfa açılınca varsayılan bölgedeki noktaları çek
+    fetchNearbyPlaces(DEFAULT_LAT, DEFAULT_LNG);
+
+    // 3. Arka planda konumu al, bulunca oraya kaydır
     if (navigator.geolocation) {
-      showLoading();
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          initMap(latitude, longitude);
-          hideLoading();
+          map.setView([latitude, longitude], 15); // Kullanıcının konumuna smooth zoom
+          fetchNearbyPlaces(latitude, longitude); // O bölgedeki yerleri çek
+          addUserLocationMarker(latitude, longitude);
         },
         (error) => {
-          console.error('Konum alınamadı:', error);
-          initMap(DEFAULT_LAT, DEFAULT_LNG);
-          hideLoading();
-        }
+          console.warn('GPS İzni verilmedi veya alınamadı:', error);
+          // Harita zaten varsayılan konumla açıldığı için bir şey yapmaya gerek yok
+        },
+        { timeout: 10000, enableHighAccuracy: false } // Hızlı sonuç için ayarlar
       );
-    } else {
-      initMap(DEFAULT_LAT, DEFAULT_LNG);
     }
 
-    // Arama butonuna tıklandığında ana sayfaya yönlendir
-    searchBtn.addEventListener('click', () => {
-      window.location.href = '../ekoarama/';
-    });
 
     // "Burayı Ara" butonu
     searchCenterBtn.addEventListener('click', () => {
@@ -776,23 +575,17 @@
     // "Konumuma Git" butonu
     userLocationBtn.addEventListener('click', () => {
       if (navigator.geolocation) {
-        showLoading();
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
             map.setView([latitude, longitude], 16);
             fetchNearbyPlaces(latitude, longitude);
             addUserLocationMarker(latitude, longitude);
-            hideLoading();
           },
           (error) => {
             console.error('Konum alınamadı:', error);
-            hideLoading();
-            showToast('Kullanıcı konumu alınamadı');
           }
         );
-      } else {
-        showToast('Tarayıcınız konum desteği sunmuyor');
       }
     });
   </script>

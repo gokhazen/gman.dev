@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EkoGokhan - Durak Harita Entegrasyonu (Leaflet + Google Maps)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Leaflet Marker Cluster CSS & JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#080c14',
+                            card: '#0f1626',
+                            border: '#1f2d4d',
+                            accent: '#10b981',
+                            blue: '#06b6d4',
+                            purple: '#8b5cf6',
+                            yellow: '#facc15',
+                            text: '#e2e8f0',
+                            muted: '#64748b'
+                        }
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #080c14;
+            color: #e2e8f0;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            background-color: #080c14;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2d4d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        /* Custom styling for Leaflet elements */
+        .leaflet-bar {
+            border: 1px solid #1f2d4d !important;
+            box-shadow: none !important;
+        }
+        .leaflet-bar a {
+            background-color: #0f1626 !important;
+            color: #e2e8f0 !important;
+            border-bottom: 1px solid #1f2d4d !important;
+            transition: all 0.2s;
+        }
+        .leaflet-bar a:hover {
+            background-color: #10b981 !important;
+            color: #080c14 !important;
+        }
+        .leaflet-popup-content-wrapper {
+            background-color: #0f1626 !important;
+            color: #e2e8f0 !important;
+            border: 1px solid #1f2d4d !important;
+            border-radius: 12px !important;
+            padding: 4px !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+        }
+        .leaflet-popup-tip {
+            background-color: #0f1626 !important;
+            border: 1px solid #1f2d4d !important;
+        }
+        .leaflet-popup-close-button {
+            color: #64748b !important;
+            padding: 8px 8px 0 0 !important;
+        }
+        .leaflet-popup-close-button:hover {
+            color: #10b981 !important;
+        }
+        /* Marker Cluster Custom Styling */
+        .marker-cluster-custom {
+            background-clip: padding-box;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #080c14;
+            font-weight: bold;
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+        /* Loading Overlay */
+        .loading-blur {
+            backdrop-filter: blur(8px);
+            background-color: rgba(8, 12, 20, 0.7);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden">
+
+    <!-- Header / Navbar -->
+    <header class="h-16 border-b border-cyber-border bg-cyber-card/90 backdrop-blur flex items-center justify-between px-6 z-[1000]">
+        <div class="flex items-center space-x-3">
+            <a href="../index.html" class="w-10 h-10 rounded-xl bg-cyber-accent/10 border border-cyber-accent/30 flex items-center justify-center text-cyber-accent text-xl hover:bg-cyber-accent hover:text-cyber-bg transition duration-200">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="text-base font-bold text-cyber-text tracking-wide flex items-center">
+                    EkoGokhan Harita Entegrasyonu 🗺️
+                </h1>
+                <p class="text-xs text-cyber-muted">Leaflet.js + Google Maps API-Keyless Katmanları</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+            <span class="text-xs font-mono bg-cyber-card border border-cyber-border px-3 py-1 rounded-full text-cyber-muted" id="loaded-region-tag">
+                Bölge Seçilmedi
+            </span>
+            <a href="../index.html" class="bg-cyber-card border border-cyber-border hover:bg-cyber-border/40 text-cyber-text px-4 py-2 rounded-lg text-sm transition duration-200">
+                Gezgine Dön <i class="fa-solid fa-folder-open ml-2"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="flex-1 flex overflow-hidden relative">
+        
+        <!-- Sidebar -->
+        <aside class="w-96 border-r border-cyber-border bg-cyber-card/45 backdrop-blur-md flex flex-col z-[999] relative">
+            <!-- Search & Filters Tab buttons -->
+            <div class="flex border-b border-cyber-border bg-cyber-bg/40">
+                <button id="tab-regions-btn" onclick="switchTab('regions')" class="flex-1 py-3 text-sm font-semibold text-cyber-accent border-b-2 border-cyber-accent bg-cyber-card/30 transition duration-150">
+                    <i class="fa-solid fa-earth-americas mr-2"></i>Bölgeler
+                </button>
+                <button id="tab-stops-btn" onclick="switchTab('stops')" class="flex-1 py-3 text-sm font-semibold text-cyber-muted hover:text-cyber-text transition duration-150" disabled>
+                    <i class="fa-solid fa-bus mr-2"></i>Duraklar (<span id="stops-count">0</span>)
+                </button>
+            </div>
+
+            <!-- TAB 1: Regions Scrollable List -->
+            <div id="tab-regions" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <div class="text-xs text-cyber-muted font-mono uppercase tracking-wider mb-2">Bölge Seçiniz</div>
+                
+                <!-- Dynamic Regions Container -->
+                <div id="regions-container" class="space-y-2">
+                    <div class="text-cyber-muted text-xs p-4 flex items-center space-x-2">
+                        <i class="fa-solid fa-spinner animate-spin"></i>
+                        <span>Bölgeler yükleniyor...</span>
+                    </div>
+                </div>
+
+                <!-- Load all stops card -->
+                <div class="border border-dashed border-cyber-border/80 rounded-xl p-4 bg-cyber-bg/25 hover:border-cyber-blue/50 hover:bg-cyber-blue/5 transition duration-200 cursor-pointer mt-4" onclick="loadAllRegionsStops()">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-lg bg-cyber-blue/15 border border-cyber-blue/30 flex items-center justify-center text-cyber-blue text-lg">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-cyber-text">Tüm Bölgeleri Yükle</h4>
+                            <p class="text-xs text-cyber-muted mt-0.5">28,000+ durak verisi, kümelenmiş</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Stops & Search Scrollable List -->
+            <div id="tab-stops" class="hidden flex-1 flex flex-col overflow-hidden">
+                <!-- Search Input inside tab -->
+                <div class="p-4 border-b border-cyber-border bg-cyber-bg/20">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-cyber-muted">
+                            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                        </span>
+                        <input type="text" id="stop-search" placeholder="Durak ismi veya ID ara..." 
+                            class="w-full bg-cyber-bg border border-cyber-border rounded-lg py-2 pl-9 pr-4 text-xs text-cyber-text focus:outline-none focus:border-cyber-accent transition duration-200">
+                    </div>
+                </div>
+                
+                <!-- Stops scroll container -->
+                <div class="flex-1 overflow-y-auto p-4 space-y-2" id="stops-list-container">
+                    <!-- Stops will be loaded dynamically -->
+                </div>
+            </div>
+            
+            <!-- Active Stop Information Block (Floating / Footer) -->
+            <div id="active-stop-card" class="hidden p-4 border-t border-cyber-border bg-cyber-card/90 backdrop-blur-md absolute bottom-0 left-0 right-0 z-10">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h4 id="active-stop-name" class="text-sm font-bold text-cyber-text">Durak İsmi</h4>
+                        <p id="active-stop-id" class="text-[10px] text-cyber-muted font-mono">ID: 20001</p>
+                    </div>
+                    <button onclick="clearActiveStop()" class="text-cyber-muted hover:text-red-400 p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2 text-xs text-cyber-muted font-mono mb-3">
+                    <div class="bg-cyber-bg/50 p-1.5 rounded border border-cyber-border/40">
+                        <span class="text-[10px] block uppercase text-cyber-muted">Enlem</span>
+                        <span id="active-stop-lat" class="text-cyber-text">41.63231</span>
+                    </div>
+                    <div class="bg-cyber-bg/50 p-1.5 rounded border border-cyber-border/40">
+                        <span class="text-[10px] block uppercase text-cyber-muted">Boylam</span>
+                        <span id="active-stop-lng" class="text-cyber-text">26.61950</span>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-[10px] block uppercase text-cyber-muted font-mono mb-1.5">Geçen Hatlar</span>
+                    <div id="active-stop-routes" class="flex flex-wrap gap-1.5">
+                        <!-- Badges -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <main class="flex-1 h-full w-full relative z-0">
+            <div id="map"></div>
+
+            <!-- Loading overlay -->
+            <div id="loading-overlay" class="hidden absolute inset-0 loading-blur z-[9999] flex flex-col items-center justify-center">
+                <div class="bg-cyber-card border border-cyber-border p-6 rounded-2xl flex flex-col items-center shadow-2xl max-w-sm">
+                    <div class="w-12 h-12 rounded-full border-4 border-cyber-accent/20 border-t-cyber-accent animate-spin mb-4"></div>
+                    <h3 class="text-base font-bold text-cyber-text mb-1" id="loading-title">Veriler Yükleniyor</h3>
+                    <p class="text-xs text-cyber-muted text-center" id="loading-desc">Duraklar ayrıştırılıyor ve haritaya ekleniyor...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script Section -->
+    <script>
+        let map;
+        let markerClusterGroup;
+        let regionsData = {};
+        let activeRegionCode = null;
+        let activeStops = [];
+        let mapMarkers = {}; // Keep track of marker references by stopId
+        let baseLayers = {};
+        
+        // Dynamic custom colors from config
+        let activeRegionColor = "#10b981"; // Fallback to green
+        let activeRegionSecondColor = "#06b6d4";
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Initialize Leaflet Map
+            initMap();
+
+            // Load Config & Regions
+            await loadKentkartConfig();
+
+            // Setup search listener
+            document.getElementById('stop-search').addEventListener('input', handleStopSearch);
+        });
+
+        function initMap() {
+            // 1. Base Tile Layers
+            const darkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 20,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            });
+
+            const googleRoadmap = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                attribution: '&copy; Google Maps'
+            });
+
+            const googleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                attribution: '&copy; Google Maps'
+            });
+
+            const googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                attribution: '&copy; Google Maps'
+            });
+
+            const googleTerrain = L.tileLayer('https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                attribution: '&copy; Google Maps'
+            });
+
+            // 2. Initialize Leaflet Map centered on Turkey
+            map = L.map('map', {
+                center: [38.9637, 35.2433],
+                zoom: 6,
+                layers: [darkMatter] // Default premium theme matching style
+            });
+
+            // 3. Add Layer Control (includes Google Maps)
+            baseLayers = {
+                "Siyah Premium Katman": darkMatter,
+                "Google Harita (Yol)": googleRoadmap,
+                "Google Uydu Görüntüsü": googleSatellite,
+                "Google Hibrit (Uydu+Yol)": googleHybrid,
+                "Google Arazi (Fiziki)": googleTerrain
+            };
+            L.control.layers(baseLayers, null, { position: 'topright' }).addTo(map);
+
+            // 4. Initialize Marker Clustering Group
+            markerClusterGroup = L.markerClusterGroup({
+                chunkedLoading: true,
+                maxClusterRadius: 50,
+                iconCreateFunction: function (cluster) {
+                    const count = cluster.getChildCount();
+                    // Customize cluster color based on active region
+                    return L.divIcon({
+                        html: `<div style="background-color: ${activeRegionColor}25; border: 2px solid ${activeRegionColor}; color: #e2e8f0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: Outfit, sans-serif; box-shadow: 0 0 10px rgba(0,0,0,0.5)">${count}</div>`,
+                        className: 'marker-cluster-custom-wrapper',
+                        iconSize: L.point(40, 40)
+                    });
+                }
+            });
+            map.addLayer(markerClusterGroup);
+        }
+
+        async function loadKentkartConfig() {
+            try {
+                // Fetch config file
+                const response = await fetch('../kentkartinfo.json');
+                if (!response.ok) throw new Error("kentkartinfo.json yüklenemedi");
+                const config = await response.json();
+                
+                regionsData = config.regions;
+                renderRegionsList(regionsData);
+            } catch (err) {
+                console.error("Konfigürasyon yüklenemedi: ", err);
+                document.getElementById('regions-container').innerHTML = `
+                    <div class="text-red-400 text-xs p-4 font-semibold">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> Konfigürasyon yüklenemedi!
+                    </div>
+                `;
+            }
+        }
+
+        function renderRegionsList(regions) {
+            const container = document.getElementById('regions-container');
+            container.innerHTML = "";
+
+            Object.entries(regions).forEach(([code, details]) => {
+                const card = document.createElement('div');
+                card.className = "border border-cyber-border rounded-xl p-3 bg-cyber-card/45 hover:border-cyber-accent/60 transition duration-200 cursor-pointer flex justify-between items-center group";
+                
+                const badgeColor = details.colors ? details.colors[0] : '#10b981';
+                const icon = details.icon || 'fa-bus';
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0 transition duration-200" 
+                            style="background-color: ${badgeColor}15; border: 1px solid ${badgeColor}30; color: ${badgeColor}">
+                            <i class="fa-solid ${icon}"></i>
+                        </div>
+                        <div class="truncate">
+                            <h4 class="text-sm font-bold text-cyber-text group-hover:text-cyber-accent transition duration-150">${details.name}</h4>
+                            <span class="text-[10px] text-cyber-muted font-mono font-semibold block uppercase tracking-wider">${details.region || 'Bölge'}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs bg-cyber-border text-cyber-muted px-2 py-0.5 rounded font-mono font-semibold">${details.routes.length} Hat</span>
+                    </div>
+                `;
+
+                card.onclick = () => loadRegionStops(code, details);
+                container.appendChild(card);
+            });
+        }
+
+        async function loadRegionStops(code, details) {
+            showLoading("Bölge Yükleniyor", `${details.name} durakları okunuyor...`);
+            activeRegionCode = code;
+            activeRegionColor = details.colors ? details.colors[0] : '#10b981';
+            activeRegionSecondColor = details.colors && details.colors[1] ? details.colors[1] : '#06b6d4';
+
+            document.getElementById('loaded-region-tag').innerText = details.name;
+            document.getElementById('loaded-region-tag').style.borderColor = activeRegionColor + "40";
+            document.getElementById('loaded-region-tag').style.color = activeRegionColor;
+
+            try {
+                const response = await fetch(`${code}.json`);
+                if (!response.ok) throw new Error(`${code}.json bulunamadı veya yüklenemedi.`);
+                const text = await response.text();
+                
+                // Parse the JSON Lines (or standard JSON format)
+                activeStops = parseStopsData(text);
+                
+                // Clear existing markers
+                markerClusterGroup.clearLayers();
+                mapMarkers = {};
+
+                // Add to Map
+                renderStopsOnMap(activeStops);
+
+                // Populate Sidebar Stops list
+                renderStopsSidebarList(activeStops);
+
+                // Update tabs
+                document.getElementById('stops-count').innerText = activeStops.length;
+                document.getElementById('tab-stops-btn').removeAttribute('disabled');
+                switchTab('stops');
+
+                // Zoom to Region coords
+                if (details.coords && details.coords.length === 2) {
+                    map.flyTo(details.coords, 12, { animate: true, duration: 1.5 });
+                } else if (activeStops.length > 0) {
+                    // Fit map bounds to stops
+                    const bounds = L.latLngBounds(activeStops.map(s => [parseFloat(s.lat), parseFloat(s.lng)]));
+                    map.flyToBounds(bounds, { padding: [50, 50] });
+                }
+
+                hideLoading();
+            } catch (err) {
+                console.error(err);
+                hideLoading();
+                alert(`${details.name} durak verileri yüklenemedi: ` + err.message);
+            }
+        }
+
+        // Heavy operation: Loading all 28k stops from allstops.json
+        async function loadAllRegionsStops() {
+            showLoading("Tüm Duraklar Yükleniyor", "28,000+ durak okunuyor ve haritaya ekleniyor. Bu işlem birkaç saniye sürebilir...");
+            activeRegionCode = 'all';
+            activeRegionColor = '#06b6d4'; // Cyan for all
+            activeRegionSecondColor = '#10b981';
+
+            document.getElementById('loaded-region-tag').innerText = "Tüm Türkiye";
+            document.getElementById('loaded-region-tag').style.borderColor = "#06b6d440";
+            document.getElementById('loaded-region-tag').style.color = "#06b6d4";
+
+            try {
+                const response = await fetch('allstops.json');
+                if (!response.ok) throw new Error("allstops.json bulunamadı.");
+                const text = await response.text();
+                
+                activeStops = parseStopsData(text);
+                
+                // Clear existing
+                markerClusterGroup.clearLayers();
+                mapMarkers = {};
+
+                // Render on map
+                renderStopsOnMap(activeStops);
+
+                // Populate Sidebar List
+                renderStopsSidebarList(activeStops);
+
+                // Tabs update
+                document.getElementById('stops-count').innerText = activeStops.length;
+                document.getElementById('tab-stops-btn').removeAttribute('disabled');
+                switchTab('stops');
+
+                // Center Turkey
+                map.flyTo([38.9637, 35.2433], 6, { animate: true, duration: 1.5 });
+
+                hideLoading();
+            } catch (err) {
+                console.error(err);
+                hideLoading();
+                alert("Tüm durak verileri yüklenemedi: " + err.message);
+            }
+        }
+
+        // Robust parsing of stops text, handling both JSON Lines and standard JSON Arrays
+        function parseStopsData(rawText) {
+            try {
+                const parsed = JSON.parse(rawText);
+                if (Array.isArray(parsed)) return parsed;
+                if (parsed.stops && Array.isArray(parsed.stops)) return parsed.stops;
+            } catch(e) {}
+            
+            const lines = rawText.split('\n');
+            const stops = [];
+            for (let line of lines) {
+                line = line.trim();
+                if (line === '') continue;
+                try {
+                    const stop = JSON.parse(line);
+                    if (stop.stopId && stop.lat && stop.lng) {
+                        stops.push(stop);
+                    }
+                } catch (err) {
+                    // Ignore malformed lines
+                }
+            }
+            return stops;
+        }
+
+        function renderStopsOnMap(stops) {
+            const markers = [];
+
+            stops.forEach(stop => {
+                const lat = parseFloat(stop.lat);
+                const lng = parseFloat(stop.lng);
+                if (isNaN(lat) || isNaN(lng)) return;
+
+                // Create a beautiful, custom colored SVG DivIcon
+                const customIcon = L.divIcon({
+                    html: `
+                        <svg width="24" height="34" viewBox="0 0 24 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 0C5.37258 0 0 5.37258 0 12C0 21 12 34 12 34C12 34 24 21 24 12C24 5.37258 18.6274 0 12 0ZM12 16.5C9.51472 16.5 7.5 14.4853 7.5 12C7.5 9.51472 9.51472 7.5 12 7.5C14.4853 7.5 16.5 9.51472 16.5 12C16.5 14.4853 14.4853 16.5 12 16.5Z" 
+                                fill="${activeRegionColor}" stroke="#080c14" stroke-width="1.5"/>
+                            <circle cx="12" cy="12" r="2.5" fill="#080c14"/>
+                        </svg>
+                    `,
+                    className: 'custom-stop-marker',
+                    iconSize: [24, 34],
+                    iconAnchor: [12, 34],
+                    popupAnchor: [0, -32]
+                });
+
+                // Prepare Route Badges for Popups
+                const routesList = stop.routes ? stop.routes.split(',') : [];
+                const badgesHtml = routesList.map(r => `
+                    <span style="background-color: ${activeRegionColor}20; color: ${activeRegionColor}; border: 1px solid ${activeRegionColor}40; padding: 2px 6px; font-size: 10px; border-radius: 4px; font-weight: bold; font-family: monospace;">
+                        ${r.trim()}
+                    </span>
+                `).join(' ');
+
+                // Create Popup HTML
+                const popupContent = `
+                    <div style="font-family: Outfit, sans-serif; padding: 4px;">
+                        <h4 style="margin: 0 0 4px 0; font-size: 13px; font-weight: bold; color: #e2e8f0; display: flex; align-items: center;">
+                            <i class="fa-solid fa-bus-simple" style="color: ${activeRegionColor}; margin-right: 6px;"></i>
+                            ${stop.stopName}
+                        </h4>
+                        <p style="margin: 0 0 8px 0; font-size: 10px; color: #64748b; font-family: monospace;">ID: ${stop.stopId}</p>
+                        <div style="border-top: 1px solid #1f2d4d; padding-top: 6px; margin-top: 6px;">
+                            <span style="font-size: 9px; display: block; color: #64748b; margin-bottom: 4px; text-transform: uppercase;">Geçen Hatlar (${routesList.length})</span>
+                            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                ${badgesHtml || '<span style="color: #64748b; font-size: 10px;">Hat bulunamadı</span>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Build Marker
+                const marker = L.marker([lat, lng], { icon: customIcon });
+                marker.bindPopup(popupContent);
+
+                // Click event to highlight card
+                marker.on('click', () => {
+                    showStopDetails(stop);
+                });
+
+                markers.push(marker);
+                mapMarkers[stop.stopId] = marker;
+            });
+
+            // Add all markers to Cluster group
+            markerClusterGroup.addLayers(markers);
+        }
+
+        // Render Stops list in Sidebar
+        function renderStopsSidebarList(stops) {
+            const container = document.getElementById('stops-list-container');
+            container.innerHTML = "";
+
+            if (stops.length === 0) {
+                container.innerHTML = `<div class="text-cyber-muted text-xs p-4">Hiç durak bulunamadı.</div>`;
+                return;
+            }
+
+            stops.slice(0, 300).forEach(stop => {
+                const item = document.createElement('div');
+                item.className = "border border-cyber-border rounded-lg p-2.5 bg-cyber-card/35 hover:border-cyber-accent/50 hover:bg-cyber-card/75 transition duration-150 cursor-pointer flex items-center justify-between";
+                
+                const routesCount = stop.routes ? stop.routes.split(',').length : 0;
+
+                item.innerHTML = `
+                    <div class="truncate pr-2">
+                        <h4 class="text-xs font-bold text-cyber-text truncate">${stop.stopName}</h4>
+                        <span class="text-[9px] text-cyber-muted font-mono">ID: ${stop.stopId}</span>
+                    </div>
+                    <span class="text-[9px] font-mono bg-cyber-bg text-cyber-accent border border-cyber-accent/20 px-1.5 py-0.5 rounded flex-shrink-0">
+                        ${routesCount} Hat
+                    </span>
+                `;
+
+                item.onclick = () => focusOnStop(stop);
+                container.appendChild(item);
+            });
+
+            if (stops.length > 300) {
+                const note = document.createElement('div');
+                note.className = "text-center text-[10px] text-cyber-muted font-mono pt-2 border-t border-cyber-border/40";
+                note.innerText = `Performans için ilk 300 durak listelenmektedir. Arama çubuğunu kullanarak filtreleyebilirsiniz.`;
+                container.appendChild(note);
+            }
+        }
+
+        // Zoom and Pan to selected stop, trigger popup
+        function focusOnStop(stop) {
+            const marker = mapMarkers[stop.stopId];
+            if (marker) {
+                map.flyTo([parseFloat(stop.lat), parseFloat(stop.lng)], 17, { animate: true, duration: 1.2 });
+                setTimeout(() => {
+                    marker.openPopup();
+                }, 1200);
+            }
+            showStopDetails(stop);
+        }
+
+        // Show Full Stop Details Card at Sidebar Footer
+        function showStopDetails(stop) {
+            document.getElementById('active-stop-card').classList.remove('hidden');
+            document.getElementById('active-stop-name').innerText = stop.stopName;
+            document.getElementById('active-stop-id').innerText = "ID: " + stop.stopId;
+            document.getElementById('active-stop-lat').innerText = parseFloat(stop.lat).toFixed(5);
+            document.getElementById('active-stop-lng').innerText = parseFloat(stop.lng).toFixed(5);
+
+            // Populate Badges
+            const container = document.getElementById('active-stop-routes');
+            container.innerHTML = "";
+
+            const routesList = stop.routes ? stop.routes.split(',') : [];
+            routesList.forEach(r => {
+                const badge = document.createElement('span');
+                badge.className = "text-xs font-mono font-bold px-2 py-0.5 rounded";
+                badge.style.backgroundColor = activeRegionColor + "15";
+                badge.style.border = `1px solid ${activeRegionColor}40`;
+                badge.style.color = activeRegionColor;
+                badge.innerText = r.trim();
+                container.appendChild(badge);
+            });
+        }
+
+        function clearActiveStop() {
+            document.getElementById('active-stop-card').classList.add('hidden');
+        }
+
+        // Search in stops list & filter map markers
+        function handleStopSearch(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            // Filter list in memory
+            const filteredStops = activeStops.filter(s => 
+                s.stopName.toLowerCase().includes(query) || 
+                s.stopId.toString().includes(query)
+            );
+
+            // Re-render sidebar list
+            renderStopsSidebarList(filteredStops);
+
+            // Zoom map to bounds of search results if found
+            if (filteredStops.length > 0 && query !== '') {
+                const validCoords = filteredStops
+                    .map(s => [parseFloat(s.lat), parseFloat(s.lng)])
+                    .filter(c => !isNaN(c[0]) && !isNaN(c[1]));
+                if (validCoords.length > 0) {
+                    const bounds = L.latLngBounds(validCoords);
+                    map.fitBounds(bounds, { maxZoom: 16, padding: [40, 40] });
+                }
+            }
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            if (tabId === 'regions') {
+                document.getElementById('tab-regions').classList.remove('hidden');
+                document.getElementById('tab-stops').classList.add('hidden');
+                
+                document.getElementById('tab-regions-btn').className = "flex-1 py-3 text-sm font-semibold text-cyber-accent border-b-2 border-cyber-accent bg-cyber-card/30 transition duration-150";
+                document.getElementById('tab-stops-btn').className = "flex-1 py-3 text-sm font-semibold text-cyber-muted hover:text-cyber-text transition duration-150";
+            } else if (tabId === 'stops') {
+                document.getElementById('tab-stops').classList.remove('hidden');
+                document.getElementById('tab-regions').classList.add('hidden');
+
+                document.getElementById('tab-stops-btn').className = "flex-1 py-3 text-sm font-semibold text-cyber-accent border-b-2 border-cyber-accent bg-cyber-card/30 transition duration-150";
+                document.getElementById('tab-regions-btn').className = "flex-1 py-3 text-sm font-semibold text-cyber-muted hover:text-cyber-text transition duration-150";
+            }
+        }
+
+        // Loading Screen handlers
+        function showLoading(title, desc) {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            document.getElementById('loading-title').innerText = title;
+            document.getElementById('loading-desc').innerText = desc;
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

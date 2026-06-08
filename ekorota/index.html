@@ -18,20 +18,22 @@
 </head>
 <body>
   <div class="app-container">
-    <div class="route-header">
-      <div class="route-title" id="route-title">Hat: </div>
-      <div class="route-actions">
-        <button class="direction-btn" id="toggleDirectionBtn" title="Yön Değiştir">
-          <i class="fas fa-sync"></i>
+    <div class="route-header" style="display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="back-btn" id="goBackBtn" title="Geri Dön">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="route-title" id="route-title" style="margin:0;">Hat: </div>
+      </div>
+      <div class="route-actions" style="display:flex; gap:6px;">
+        <button class="direction-btn" id="toggleDirectionBtn" title="Yön Değiştir" style="background:var(--primary-soft); color:var(--primary-color); border-color:var(--primary-soft);">
+          <i class="fas fa-exchange-alt"></i>
         </button>
         <button class="direction-btn" id="centerToUserLocationBtn" title="Konumuma Git">
-          <i class="fas fa-location-arrow"></i>
+          <i class="fas fa-map-marker-alt"></i>
         </button>
         <button class="search-btn" id="openSearchPageBtn" title="Arama Sayfası">
           <i class="fas fa-search"></i>
-        </button>
-        <button class="back-btn" id="goBackBtn" title="Geri Dön">
-          <i class="fas fa-arrow-left"></i>
         </button>
       </div>
     </div>

@@ -16,17 +16,19 @@
 </head>
 <body>
     <div class="app-container">
-        <div class="route-header">
-            <h1 class="route-title project-name">EkoGokhan</h1>
-            <div class="route-actions">
+        <div class="route-header" style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:10px;">
                 <button id="backButton" class="back-btn" onclick="goBack()" style="display: none;" title="Geri">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <button class="search-btn" onclick="goToSearch()" title="Arama">
-                    <i class="fas fa-search"></i>
-                </button>
+                <h1 class="route-title project-name" style="margin:0;">EkoGokhan</h1>
+            </div>
+            <div class="route-actions" style="display:flex; gap:6px;">
                 <button id="shareButton" class="search-btn" onclick="copyShareLink()" style="display: none;" title="Paylaş">
                     <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="search-btn" onclick="goToSearch()" title="Arama">
+                    <i class="fas fa-search"></i>
                 </button>
             </div>
         </div>
@@ -44,6 +46,22 @@
             </div>
 
             <div id="selected-points"></div>
+            
+            <!-- Progress Bar Container -->
+            <div id="calculation-progress" style="display: none; background: var(--card-background); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); text-align: center;">
+                <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                        <i class="fas fa-satellite-dish fa-spin" style="font-size: 1.2rem;"></i>
+                    </div>
+                </div>
+                <h3 style="margin: 0 0 8px 0; color: var(--text-primary); font-size: 1.1rem;">Rota Optimize Ediliyor</h3>
+                <div id="progress-text" style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">Veriler analiz ediliyor...</div>
+                
+                <div style="height: 6px; background: var(--background-soft); border-radius: 10px; overflow: hidden; position: relative;">
+                    <div id="progress-bar" style="position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); transition: width 0.3s ease; border-radius: 10px;"></div>
+                </div>
+                <div id="progress-percent" style="margin-top: 8px; font-weight: bold; color: var(--primary-color); font-size: 0.9rem;">%0</div>
+            </div>
 
             <div id="route-result"></div>
         </div>
@@ -391,52 +409,38 @@
             const pointsDiv = document.getElementById('selected-points');
             if (selectedPoints.length === 2) {
                 pointsDiv.innerHTML = `
-                    <div style="background: var(--card-background); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
-                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                            <i class="fas fa-route" style="color: var(--primary-color); margin-right: 8px; font-size: 1rem;"></i>
-                            <span style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">Seçilen Rota</span>
-                        </div>
+                    <div style="background: var(--card-background); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light);">
                         
-                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center;">
-                            <!-- Başlangıç -->
-                            <div style="text-align: center;">
-                                <div style="background: var(--success-light); border: 1px solid var(--success-border); border-radius: var(--radius); padding: 10px;">
-                                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
-                                        <div style="background: var(--success-color); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 6px; font-size: 10px;">B</div>
-                                        <span style="font-weight: 600; color: var(--success-color); font-size: 0.8rem;">Başlangıç</span>
-                                    </div>
-                                    <div style="font-size: 0.8rem; color: var(--text-primary); font-weight: 500; margin-bottom: 4px; line-height: 1.2;">${startStop.stop.stopName}</div>
-                                    <div style="display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-secondary);">
-                                        <i class="fas fa-walking" style="margin-right: 4px;"></i>
-                                        ${Math.round(startStop.distance)}m
-                                    </div>
-                                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-family: monospace;">
-                                        ${selectedPoints[0].lat.toFixed(3)}, ${selectedPoints[0].lng.toFixed(3)}
+                        <div style="display: flex; flex-direction: column; gap: 16px; position: relative;">
+                            <!-- Sol dikey çizgi -->
+                            <div style="position: absolute; left: 15px; top: 20px; bottom: 20px; width: 2px; background: var(--border-light); z-index: 1;"></div>
+                            
+                            <!-- Başlangıç Noktası -->
+                            <div style="display: flex; align-items: flex-start; position: relative; z-index: 2;">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--card-background); border: 2px solid var(--success-color); display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--success-color);"></div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Başlangıç</div>
+                                    <div style="font-size: 1rem; color: var(--text-primary); font-weight: 600; line-height: 1.3;">${startStop.stop.stopName}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; display: flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-walking" style="opacity: 0.7;"></i>
+                                        <span>Konumdan ${Math.round(startStop.distance)}m yürüme mesafesinde</span>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Ok işareti -->
-                            <div style="display: flex; justify-content: center;">
-                                <div style="background: var(--primary-color); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-arrow-right" style="font-size: 10px;"></i>
+                            <!-- Bitiş Noktası -->
+                            <div style="display: flex; align-items: flex-start; position: relative; z-index: 2;">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--card-background); border: 2px solid var(--danger-color); display: flex; align-items: center; justify-content: center; margin-right: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    <i class="fas fa-map-marker-alt" style="color: var(--danger-color); font-size: 0.85rem;"></i>
                                 </div>
-                            </div>
-                            
-                            <!-- Bitiş -->
-                            <div style="text-align: center;">
-                                <div style="background: var(--danger-light); border: 1px solid var(--danger-border); border-radius: var(--radius); padding: 10px;">
-                                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
-                                        <div style="background: var(--danger-color); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 6px; font-size: 10px;">S</div>
-                                        <span style="font-weight: 600; color: var(--danger-color); font-size: 0.8rem;">Bitiş</span>
-                                    </div>
-                                    <div style="font-size: 0.8rem; color: var(--text-primary); font-weight: 500; margin-bottom: 4px; line-height: 1.2;">${endStop.stop.stopName}</div>
-                                    <div style="display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-secondary);">
-                                        <i class="fas fa-walking" style="margin-right: 4px;"></i>
-                                        ${Math.round(endStop.distance)}m
-                                    </div>
-                                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-family: monospace;">
-                                        ${selectedPoints[1].lat.toFixed(3)}, ${selectedPoints[1].lng.toFixed(3)}
+                                <div style="flex: 1;">
+                                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Hedef</div>
+                                    <div style="font-size: 1rem; color: var(--text-primary); font-weight: 600; line-height: 1.3;">${endStop.stop.stopName}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; display: flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-walking" style="opacity: 0.7;"></i>
+                                        <span>Hedefe ${Math.round(endStop.distance)}m yürüme mesafesinde</span>
                                     </div>
                                 </div>
                             </div>
@@ -446,19 +450,41 @@
             }
         }
 
-        function calculateRoute() {
+        async function calculateRoute() {
             const start = selectedPoints[0];
             const end = selectedPoints[1];
 
-            console.log('Rota hesaplanıyor...');
+            console.log('Karmaşık rota algoritması başlatılıyor...');
             
-            const bestResult = findBestRoute(
-                start.lat, start.lng, end.lat, end.lng,
-                stops, routes, map, routeMarkers, routeLines,
-                makeRouteNumberClickable, displayRouteOnMap
-            );
+            const progressContainer = document.getElementById('calculation-progress');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const progressPercent = document.getElementById('progress-percent');
+            const resultDiv = document.getElementById('route-result');
             
-            displayRouteResult(bestResult, start, end);
+            document.getElementById('usage-info').style.display = 'none';
+            resultDiv.innerHTML = '';
+            progressContainer.style.display = 'block';
+            
+            const onProgress = (percent, text) => {
+                progressBar.style.width = percent + '%';
+                progressPercent.textContent = '%' + percent;
+                progressText.textContent = text;
+            };
+
+            try {
+                const bestResult = await findBestRouteAdvanced(
+                    start.lat, start.lng, end.lat, end.lng,
+                    stops, routes, onProgress
+                );
+                
+                progressContainer.style.display = 'none';
+                displayRouteResult(bestResult, start, end);
+            } catch (error) {
+                console.error("Rota hesaplama hatası:", error);
+                progressContainer.style.display = 'none';
+                resultDiv.innerHTML = `<div class="info-item" style="border-left-color: var(--danger-color);"><strong style="color: var(--danger-color);">Hata Oluştu</strong><br>Rota hesaplanırken bir sorun oluştu. Lütfen tekrar deneyin.</div>`;
+            }
         }
 
         function displayRouteResult(bestResult, start, end) {
@@ -480,7 +506,9 @@
 
                     // createSelectedPointsInfo artık boş döneceği için kaldırdık
 
-                    if (routeData.type === 'direct') {
+                    if (routeData.type === 'advanced') {
+                        resultHtml += createAdvancedRouteResult(routeData, stops, routes, makeRouteNumberClickable);
+                    } else if (routeData.type === 'direct') {
                         const route = routeData.routes[0];
                         const alternatives = findAlternativeRoutes(
                             startStop.stop.stopId, 

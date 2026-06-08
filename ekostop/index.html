@@ -18,25 +18,27 @@
 </head>
 <body>
   <div class="app-container">
-    <div class="route-header">
-      <div class="route-title" id="header-title"></div>
-      <div class="route-actions">
-        <button class="direction-btn" onclick="refreshData()" title="Verileri Yenile">
+    <div class="route-header" style="display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="back-btn" id="back-btn" onclick="goBack()" title="Geri Dön" style="display:none;">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="route-title" id="header-title" style="margin:0;"></div>
+      </div>
+      <div class="route-actions" style="display:flex; gap:6px;">
+        <button class="direction-btn" onclick="refreshData()" title="Verileri Yenile" style="background:var(--primary-soft); color:var(--primary-color); border-color:var(--primary-soft);">
           <i class="fas fa-sync-alt"></i>
         </button>
         <button class="direction-btn" onclick="window.centerToUserLocation()" title="Konumuma Git">
-          <i class="fas fa-location-arrow"></i>
+          <i class="fas fa-map-marker-alt"></i>
         </button>
         <button class="search-btn" onclick="openSearchPage()" title="Arama Sayfası">
           <i class="fas fa-search"></i>
         </button>
-        <button class="back-btn" id="back-btn" onclick="goBack()" title="Geri Dön" style="display:none;">
-          <i class="fas fa-arrow-left"></i>
-        </button>
       </div>
     </div>
     
-    <div class="map-container">
+    <div class="map-container" style="view-transition-name: ekostop-map;">
       <div id="map"></div>
     </div>
     
@@ -59,7 +61,7 @@ window.busAnimations = {};
 
 // Bus tracking functions
 window.toggleBusTracking = function(plate) {
-  document.querySelectorAll('.info-item[data-plate]').forEach(item => {
+  document.querySelectorAll('.bus-info-card[data-plate]').forEach(item => {
     item.classList.remove('tracking-active');
   });
 
@@ -73,9 +75,11 @@ window.toggleBusTracking = function(plate) {
     window.trackedBusPlate = plate;
     localStorage.setItem('trackedBusPlate', window.trackedBusPlate);
     
-    const targetItem = document.querySelector(`.info-item[data-plate="${plate}"]`);
+    const targetItem = document.querySelector(`.bus-info-card[data-plate="${plate}"]`);
     if (targetItem) {
       targetItem.classList.add('tracking-active');
+      targetItem.classList.add('pulse-anim');
+      setTimeout(() => targetItem.classList.remove('pulse-anim'), 400);
     }
     
     window.focusOnBus(plate);
@@ -85,7 +89,7 @@ window.toggleBusTracking = function(plate) {
 window.stopBusTracking = function() {
   window.trackedBusPlate = null;
   localStorage.removeItem('trackedBusPlate');
-  document.querySelectorAll('.info-item[data-plate]').forEach(item => {
+  document.querySelectorAll('.bus-info-card[data-plate]').forEach(item => {
     item.classList.remove('tracking-active'); 
   });
 };
@@ -168,6 +172,44 @@ function formatDistance(distance) {
   return distance >= 1000 ? (distance / 1000).toFixed(1) + " km" : Math.round(distance) + " m";
 }
 
+window.calculateSmartETA = function(distance, stopDiff, vehicleType) {
+  const routeCurvatureFactor = 1.28;
+  const estimatedRoadDistance = distance * routeCurvatureFactor;
+  let baseSpeed = 11.1; 
+  if (vehicleType === 2) baseSpeed = 8.3;  
+  if (vehicleType === 3) baseSpeed = 16.6; 
+  if (vehicleType === 5) baseSpeed = 7.7;  
+  const now = new Date();
+  const hour = now.getHours();
+  const day = now.getDay();
+  let trafficFactor = 1.0;
+  const isWeekend = (day === 0 || day === 6);
+  if (!isWeekend) {
+    if ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19.5)) {
+      trafficFactor = 1.45;
+    } else if (hour >= 12 && hour <= 14) {
+      trafficFactor = 1.15;
+    }
+  }
+  let travelTime = (estimatedRoadDistance / baseSpeed) * trafficFactor;
+  let dwellTimePerStop = 25;
+  if (vehicleType === 2) dwellTimePerStop = 20; 
+  if (vehicleType === 3) dwellTimePerStop = 30; 
+  if (stopDiff > 0) {
+    const intermediateStops = Math.max(0, stopDiff - 1);
+    travelTime += intermediateStops * dwellTimePerStop;
+  } else {
+    const estimatedStops = Math.floor(estimatedRoadDistance / 400);
+    travelTime += Math.max(0, estimatedStops - 1) * dwellTimePerStop;
+  }
+  const trafficLightDelay = Math.floor(estimatedRoadDistance / 1000) * 30;
+  travelTime += trafficLightDelay;
+  let etaMinutes = Math.round(travelTime / 60);
+  if (distance > 50 && etaMinutes < 1) { etaMinutes = 1; }
+  if (distance <= 50 && stopDiff <= 1) { etaMinutes = 0; }
+  return etaMinutes;
+};
+
 function getVehicleTypeForRoute(route) {
   // 1. URL parametresi varsa en üst öncelik o (Global durak tipi zorlaması)
   const params = new URLSearchParams(window.location.search);
@@ -202,7 +244,7 @@ function transferBus(route, direction) {
 // Basit otobüs animasyonu fonksiyonu (ekostop için özelleştirilmiş)
 // Hat kodunu da parametre olarak alan animasyon fonksiyonu
 // Akıcı ve Tahminli Otobüs Hareketi (Sürekli Akış Sistemi - ekostop)
-function animateBusToPosition(busPlate, startPos, endPos, bearing, duration = 12000, routeCode = null, vehicleType = 1) {
+function animateBusToPosition(busPlate, startPos, endPos, bearing, duration = 10000, routeCode = null, vehicleType = 1) {
   if (window.busAnimations && window.busAnimations[busPlate]) {
     cancelAnimationFrame(window.busAnimations[busPlate].animationId);
   }
@@ -218,19 +260,19 @@ function animateBusToPosition(busPlate, startPos, endPos, bearing, duration = 12
 
   function animate(currentTime) {
     const elapsed = currentTime - startTime;
-    let progress = elapsed / duration;
-    const clampedProgress = Math.min(1.2, progress);
+    let progress = Math.min(1, elapsed / duration);
+    let easedProgress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
     const currentPos = [
-      startPos[0] + (endPos[0] - startPos[0]) * clampedProgress,
-      startPos[1] + (endPos[1] - startPos[1]) * clampedProgress
+      startPos[0] + (endPos[0] - startPos[0]) * easedProgress,
+      startPos[1] + (endPos[1] - startPos[1]) * easedProgress
     ];
 
     let currentBearing = bearing;
     if (startBearing !== bearing) {
       let angleDiff = ((bearing - startBearing + 180) % 360) - 180;
       if (angleDiff < -180) angleDiff += 360;
-      currentBearing = startBearing + angleDiff * Math.min(1, clampedProgress);
+      currentBearing = startBearing + angleDiff * easedProgress;
     }
 
     const marker = window.activeBusMarkers[busPlate];
@@ -240,12 +282,12 @@ function animateBusToPosition(busPlate, startPos, endPos, bearing, duration = 12
       const updatedIcon = window.createBusIconWithPlate(displayText, currentBearing, vehicleType);
       marker.setIcon(updatedIcon);
 
-      if (window.trackedBusPlate === busPlate) {
+      if (window.trackedBusPlate === busPlate && !window.isFlying) {
         window.map.panTo(currentPos, { animate: true, duration: 0.2 });
       }
     }
 
-    if (clampedProgress < 1.2) {
+    if (progress < 1) {
       window.busAnimations[busPlate].animationId = requestAnimationFrame(animate);
     }
   }
@@ -256,81 +298,93 @@ function animateBusToPosition(busPlate, startPos, endPos, bearing, duration = 12
 }
 
 function updateBusListWithAnimation(sortedBuses, stopLat, stopLng, stopInfo) {
-  const currentBusPlates = window.previousBusList.map(bus => bus.plate);
   const newBusPlates = sortedBuses.map(bus => bus.plate);
+  const usedNames = new Set();
   
-  const exitingBuses = currentBusPlates.filter(plate => !newBusPlates.includes(plate));
-  
-  exitingBuses.forEach(plate => {
-    const existingItem = document.querySelector(`.info-item[data-plate="${plate}"]`);
-    if (existingItem) {
-      existingItem.classList.add('bus-item-exit');
-      setTimeout(() => {
-        if (existingItem.parentNode) {
-          existingItem.remove();
-        }
-      }, 400);
+  let busesHTML = sortedBuses.map((bus, index) => {
+    const busLat = parseFloat(bus.lat);
+    const busLng = parseFloat(bus.lng);
+    const distance = calculateDistance(busLat, busLng, stopLat, stopLng);
+    const formattedDistance = formatDistance(distance);
+    
+    const isTracked = window.trackedBusPlate === bus.plate;
+    const vehicleType = getVehicleTypeForRoute(bus.displayRouteCode);
+    const eta = window.calculateSmartETA(distance, parseInt(bus.stopDiff) || 0, vehicleType);
+    
+    let iconClass = 'fa-bus';
+    if (vehicleType === 2) iconClass = 'fa-tram';
+    else if (vehicleType === 3 || vehicleType === 6) iconClass = 'fa-train-subway';
+    else if (vehicleType === 5) iconClass = 'fa-ship';
+    else if (vehicleType === 4) iconClass = 'fa-cable-car';
+
+    const isApproaching = bus.stopDiff <= 3;
+    const transferUrl = `../ekorota/?region=${window.currentRegion}&route=${bus.displayRouteCode || (bus.routeCode ? bus.routeCode.replace(/^41/, '') : 'N/A')}&direction=${bus.direction}`;
+
+    const rightBoxHtml = `
+      <div class="card-status-orb" onclick="event.stopPropagation(); window.location.href='${transferUrl}'" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:6px 10px; background:${isApproaching ? 'var(--success-light)' : 'transparent'}; border:${isApproaching ? '1px solid var(--success-border)' : '1px solid var(--border-light)'}; cursor:pointer; transition:all 0.2s;">
+        <span style="font-size:1.2rem; font-weight:800; color:${isApproaching ? 'var(--success-color)' : 'var(--primary-color)'}; line-height:1;">${eta} <span style="font-size:0.75rem;">dk</span></span>
+        <span style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">${formattedDistance}</span>
+      </div>
+    `;
+
+    const bottomBoxHtml = `
+      <div class="route-details" style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+        <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px;">
+          <i class="fas fa-arrow-right" style="color:var(--primary-light); font-size:0.65rem;"></i>
+          <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px;">${bus.displayName || 'Bilinmiyor'}</span>
+        </div>
+        <div style="display:inline-flex; align-items:center; gap:5px; background:var(--background-soft); border:1px solid var(--border-light); padding:3px 8px; border-radius:6px; width:fit-content;">
+          <i class="fas fa-map-marker-alt" style="color:var(--text-muted); font-size:0.65rem;"></i>
+          <span style="font-size:0.7rem; font-weight:600; color:var(--text-secondary);">Size <strong style="color:var(--primary-color);">${bus.stopDiff || 0}</strong> durak mesafede</span>
+        </div>
+      </div>
+    `;
+
+    let safePlateName = bus.plate.replace(/[^a-zA-Z0-9]/g, '-');
+    let finalName = `bus-card-${safePlateName}`;
+    let counter = 1;
+    while(usedNames.has(finalName)) {
+      finalName = `bus-card-${safePlateName}-${counter}`;
+      counter++;
     }
-  });
+    usedNames.add(finalName);
+
+    return `<div id="${finalName}" class="bus-info-card ${isTracked ? 'tracking-active' : ''}" data-plate="${bus.plate}" onclick="window.toggleBusTracking('${bus.plate}')">
+      <div class="card-glow" style="background: ${isApproaching ? 'var(--success-color)' : 'var(--primary-color)'};">
+        <div class="sequence-mini">#${index + 1}</div>
+      </div>
+      
+      <div class="card-main">
+        <div class="bus-id-section">
+          <div class="bus-icon-pill">
+            <i class="fas ${iconClass}"></i>
+          </div>
+          <div class="plate-number">${bus.displayRouteCode || 'Bilinmiyor'}</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; margin-left:4px;">(${bus.plate})</div>
+        </div>
+        ${bottomBoxHtml}
+      </div>
+
+      ${rightBoxHtml}
+    </div>`;
+  }).join('');
+
+  const gridContainer = document.querySelector('.bus-cards-grid');
   
-  setTimeout(() => {
-    let busesHTML = sortedBuses.map((bus, index) => {
-      const busLat = parseFloat(bus.lat);
-      const busLng = parseFloat(bus.lng);
-      const distance = calculateDistance(busLat, busLng, stopLat, stopLng);
-      const formattedDistance = formatDistance(distance);
-      
-      const isTracked = window.trackedBusPlate === bus.plate;
-      const isNewBus = !currentBusPlates.includes(bus.plate);
-      const vehicleType = getVehicleTypeForRoute(bus.displayRouteCode);
-      
-      // Tip bazlı ikon belirleme
-      let iconClass = 'fa-bus';
-      if (vehicleType === 2) iconClass = 'fa-tram';
-      else if (vehicleType === 3 || vehicleType === 6) iconClass = 'fa-train-subway';
-      else if (vehicleType === 5) iconClass = 'fa-ship';
-      else if (vehicleType === 4) iconClass = 'fa-cable-car';
+  // FLIP: F (First) - Eski pozisyonları kaydet
+  let firstPositions = {};
+  if (gridContainer && !window.isFirstBusLoad) {
+    Array.from(gridContainer.children).forEach(child => {
+      if(child.id) firstPositions[child.id] = child.getBoundingClientRect().top;
+    });
+  }
 
-      let animationClass = '';
-      if (window.isFirstBusLoad) {
-        animationClass = 'bus-item-enter';
-      } else if (isNewBus) {
-        animationClass = 'bus-item-enter';
-      } else {
-        const oldIndex = currentBusPlates.indexOf(bus.plate);
-        if (oldIndex !== -1 && oldIndex !== index) {
-          animationClass = 'bus-item-move';
-        }
-      }
-
-      return `<div class="bus-info-card ${isTracked ? 'tracking-active' : ''} ${animationClass}" data-plate="${bus.plate}">
-        <div class="card-glow" style="background: ${bus.stopDiff <= 3 ? 'var(--success-color)' : 'var(--primary-color)'};">
-          <div class="sequence-mini">#${index + 1}</div>
-        </div>
-        
-        <div class="card-main" onclick="event.stopPropagation(); window.toggleBusTracking('${bus.plate}')">
-          <div class="bus-id-section">
-            <div class="bus-icon-pill">
-              <i class="fas ${iconClass}"></i>
-            </div>
-            <div class="plate-number">${bus.displayRouteCode || 'Bilinmiyor'}</div>
-          </div>
-
-          <div class="route-details">
-            <div class="next-label">${bus.displayName || 'Bilinmiyor'}</div>
-            <div class="bus-user-status ${bus.stopDiff <= 5 ? 'approaching' : 'passed'}">
-              <span>${bus.stopDiff || 0} durak kaldı • ${bus.plate || 'Bilinmiyor'}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-status-orb" onclick="event.stopPropagation(); transferBus('${bus.displayRouteCode || (bus.routeCode ? bus.routeCode.replace(/^41/, '') : 'N/A')}', '${bus.direction}')">
-          <div class="status-label">${formattedDistance}</div>
-          <div class="status-action-hint"><i class="fas fa-arrow-right"></i></div>
-        </div>
-      </div>`;
-    }).join('');
-
+  // DOM Güncellemesi
+  if (gridContainer && !window.isFirstBusLoad) {
+    gridContainer.innerHTML = busesHTML;
+    const countBadge = document.querySelector('.count-badge');
+    if (countBadge) countBadge.textContent = sortedBuses.length;
+  } else {
     document.getElementById('bus-info').innerHTML = `
       <div class="section-container first-section">
         <div class="section-meta-label">${stopInfo ? stopInfo.busStopName : 'Bilinmeyen Durak'}</div>
@@ -341,29 +395,56 @@ function updateBusListWithAnimation(sortedBuses, stopLat, stopLng, stopInfo) {
         <div class="bus-cards-grid">${busesHTML}</div>
       </div>
     `;
+  }
 
-    if (window.isFirstBusLoad) {
-      window.isFirstBusLoad = false;
-    }
+  // Tracking durumunu aktar
+  if (window.trackedBusPlate && newBusPlates.includes(window.trackedBusPlate)) {
+    const targetItem = document.querySelector(`.bus-info-card[data-plate="${window.trackedBusPlate}"]`);
+    if (targetItem) targetItem.classList.add('tracking-active');
+  } else if (window.trackedBusPlate && !newBusPlates.includes(window.trackedBusPlate)) {
+    window.stopBusTracking();
+  }
 
-    setTimeout(() => {
-      document.querySelectorAll('.bus-item-enter, .bus-item-move').forEach(item => {
-        item.classList.remove('bus-item-enter', 'bus-item-move');
-      });
-    }, 800);
-    
-    if (window.trackedBusPlate && newBusPlates.includes(window.trackedBusPlate)) {
-      const targetItem = document.querySelector(`.info-item[data-plate="${window.trackedBusPlate}"]`);
-      if (targetItem) {
-        targetItem.classList.add('tracking-active');
+  // FLIP: L (Last), I (Invert), P (Play) - Animasyonu tetikle
+  const activeGrid = document.querySelector('.bus-cards-grid');
+  if (activeGrid && Object.keys(firstPositions).length > 0) {
+    Array.from(activeGrid.children).forEach(child => {
+      if (child.id && firstPositions[child.id] !== undefined) {
+        const lastTop = child.getBoundingClientRect().top;
+        const firstTop = firstPositions[child.id];
+        const deltaY = firstTop - lastTop;
+        
+        if (deltaY !== 0) {
+          // Invert
+          child.style.transform = `translateY(${deltaY}px)`;
+          child.style.transition = 'none';
+          
+          // Play
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              child.style.transition = 'transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1)';
+              child.style.transform = '';
+            });
+          });
+        }
+      } else {
+        // Yeni Gelen Otobüs Animasyonu
+        child.style.opacity = '0';
+        child.style.transform = 'translateY(15px)';
+        child.style.transition = 'none';
+        
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            child.style.transition = 'all 0.4s ease';
+            child.style.opacity = '1';
+            child.style.transform = '';
+          });
+        });
       }
-      window.focusOnBus(window.trackedBusPlate);
-    } else if (window.trackedBusPlate && !newBusPlates.includes(window.trackedBusPlate)) {
-      window.stopBusTracking();
-    }
-    
-  }, exitingBuses.length > 0 ? 200 : 0);
-  
+    });
+  }
+
+  if (window.isFirstBusLoad) window.isFirstBusLoad = false;
   window.previousBusList = [...sortedBuses];
 }
 
@@ -418,7 +499,7 @@ function displayData(data) {
   else if (stopType === 4) headerIconClass = 'fa-cable-car';
 
   const stopId = getQueryParam('stop');
-  document.getElementById('header-title').innerHTML = `<i class="fas ${headerIconClass}" style="margin-right: 8px;"></i>${stopId || data.stopInfo.busStopId}`;
+  document.getElementById('header-title').innerHTML = `Durak: ${stopId || data.stopInfo.busStopId}`;
 
   const backParam = getQueryParam('back');
   if(backParam) {

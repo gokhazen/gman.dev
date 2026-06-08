@@ -949,7 +949,10 @@
     /* Permission Screen Stilleri */
     .permission-overlay {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: var(--background-main);
       z-index: 9999;
       display: flex;
@@ -1081,7 +1084,8 @@
       </div>
       <h2 class="permission-title">Konum Erişimi</h2>
       <p class="permission-text">
-        EkoGokhan'ın size en yakın şehri otomatik seçebilmesi ve durakların uzaklığını gösterebilmesi için konum iznine ihtiyacı var.
+        EkoGokhan'ın size en yakın şehri otomatik seçebilmesi ve durakların uzaklığını gösterebilmesi için konum iznine
+        ihtiyacı var.
       </p>
       <button class="permission-btn" id="request-permission-btn">
         <i class="fas fa-location-arrow"></i>
@@ -1233,7 +1237,7 @@
         APP_DATA = await res1.json();
         PROJECT_DATA = await res2.json();
         updateProjectUI();
-        
+
         // Config yüklendikten sonra izin kontrolü yap
         initPermissionFlow();
       } catch (e) {
@@ -1393,7 +1397,7 @@
 
     const findNearestCity = async () => {
       if (locationProcessed && !cachedCoords) return nearestCity;
-      
+
       return new Promise((resolve) => {
         if (cachedCoords) {
           processLocation(cachedCoords.latitude, cachedCoords.longitude, resolve);
@@ -1893,7 +1897,7 @@
         if (!cardNumber) {
           els.kentkartContent.innerHTML = `
         <div class="kentkart-input-area">
-          <input type="text" id="card-input" placeholder="Kart numaranızı girin (son 2 hanesi olmadan)" maxlength="11">
+          <input type="text" id="card-input" placeholder="Kart Numaranızı Girin" maxlength="11">
           <button id="save-card-btn"><i class="fas fa-save"></i></button>
         </div>
       `;

@@ -65,14 +65,14 @@ window.initializeMap = function() {
 
   googleStreets.addTo(window.map);
 
-  // Custom Map Name & Layer Selector (Top Right)
+  // Custom Map Name & Layer Selector (Bottom Right)
   const MapTypeSelector = L.Control.extend({
-    options: { position: 'topright' },
+    options: { position: 'bottomright' },
     onAdd: function() {
       const container = L.DomUtil.create('div', 'custom-map-name-frame');
       container.innerHTML = `
-        <div class="active-map-name">📍 GOOGLE MAPS</div>
-        <div class="map-type-dropdown">
+        <div class="active-map-name" title="Harita Katmanları" style="width:36px; height:36px; justify-content:center; padding:0; font-size:1.1rem; border-radius:10px; background:var(--card-background); border:1px solid var(--border-light); color:var(--text-secondary);"><i class="fas fa-layer-group"></i></div>
+        <div class="map-type-dropdown" style="top:auto; bottom:100%; margin-bottom:8px;">
           <div class="map-type-option active" data-layer="street">Google Maps</div>
           <div class="map-type-option" data-layer="sat">Google Uydu</div>
           <div class="map-type-option" data-layer="osm">OpenStreetMaps</div>
@@ -98,15 +98,12 @@ window.initializeMap = function() {
 
           if (type === 'street') {
             googleStreets.addTo(window.map);
-            activeName.innerText = '📍 GOOGLE MAPS';
           }
           if (type === 'sat') {
             googleHybrid.addTo(window.map);
-            activeName.innerText = '📍 GOOGLE UYDU';
           }
           if (type === 'osm') {
             osmLayer.addTo(window.map);
-            activeName.innerText = '📍 OPENSTREETMAPS';
           }
 
           container.querySelectorAll('.map-type-option').forEach(o => o.classList.remove('active'));
@@ -321,19 +318,27 @@ window.addStopsToMap = function(stopPositions, nearestStop) {
       if (dist < 40) isCrowded = true;
     }
 
-    // Zigzag Etiket Algoritması (Durak isimlerinin birbirini ezmemesi için)
-    let routeAngle = 35; // Varsayılan temiz açı
+    // Gelişmiş Zigzag Etiket Algoritması (Durak isimlerinin birbirini ezmemesi için)
+    // Her durak bir öncekine göre ters açıya yatar, böylece asla üst üste binmezler.
+    let baseAngle = (index % 2 === 0) ? 35 : -35;
+    
     if (isCrowded) {
-      // Çok yakın duraklarda başlıkları sırayla ters açılara yatır (Zigzag)
-      routeAngle = (index % 2 === 0) ? 35 : -35; 
-    } else {
-      // Normal mesafede, rotanın genel gidişatına göre en okunabilir açıyı seç
-      const ni = Math.max(0, Math.min(index, stopPositions.length - 2));
-      const p1 = stopPositions[ni].position;
-      const p2 = stopPositions[ni + 1].position;
-      const bearing = window.calculateBearing(p1[0], p1[1], p2[0], p2[1]);
-      routeAngle = (Math.abs(Math.sin(bearing * Math.PI / 180)) > 0.7) ? 45 : -35;
+      // Eğer duraklar çok yakınsa, çarpışmamaları için açıları daha dik yap (+55 ve -55)
+      baseAngle = (index % 2 === 0) ? 55 : -55; 
     }
+    
+    // Rotanın genel yönüne göre ince ayar (opsiyonel)
+    const ni = Math.max(0, Math.min(index, stopPositions.length - 2));
+    const p1 = stopPositions[ni].position;
+    const p2 = stopPositions[ni + 1].position;
+    const bearing = window.calculateBearing(p1[0], p1[1], p2[0], p2[1]);
+    
+    // Eğer yol tam sağa/sola gidiyorsa ve etiketler yola paralel düşüyorsa açıları dikleştir
+    if (Math.abs(Math.sin(bearing * Math.PI / 180)) < 0.3) {
+       baseAngle = (index % 2 === 0) ? 60 : -60;
+    }
+
+    let routeAngle = baseAngle;
 
     const stopIcon = window.createStopIcon(stop, isFirst, isLast, isNearest, routeAngle, isCrowded);
     
@@ -448,10 +453,12 @@ window.focusOnLocation = function(position, zoomLevel = 16) {
 window.focusOnBus = function(plate) {
   const marker = window.activeBusMarkers[plate];
   if (marker) {
+    window.isFlying = true;
     window.map.flyTo(marker.getLatLng(), 16, {
       animate: true,
-      duration: 1
+      duration: 1.5
     }); 
+    setTimeout(() => { window.isFlying = false; }, 1500);
   }
 };
 
@@ -471,7 +478,7 @@ window.animateBusMovement = function(busPlate, startPos, endPos, bearing) {
     cancelAnimationFrame(window.busAnimations[busPlate].animationId);
   }
 
-  const duration = 12000; // 12 saniyelik hareket penceresi
+  const duration = 10000; 
   const startTime = performance.now();
   let startBearing = bearing;
   
@@ -481,23 +488,22 @@ window.animateBusMovement = function(busPlate, startPos, endPos, bearing) {
 
   function animate(currentTime) {
     const elapsed = currentTime - startTime;
-    // Progress %120'ye kadar çıkabilir (Sunucu gecikirse ilerlemeye devam etmesi için)
-    let progress = elapsed / duration; 
+    let progress = Math.min(1, elapsed / duration);
     
-    // Easing (sadece ilk %100'lük kısım için geçerli)
-    const clampedProgress = Math.min(1.2, progress);
+    // Smooth Easing (easeInOutQuad)
+    let easedProgress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
     const currentPos = [
-      startPos[0] + (endPos[0] - startPos[0]) * clampedProgress,
-      startPos[1] + (endPos[1] - startPos[1]) * clampedProgress
+      startPos[0] + (endPos[0] - startPos[0]) * easedProgress,
+      startPos[1] + (endPos[1] - startPos[1]) * easedProgress
     ];
 
-    // Bearing interpolasyonu (açı değişimi)
+    // Yön (bearing) interpolasyonu
     let currentBearing = bearing;
     if (startBearing !== bearing) {
       let angleDiff = ((bearing - startBearing + 180) % 360) - 180;
       if (angleDiff < -180) angleDiff += 360;
-      currentBearing = startBearing + angleDiff * Math.min(1, clampedProgress);
+      currentBearing = startBearing + angleDiff * easedProgress;
     }
 
     const marker = window.activeBusMarkers[busPlate];
@@ -506,13 +512,12 @@ window.animateBusMovement = function(busPlate, startPos, endPos, bearing) {
       const updatedIcon = window.createBusIconWithPlate(busPlate, currentBearing);
       marker.setIcon(updatedIcon);
 
-      if (window.trackedBusPlate === busPlate) {
+      if (window.trackedBusPlate === busPlate && !window.isFlying) {
         window.map.panTo(currentPos, { animate: true, duration: 0.2 });
       }
     }
 
-    // Bir sonraki güncelleme gelene kadar (veya %120 bitene kadar) devam et
-    if (clampedProgress < 1.2) {
+    if (progress < 1) {
       window.busAnimations[busPlate].animationId = requestAnimationFrame(animate);
     }
   }

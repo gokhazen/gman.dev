@@ -52,7 +52,7 @@ window.guessVehicleType = function(routeCode) {
 // Otobüs takip fonksiyonları
 window.toggleBusTracking = function(plate) {
   // Önce tüm tracking durumlarını temizle
-  document.querySelectorAll('.info-item[data-plate]').forEach(item => {
+  document.querySelectorAll('.bus-info-card[data-plate]').forEach(item => {
     item.classList.remove('tracking-active');
   });
 
@@ -69,9 +69,11 @@ window.toggleBusTracking = function(plate) {
     localStorage.setItem('trackedBusPlate', window.trackedBusPlate);
     
     // Hemen görsel güncellemesini yap
-    const targetItem = document.querySelector(`.info-item[data-plate="${plate}"]`);
+    const targetItem = document.querySelector(`.bus-info-card[data-plate="${plate}"]`);
     if (targetItem) {
       targetItem.classList.add('tracking-active');
+      targetItem.classList.add('pulse-anim');
+      setTimeout(() => targetItem.classList.remove('pulse-anim'), 400);
     }
     
     // Otobüsü haritada odakla
@@ -82,7 +84,7 @@ window.toggleBusTracking = function(plate) {
 window.stopBusTracking = function() {
   window.trackedBusPlate = null;
   localStorage.removeItem('trackedBusPlate');
-  document.querySelectorAll('.info-item[data-plate]').forEach(item => {
+  document.querySelectorAll('.bus-info-card[data-plate]').forEach(item => {
     item.classList.remove('tracking-active'); 
   });
 };
@@ -104,6 +106,44 @@ window.calculateDistance = function(lat1, lon1, lat2, lon2) {
     Math.cos(φ1) * Math.cos(φ2) *
     Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+window.calculateSmartETA = function(distance, stopDiff, vehicleType) {
+  const routeCurvatureFactor = 1.28;
+  const estimatedRoadDistance = distance * routeCurvatureFactor;
+  let baseSpeed = 11.1; 
+  if (vehicleType === 2) baseSpeed = 8.3;  
+  if (vehicleType === 3) baseSpeed = 16.6; 
+  if (vehicleType === 5) baseSpeed = 7.7;  
+  const now = new Date();
+  const hour = now.getHours();
+  const day = now.getDay();
+  let trafficFactor = 1.0;
+  const isWeekend = (day === 0 || day === 6);
+  if (!isWeekend) {
+    if ((hour >= 7 && hour <= 9) || (hour >= 17 && hour <= 19.5)) {
+      trafficFactor = 1.45;
+    } else if (hour >= 12 && hour <= 14) {
+      trafficFactor = 1.15;
+    }
+  }
+  let travelTime = (estimatedRoadDistance / baseSpeed) * trafficFactor;
+  let dwellTimePerStop = 25;
+  if (vehicleType === 2) dwellTimePerStop = 20; 
+  if (vehicleType === 3) dwellTimePerStop = 30; 
+  if (stopDiff > 0) {
+    const intermediateStops = Math.max(0, stopDiff - 1);
+    travelTime += intermediateStops * dwellTimePerStop;
+  } else {
+    const estimatedStops = Math.floor(estimatedRoadDistance / 400);
+    travelTime += Math.max(0, estimatedStops - 1) * dwellTimePerStop;
+  }
+  const trafficLightDelay = Math.floor(estimatedRoadDistance / 1000) * 30;
+  travelTime += trafficLightDelay;
+  let etaMinutes = Math.round(travelTime / 60);
+  if (distance > 50 && etaMinutes < 1) { etaMinutes = 1; }
+  if (distance <= 50 && stopDiff <= 1) { etaMinutes = 0; }
+  return etaMinutes;
 };
 
 // İki nokta arasındaki açıyı (bearing) hesapla
@@ -475,30 +515,74 @@ window.displayRouteOnMap = function(data) {
 
   // Otobüs listesi HTML'i oluştur
   const busesHTML = busesInfo.map((bus, index) => {
-    let userStatusHtml = '';
-    if (bus.userDistanceInfo) {
-      if (bus.userDistanceInfo.type === "approaching") {
-        userStatusHtml = `
-        <div class="bus-user-status approaching">
-          <div class="user-status-icon">👤</div>
-          <span>Size ${bus.userDistanceInfo.stopsAway} durak • ${window.formatDistance(bus.userDistanceInfo.distance)}</span>
-        </div>
-      `;
-      } else if (bus.userDistanceInfo.type === "passed") {
-        userStatusHtml = `
-        <div class="bus-user-status passed">
-          <div class="user-status-icon">✕</div>
-          <span>Durağınızı geçti</span>
-        </div>
-      `;
-      }
-    }
-
     const statusText = bus.isAtStop ? 'DURAKTA' : 'YOLDA';
     const statusValue = bus.isAtStop ? '' : (bus.nextDistance > 0 ? window.formatDistance(bus.nextDistance) : '---');
     const targetStopName = bus.isAtStop ?
       (bus.nextStop ? bus.nextStop.stopName : 'Terminal') :
       (bus.nextStop ? bus.nextStop.stopName : 'Son Durak');
+
+    let rightBoxHtml = '';
+    let bottomBoxHtml = '';
+
+    if (bus.userDistanceInfo) {
+      if (bus.userDistanceInfo.type === "approaching") {
+        const eta = window.calculateSmartETA(bus.userDistanceInfo.distance, bus.userDistanceInfo.stopsAway, window.currentVehicleType);
+        
+        rightBoxHtml = `
+          <div class="card-status-orb" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:6px 10px; background:${bus.isAtStop ? 'var(--success-light)' : 'transparent'}; border:${bus.isAtStop ? '1px solid var(--success-border)' : 'none'};">
+            <span style="font-size:1.2rem; font-weight:800; color:${bus.isAtStop ? 'var(--success-color)' : 'var(--primary-color)'}; line-height:1;">${eta} <span style="font-size:0.75rem;">dk</span></span>
+            <span style="font-size:0.7rem; color:var(--text-muted); font-weight:600;">${window.formatDistance(bus.userDistanceInfo.distance)}</span>
+          </div>
+        `;
+
+        bottomBoxHtml = `
+          <div class="route-details" style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+            <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px;">
+              <i class="fas fa-arrow-right" style="color:var(--primary-light); font-size:0.65rem;"></i>
+              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px;">${targetStopName}</span>
+              <strong style="color:var(--primary-color);">${statusValue}</strong>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:5px; background:var(--background-soft); border:1px solid var(--border-light); padding:3px 8px; border-radius:6px; width:fit-content;">
+              <i class="fas fa-map-marker-alt" style="color:var(--text-muted); font-size:0.65rem;"></i>
+              <span style="font-size:0.7rem; font-weight:600; color:var(--text-secondary);">Size <strong style="color:var(--primary-color);">${bus.userDistanceInfo.stopsAway}</strong> durak mesafede</span>
+            </div>
+          </div>
+        `;
+      } else if (bus.userDistanceInfo.type === "passed") {
+        rightBoxHtml = `
+          <div class="card-status-orb" style="display:flex; align-items:center; justify-content:center; background:var(--danger-light); padding:8px 12px; border-radius:12px;">
+            <span style="font-size:0.8rem; font-weight:800; color:var(--danger-color);">GEÇTİ</span>
+          </div>
+        `;
+        bottomBoxHtml = `
+          <div class="route-details" style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+            <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px;">
+              <i class="fas fa-arrow-right" style="color:var(--primary-light); font-size:0.65rem;"></i>
+              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px;">${targetStopName}</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:5px; background:var(--danger-light); padding:3px 8px; border-radius:6px; width:fit-content;">
+              <i class="fas fa-times-circle" style="color:var(--danger-color); font-size:0.65rem;"></i>
+              <span style="font-size:0.7rem; font-weight:600; color:var(--danger-color);">Durağınızı geçti</span>
+            </div>
+          </div>
+        `;
+      }
+    } else {
+      rightBoxHtml = `
+        <div class="card-status-orb ${bus.isAtStop ? 'at-stop' : 'in-motion'}">
+          <div class="status-label">${statusText}</div>
+          <div class="status-dist">${statusValue}</div>
+        </div>
+      `;
+      bottomBoxHtml = `
+        <div class="route-details" style="margin-top:6px;">
+          <div style="font-size:0.75rem; color:var(--text-secondary); display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-arrow-right" style="color:var(--primary-light); font-size:0.65rem;"></i>
+            <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:160px;">Sonraki: <strong>${targetStopName}</strong></span>
+          </div>
+        </div>
+      `;
+    }
 
     return `<div class="bus-info-card" data-plate="${bus.plate}" ${bus.passedUser ? 'style="opacity:0.65;"' : ''}>
       <div class="card-glow" style="background: ${bus.isAtStop ? 'var(--success-color)' : 'var(--primary-color)'};">
@@ -512,18 +596,10 @@ window.displayRouteOnMap = function(data) {
           </div>
           <div class="plate-number">${bus.plate}</div>
         </div>
-
-        <div class="route-details">
-          <div class="next-label">HEDEF DURAK</div>
-          <div class="next-stop-name">${targetStopName}</div>
-          ${userStatusHtml}
-        </div>
+        ${bottomBoxHtml}
       </div>
 
-      <div class="card-status-orb ${bus.isAtStop ? 'at-stop' : 'in-motion'}">
-        <div class="status-label">${statusText}</div>
-        <div class="status-dist">${statusValue}</div>
-      </div>
+      ${rightBoxHtml}
     </div>`;
   }).join('');
 
@@ -600,12 +676,23 @@ window.displayRouteOnMap = function(data) {
   let nearestStopInfo = '';
   if (window.nearestStop) {
     nearestStopInfo = `
-      <div class="info-item nearest-user-stop" onclick="window.redirectToStop('${window.nearestStop.stopId}')">
-        <strong>Size En Yakın Durak: ${window.nearestStop.stopName}</strong>
-        <div class="info-detail">
-          <i class="fas fa-walking" style="margin-right: 5px;"></i>
-          Mesafe: ${window.formatDistance(window.nearestStop.distance)}
+      <div class="nearest-stop-card" onclick="window.redirectToStop('${window.nearestStop.stopId}')" style="background:var(--card-background); border:1px solid var(--border-light); border-radius:16px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; box-shadow:var(--shadow-sm); transition:all 0.2s;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div style="width:40px; height:40px; background:var(--primary-soft); color:var(--primary-color); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; letter-spacing:0.5px; text-transform:uppercase;">Konumunuza Yakın</div>
+            <div style="font-size:1.05rem; font-weight:700; color:var(--text-primary); line-height:1.2;">${window.nearestStop.stopName}</div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:2px; display:flex; align-items:center; gap:6px;">
+              <div style="background:var(--background-soft); padding:3px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; border:1px solid var(--border-light);">
+                <i class="fas fa-walking" style="color:var(--primary-light); font-size:0.75rem;"></i>
+                <span style="font-weight:600; font-size:0.75rem;">${window.formatDistance(window.nearestStop.distance)} yürüme</span>
+              </div>
+            </div>
+          </div>
         </div>
+        <div style="color:var(--border-color);"><i class="fas fa-chevron-right"></i></div>
       </div>
     `;
   }
@@ -644,10 +731,6 @@ window.displayRouteOnMap = function(data) {
     item.addEventListener('click', () => {
       const plate = item.dataset.plate;
       window.toggleBusTracking(plate);
-      const marker = window.activeBusMarkers[plate];
-      if (marker) {
-        window.map.setView(marker.getLatLng(), 16);
-      }
     });
   });
 

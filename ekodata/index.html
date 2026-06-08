@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EkoGokhan - Ekodata Dosya Gezgini</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#080c14',
+                            card: '#0f1626',
+                            border: '#1f2d4d',
+                            accent: '#10b981',
+                            blue: '#06b6d4',
+                            purple: '#8b5cf6',
+                            yellow: '#facc15',
+                            text: '#e2e8f0',
+                            muted: '#64748b'
+                        }
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #080c14;
+            color: #e2e8f0;
+        }
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            tab-size: 4;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2d4d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        .pulse-accent {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        /* Syntax highlighting classes */
+        .token-keyword { color: #f472b6; font-weight: bold; }
+        .token-string { color: #34d399; }
+        .token-number { color: #fb7185; }
+        .token-boolean { color: #818cf8; }
+        .token-null { color: #a78bfa; }
+        .token-key { color: #38bdf8; font-weight: 500; }
+        .token-comment { color: #64748b; font-style: italic; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="h-16 border-b border-cyber-border bg-cyber-card/85 backdrop-blur flex items-center justify-between px-6 z-20">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-cyber-accent/10 border border-cyber-accent/30 flex items-center justify-center text-cyber-accent text-xl">
+                <i class="fa-solid fa-database"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold text-cyber-text tracking-wide flex items-center">
+                    EkoGokhan <span class="text-xs bg-cyber-accent/20 text-cyber-accent px-2 py-0.5 rounded ml-2 border border-cyber-accent/30 font-mono">v3.8</span>
+                </h1>
+                <p class="text-xs text-cyber-muted">Ekodata Klasör Gezgini & Entegrasyon Paneli</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <a href="stops/index.html" class="pulse-accent bg-cyber-accent hover:bg-cyber-accent/80 text-cyber-bg px-4 py-2 rounded-lg font-semibold text-sm flex items-center space-x-2 transition duration-200">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Harita Görünümüne Git (Leaflet)</span>
+            </a>
+            <a href="../index.html" class="border border-cyber-border hover:bg-cyber-border/30 text-cyber-text px-4 py-2 rounded-lg text-sm transition duration-200">
+                <i class="fa-solid fa-arrow-left mr-2"></i>Portfolyo'ya Dön
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- Sidebar: File Tree -->
+        <aside class="w-80 border-r border-cyber-border bg-cyber-card/30 flex flex-col z-10">
+            <!-- Search & Filters -->
+            <div class="p-4 border-b border-cyber-border">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-cyber-muted">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </span>
+                    <input type="text" id="file-search" placeholder="Dosyalarda ara..." 
+                        class="w-full bg-cyber-bg border border-cyber-border rounded-lg py-2 pl-9 pr-4 text-sm text-cyber-text placeholder-cyber-muted focus:outline-none focus:border-cyber-accent transition duration-200">
+                </div>
+            </div>
+            
+            <!-- File Tree Scrollable Area -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-2 font-mono text-sm" id="file-tree-container">
+                <!-- Root Folder -->
+                <div class="space-y-1">
+                    <div class="flex items-center space-x-2 text-cyber-accent font-semibold py-1">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span>ekodata/</span>
+                    </div>
+                    
+                    <div class="pl-4 space-y-2 border-l border-cyber-border/30 ml-2" id="tree-root">
+                        <!-- Folders and Files will be dynamically generated here -->
+                        <div class="text-cyber-muted py-2 text-xs flex items-center space-x-2">
+                            <i class="fa-solid fa-spinner animate-spin"></i>
+                            <span>Dosya ağacı yükleniyor...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar Footer: Stats Summary -->
+            <div class="p-4 border-t border-cyber-border bg-cyber-card/50 text-xs text-cyber-muted flex justify-between items-center">
+                <span><i class="fa-solid fa-file-code mr-1"></i> <span id="stat-file-count">0</span> Dosya</span>
+                <span><i class="fa-solid fa-hdd mr-1"></i> <span id="stat-total-size">0.0 MB</span></span>
+            </div>
+        </aside>
+
+        <!-- Right Content: File Viewer / Welcome Dashboard -->
+        <main class="flex-1 flex flex-col bg-cyber-bg overflow-hidden relative">
+            
+            <!-- Default Dashboard (When no file is selected) -->
+            <div id="dashboard-view" class="flex-1 overflow-y-auto p-8 flex flex-col justify-between">
+                <div>
+                    <!-- Welcome Banner -->
+                    <div class="bg-gradient-to-r from-cyber-card to-cyber-bg border border-cyber-border rounded-2xl p-6 mb-8 relative overflow-hidden">
+                        <div class="absolute -right-8 -bottom-8 text-cyber-accent/5 text-9xl font-bold">
+                            <i class="fa-solid fa-cubes"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-cyber-text mb-2 flex items-center">
+                            Veri Yapısı İnceleme Paneline Hoş Geldiniz! 👋
+                        </h2>
+                        <p class="text-cyber-muted text-sm max-w-2xl">
+                            Bu panel, <strong>EkoGokhan Şehir İçi Ulaşım Rehberi</strong> projenizin çekirdek veri klasörü olan 
+                            <code class="text-cyber-accent font-mono bg-cyber-bg px-1.5 py-0.5 rounded border border-cyber-accent/20">ekodata</code> 
+                            dizinindeki tüm dosyaları, rotaları, durakları ve modelleri canlı olarak incelemenizi sağlar.
+                        </p>
+                    </div>
+
+                    <!-- Statistics Cards Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <!-- Card 1: Stops JSONs -->
+                        <div class="bg-cyber-card border border-cyber-border rounded-xl p-5 hover:border-cyber-accent/30 transition duration-300">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-cyber-accent/10 border border-cyber-accent/20 flex items-center justify-center text-cyber-accent">
+                                    <i class="fa-solid fa-bus"></i>
+                                </div>
+                                <span class="text-xs bg-cyber-accent/15 text-cyber-accent px-2 py-0.5 rounded font-mono">stops/</span>
+                            </div>
+                            <h3 class="text-cyber-muted text-xs uppercase tracking-wider font-semibold">Toplam Durak Verisi</h3>
+                            <p class="text-2xl font-bold text-cyber-text mt-1" id="dash-stops-count">21 JSON</p>
+                            <p class="text-xs text-cyber-muted mt-2">Tüm illerin durak bilgileri ve koordinatları</p>
+                        </div>
+
+                        <!-- Card 2: Routes JSONs -->
+                        <div class="bg-cyber-card border border-cyber-border rounded-xl p-5 hover:border-cyber-blue/30 transition duration-300">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-cyber-blue/10 border border-cyber-blue/20 flex items-center justify-center text-cyber-blue">
+                                    <i class="fa-solid fa-route"></i>
+                                </div>
+                                <span class="text-xs bg-cyber-blue/15 text-cyber-blue px-2 py-0.5 rounded font-mono">routes/</span>
+                            </div>
+                            <h3 class="text-cyber-muted text-xs uppercase tracking-wider font-semibold">Toplam Güzergah Verisi</h3>
+                            <p class="text-2xl font-bold text-cyber-text mt-1" id="dash-routes-count">20 Dosya</p>
+                            <p class="text-xs text-cyber-muted mt-2">Otobüs hat çizgileri ve koordinat dizileri</p>
+                        </div>
+
+                        <!-- Card 3: Kentkart Config -->
+                        <div class="bg-cyber-card border border-cyber-border rounded-xl p-5 hover:border-cyber-purple/30 transition duration-300">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-cyber-purple/10 border border-cyber-purple/20 flex items-center justify-center text-cyber-purple">
+                                    <i class="fa-solid fa-gears"></i>
+                                </div>
+                                <span class="text-xs bg-cyber-purple/15 text-cyber-purple px-2 py-0.5 rounded font-mono">config/</span>
+                            </div>
+                            <h3 class="text-cyber-muted text-xs uppercase tracking-wider font-semibold">Kent Kart Konfigürasyonu</h3>
+                            <p class="text-2xl font-bold text-cyber-text mt-1" id="dash-config-name">kentkartinfo.json</p>
+                            <p class="text-xs text-cyber-muted mt-2">İl kodları, renk şemaları ve bölgesel koordinatlar</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Guide / Call To Actions -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left Action: Explore files -->
+                        <div class="bg-cyber-card/40 border border-cyber-border rounded-xl p-6">
+                            <h3 class="text-lg font-bold text-cyber-text mb-3 flex items-center">
+                                <i class="fa-solid fa-folder-tree text-cyber-accent mr-2"></i> Dosyaları İncele
+                            </h3>
+                            <p class="text-cyber-muted text-xs mb-4">
+                                Sol menüdeki dosya ağacını kullanarak istediğiniz dosyayı seçin. JSON ve Javascript dosyalarının içeriğini canlı olarak görüntüleyebilir, formatlı şekilde okuyabilir, panoya kopyalayabilir veya doğrudan indirebilirsiniz. Görselleri ise dahili olarak önizleyebilirsiniz.
+                            </p>
+                            <div class="flex items-center space-x-2 text-xs text-cyber-accent font-semibold">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>Detaylı inceleme için dosya üzerine tıklamanız yeterlidir.</span>
+                            </div>
+                        </div>
+
+                        <!-- Right Action: Launch stops map -->
+                        <div class="bg-cyber-card/40 border border-cyber-border rounded-xl p-6 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-cyber-text mb-3 flex items-center">
+                                    <i class="fa-solid fa-map-location-dot text-cyber-blue mr-2"></i> Durak Harita Entegrasyonu
+                                </h3>
+                                <p class="text-cyber-muted text-xs mb-4">
+                                    Tüm durakları Leaflet.js kütüphanesi ve Google Haritaları katmanları (Yol, Uydu, Arazi ve Hibrit) üzerinde görüntülemek için özel olarak hazırladığımız harita modülünü başlatın. İllere göre filtreleme, canlı arama ve hat detayları haritada sizi bekliyor!
+                                </p>
+                            </div>
+                            <a href="stops/index.html" class="w-full bg-cyber-blue hover:bg-cyber-blue/80 text-cyber-bg text-center py-2.5 rounded-lg font-bold text-sm transition duration-200 flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-circle-play"></i>
+                                <span>Durak Haritasını Başlat (stops/index.html)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer copyright/credits -->
+                <div class="mt-8 border-t border-cyber-border/40 pt-4 flex justify-between text-xs text-cyber-muted font-mono">
+                    <span>EkoGokhan Transit System Dashboard</span>
+                    <span>© 2026 Gökhan Özen</span>
+                </div>
+            </div>
+
+            <!-- File Content Viewer (Hidden by default, shown when a file is clicked) -->
+            <div id="file-view" class="hidden flex-1 flex flex-col overflow-hidden">
+                <!-- File Header / Toolbar -->
+                <div class="h-14 border-b border-cyber-border bg-cyber-card/50 flex items-center justify-between px-6">
+                    <div class="flex items-center space-x-3 overflow-hidden">
+                        <div id="file-icon" class="text-cyber-accent text-lg flex-shrink-0">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+                        <div class="truncate">
+                            <span id="file-path" class="text-sm font-semibold text-cyber-text font-mono">ekodata/file.json</span>
+                            <span id="file-size-tag" class="text-xs bg-cyber-border text-cyber-muted px-2 py-0.5 rounded ml-2 font-mono">0.0 KB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <!-- Action buttons -->
+                        <button id="btn-copy" onclick="copyFileContent()" class="p-2 border border-cyber-border hover:border-cyber-accent/50 text-cyber-muted hover:text-cyber-accent rounded-lg text-xs transition duration-200 flex items-center space-x-1.5" title="Kopyala">
+                            <i class="fa-regular fa-copy"></i>
+                            <span class="hidden sm:inline">Kopyala</span>
+                        </button>
+                        <a id="btn-download" href="#" download class="p-2 border border-cyber-border hover:border-cyber-blue/50 text-cyber-muted hover:text-cyber-blue rounded-lg text-xs transition duration-200 flex items-center space-x-1.5" title="İndir">
+                            <i class="fa-solid fa-download"></i>
+                            <span class="hidden sm:inline">İndir</span>
+                        </a>
+                        <button onclick="closeFileView()" class="p-2 border border-cyber-border hover:border-red-500/50 text-cyber-muted hover:text-red-500 rounded-lg text-xs transition duration-200" title="Kapat">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Area -->
+                <div class="flex-1 overflow-auto relative p-6 bg-cyber-bg" id="file-body-container">
+                    
+                    <!-- Text Content (JSON/JS/PY/etc) -->
+                    <pre id="text-preview" class="hidden text-xs code-block leading-relaxed overflow-x-auto text-slate-300 font-mono"><code id="code-content"></code></pre>
+                    
+                    <!-- Image Content Preview -->
+                    <div id="image-preview" class="hidden w-full h-full flex flex-col items-center justify-center">
+                        <div class="border border-cyber-border p-4 rounded-xl bg-cyber-card/45 backdrop-blur-sm max-w-lg flex flex-col items-center">
+                            <img id="preview-img-src" src="" alt="Görsel Önizleme" class="max-h-96 object-contain mb-4 rounded-lg">
+                            <p id="image-info-tag" class="text-xs text-cyber-muted font-mono">gorsel.png (512x512)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Large File Warning -->
+                    <div id="large-file-warning" class="hidden absolute inset-0 bg-cyber-bg/95 flex flex-col items-center justify-center p-8 text-center z-10">
+                        <div class="w-16 h-16 rounded-full bg-cyber-yellow/10 border border-cyber-yellow/30 flex items-center justify-center text-cyber-yellow text-2xl mb-4">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-cyber-text mb-2">Büyük Dosya Algılandı</h4>
+                        <p class="text-cyber-muted text-sm max-w-md mb-6" id="large-file-text">
+                            Bu dosya boyutu çok büyük olduğu için doğrudan tarayıcıda render edilmesi performansı olumsuz etkileyebilir. Yine de yüklemek istiyor musunuz?
+                        </p>
+                        <div class="flex items-center space-x-4">
+                            <button id="btn-force-load" class="bg-cyber-yellow hover:bg-cyber-yellow/80 text-cyber-bg px-4 py-2 rounded-lg font-bold text-xs transition duration-200">
+                                Dosyayı Yine de Yükle
+                            </button>
+                            <button onclick="closeFileView()" class="border border-cyber-border hover:bg-cyber-border/30 text-cyber-text px-4 py-2 rounded-lg text-xs transition duration-200">
+                                Vazgeç
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script Section -->
+    <script>
+        // Pre-mapped folder structure in case direct scanning fails (which happens on static hosting pages)
+        const STATIC_FILE_TREE = {
+            "name": "ekodata",
+            "isDir": true,
+            "children": [
+                { "name": "favicon.ico", "sizeBytes": 3902, "type": "image/x-icon", "path": "favicon.ico" },
+                { "name": "icon-512.png", "sizeBytes": 389656, "type": "image/png", "path": "icon-512.png" },
+                { "name": "location_icon.png", "sizeBytes": 459406, "type": "image/png", "path": "location_icon.png" },
+                { "name": "kentkartinfo.json", "sizeBytes": 10081, "type": "application/json", "path": "kentkartinfo.json" },
+                { "name": "project_loader.js", "sizeBytes": 838, "type": "application/javascript", "path": "project_loader.js" },
+                { "name": "projectinfo.json", "sizeBytes": 107, "type": "application/json", "path": "projectinfo.json" },
+                {
+                    "name": "models",
+                    "isDir": true,
+                    "path": "models",
+                    "children": [
+                        { "name": "vehicles.js", "sizeBytes": 5522, "type": "application/javascript", "path": "models/vehicles.js" }
+                    ]
+                },
+                {
+                    "name": "routes",
+                    "isDir": true,
+                    "path": "routes",
+                    "children": [
+                        { "name": "003.json", "sizeBytes": 151970, "type": "application/json", "path": "routes/003.json" },
+                        { "name": "004.json", "sizeBytes": 330923, "type": "application/json", "path": "routes/004.json" },
+                        { "name": "005.json", "sizeBytes": 27957, "type": "application/json", "path": "routes/005.json" },
+                        { "name": "007.json", "sizeBytes": 13029, "type": "application/json", "path": "routes/007.json" },
+                        { "name": "010.json", "sizeBytes": 151190, "type": "application/json", "path": "routes/010.json" },
+                        { "name": "013.json", "sizeBytes": 9833, "type": "application/json", "path": "routes/013.json" },
+                        { "name": "017.json", "sizeBytes": 11045, "type": "application/json", "path": "routes/017.json" },
+                        { "name": "019.json", "sizeBytes": 9662, "type": "application/json", "path": "routes/019.json" },
+                        { "name": "020.json", "sizeBytes": 12552, "type": "application/json", "path": "routes/020.json" },
+                        { "name": "023.json", "sizeBytes": 4043, "type": "application/json", "path": "routes/023.json" },
+                        { "name": "025.json", "sizeBytes": 6951, "type": "application/json", "path": "routes/025.json" },
+                        { "name": "026.json", "sizeBytes": 165834, "type": "application/json", "path": "routes/026.json" },
+                        { "name": "027.json", "sizeBytes": 2912, "type": "application/json", "path": "routes/027.json" },
+                        { "name": "029.json", "sizeBytes": 7797, "type": "application/json", "path": "routes/029.json" },
+                        { "name": "031.json", "sizeBytes": 23347, "type": "application/json", "path": "routes/031.json" },
+                        { "name": "032.json", "sizeBytes": 38971, "type": "application/json", "path": "routes/032.json" },
+                        { "name": "033.json", "sizeBytes": 4806, "type": "application/json", "path": "routes/033.json" },
+                        { "name": "036.json", "sizeBytes": 51053, "type": "application/json", "path": "routes/036.json" },
+                        { "name": "037.json", "sizeBytes": 3639, "type": "application/json", "path": "routes/037.json" },
+                        { "name": "update_routes.py", "sizeBytes": 3518, "type": "text/x-python", "path": "routes/update_routes.py" }
+                    ]
+                },
+                {
+                    "name": "stops",
+                    "isDir": true,
+                    "path": "stops",
+                    "children": [
+                        { "name": "003.json", "sizeBytes": 626171, "type": "application/json", "path": "stops/003.json" },
+                        { "name": "004.json", "sizeBytes": 1059048, "type": "application/json", "path": "stops/004.json" },
+                        { "name": "005.json", "sizeBytes": 94898, "type": "application/json", "path": "stops/005.json" },
+                        { "name": "007.json", "sizeBytes": 45255, "type": "application/json", "path": "stops/007.json" },
+                        { "name": "010.json", "sizeBytes": 436488, "type": "application/json", "path": "stops/010.json" },
+                        { "name": "013.json", "sizeBytes": 42076, "type": "application/json", "path": "stops/013.json" },
+                        { "name": "017.json", "sizeBytes": 39377, "type": "application/json", "path": "stops/017.json" },
+                        { "name": "019.json", "sizeBytes": 37337, "type": "application/json", "path": "stops/019.json" },
+                        { "name": "020.json", "sizeBytes": 50497, "type": "application/json", "path": "stops/020.json" },
+                        { "name": "023.json", "sizeBytes": 39698, "type": "application/json", "path": "stops/023.json" },
+                        { "name": "025.json", "sizeBytes": 10847, "type": "application/json", "path": "stops/025.json" },
+                        { "name": "026.json", "sizeBytes": 576061, "type": "application/json", "path": "stops/026.json" },
+                        { "name": "027.json", "sizeBytes": 27482, "type": "application/json", "path": "stops/027.json" },
+                        { "name": "029.json", "sizeBytes": 26556, "type": "application/json", "path": "stops/029.json" },
+                        { "name": "031.json", "sizeBytes": 84582, "type": "application/json", "path": "stops/031.json" },
+                        { "name": "032.json", "sizeBytes": 94873, "type": "application/json", "path": "stops/032.json" },
+                        { "name": "033.json", "sizeBytes": 26961, "type": "application/json", "path": "stops/033.json" },
+                        { "name": "036.json", "sizeBytes": 164293, "type": "application/json", "path": "stops/036.json" },
+                        { "name": "037.json", "sizeBytes": 33767, "type": "application/json", "path": "stops/037.json" },
+                        { "name": "allstops.json", "sizeBytes": 3600891, "type": "application/json", "path": "stops/allstops.json" },
+                        { "name": "popular.json", "sizeBytes": 837, "type": "application/json", "path": "stops/popular.json" }
+                    ]
+                }
+            ]
+        };
+
+        let activeFileTree = STATIC_FILE_TREE;
+        let selectedFile = null;
+        let selectedFileContent = "";
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Try to scan directories dynamically to see if we are in python local server environment
+            await tryDynamicScan();
+            
+            // Build the Sidebar File Tree
+            renderFileTree();
+            
+            // Setup stats on dashboard
+            calculateStats();
+            
+            // Search Input listener
+            document.getElementById('file-search').addEventListener('input', handleSearch);
+        });
+
+        // Tries to dynamically scan the workspace for files
+        async function tryDynamicScan() {
+            try {
+                // Fetch root listing
+                const scannedRoot = await scanPath('./');
+                if (scannedRoot && scannedRoot.length > 0) {
+                    // Overwrite default static tree with actual scanned contents
+                    const newTree = { "name": "ekodata", "isDir": true, "children": [] };
+                    
+                    for (const item of scannedRoot) {
+                        if (item.isDir) {
+                            const subPath = item.name;
+                            const subChildren = await scanPath(subPath + '/');
+                            
+                            newTree.children.push({
+                                "name": item.name,
+                                "isDir": true,
+                                "path": subPath,
+                                "children": subChildren.map(c => ({
+                                    "name": c.name,
+                                    "isDir": false,
+                                    "sizeBytes": c.sizeBytes || 1024,
+                                    "path": subPath + '/' + c.name,
+                                    "type": getFileType(c.name)
+                                }))
+                            });
+                        } else {
+                            newTree.children.push({
+                                "name": item.name,
+                                "isDir": false,
+                                "sizeBytes": item.sizeBytes || 1024,
+                                "path": item.name,
+                                "type": getFileType(item.name)
+                            });
+                        }
+                    }
+                    activeFileTree = newTree;
+                }
+            } catch (e) {
+                console.log("Dinamik tarama yapılamadı, yedek statik ağaç kullanılacak.", e);
+            }
+        }
+
+        // Fetches and parses a single directory path
+        async function scanPath(relativeUrl) {
+            const response = await fetch(relativeUrl);
+            if (!response.ok) return null;
+            const html = await response.text();
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const links = Array.from(doc.querySelectorAll('a'))
+                .map(a => a.getAttribute('href'))
+                .filter(href => href && !href.startsWith('..') && !href.startsWith('/') && !href.includes('?'));
+            
+            return links.map(link => {
+                const isDir = link.endsWith('/');
+                const cleanName = isDir ? link.slice(0, -1) : link;
+                return {
+                    name: cleanName,
+                    isDir: isDir,
+                    sizeBytes: 0 // Fetch doesn't give size immediately
+                };
+            });
+        }
+
+        function getFileType(filename) {
+            if (filename.endsWith('.json')) return 'application/json';
+            if (filename.endsWith('.js')) return 'application/javascript';
+            if (filename.endsWith('.py')) return 'text/x-python';
+            if (filename.endsWith('.png')) return 'image/png';
+            if (filename.endsWith('.ico')) return 'image/x-icon';
+            return 'text/plain';
+        }
+
+        function calculateStats() {
+            let totalBytes = 0;
+            let fileCount = 0;
+            let stopsCount = 0;
+            let routesCount = 0;
+
+            function recurse(item) {
+                if (item.isDir) {
+                    if (item.name === 'stops') stopsCount = item.children.length;
+                    if (item.name === 'routes') routesCount = item.children.length;
+                    item.children.forEach(recurse);
+                } else {
+                    fileCount++;
+                    totalBytes += item.sizeBytes || 0;
+                }
+            }
+            activeFileTree.children.forEach(recurse);
+
+            const mbSize = (totalBytes / (1024 * 1024)).toFixed(2);
+            document.getElementById('stat-file-count').innerText = fileCount;
+            document.getElementById('stat-total-size').innerText = mbSize + " MB";
+
+            // Dashboard updates
+            document.getElementById('dash-stops-count').innerText = stopsCount + " JSON";
+            document.getElementById('dash-routes-count').innerText = routesCount + " Dosya";
+        }
+
+        // Render File Tree in Sidebar
+        function renderFileTree(filterQuery = "") {
+            const container = document.getElementById('tree-root');
+            container.innerHTML = "";
+
+            const q = filterQuery.toLowerCase().trim();
+
+            function buildItemNode(item, depth = 0) {
+                if (item.isDir) {
+                    // Check if children match search filter
+                    const matchingChildren = item.children.filter(child => 
+                        !q || child.name.toLowerCase().includes(q) || item.name.toLowerCase().includes(q)
+                    );
+                    
+                    if (q && matchingChildren.length === 0) return null;
+
+                    const folderNode = document.createElement('div');
+                    folderNode.className = "space-y-1 my-1";
+                    
+                    const header = document.createElement('div');
+                    header.className = "flex items-center space-x-2 text-cyber-text font-semibold cursor-pointer hover:text-cyber-accent py-0.5 select-none transition duration-150";
+                    header.innerHTML = `<i class="fa-solid fa-folder text-cyber-purple/80"></i> <span>${item.name}/</span>`;
+                    
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = "pl-4 border-l border-cyber-border/20 ml-2 space-y-1";
+                    
+                    // Folder toggle behavior
+                    header.onclick = () => {
+                        const icon = header.querySelector('i');
+                        if (childrenContainer.classList.contains('hidden')) {
+                            childrenContainer.classList.remove('hidden');
+                            icon.className = "fa-solid fa-folder-open text-cyber-purple/80";
+                        } else {
+                            childrenContainer.classList.add('hidden');
+                            icon.className = "fa-solid fa-folder text-cyber-purple/80";
+                        }
+                    };
+
+                    item.children.forEach(child => {
+                        const childNode = buildItemNode(child, depth + 1);
+                        if (childNode) childrenContainer.appendChild(childNode);
+                    });
+
+                    folderNode.appendChild(header);
+                    folderNode.appendChild(childrenContainer);
+                    return folderNode;
+                } else {
+                    if (q && !item.name.toLowerCase().includes(q)) return null;
+
+                    const fileNode = document.createElement('div');
+                    fileNode.className = "flex items-center justify-between group cursor-pointer hover:bg-cyber-card/40 hover:text-cyber-accent py-1 px-2 rounded transition duration-150";
+                    
+                    let iconHtml = '<i class="fa-regular fa-file text-cyber-muted"></i>';
+                    if (item.name.endsWith('.json')) {
+                        iconHtml = '<i class="fa-solid fa-file-code text-cyber-blue/80"></i>';
+                        if (item.path.includes('stops/')) iconHtml = '<i class="fa-solid fa-bus text-cyber-accent/80"></i>';
+                        if (item.path.includes('routes/')) iconHtml = '<i class="fa-solid fa-route text-cyber-blue/80"></i>';
+                    } else if (item.name.endsWith('.js')) {
+                        iconHtml = '<i class="fa-brands fa-js text-cyber-yellow/80"></i>';
+                    } else if (item.name.endsWith('.py')) {
+                        iconHtml = '<i class="fa-brands fa-python text-blue-400"></i>';
+                    } else if (item.name.endsWith('.png') || item.name.endsWith('.ico')) {
+                        iconHtml = '<i class="fa-regular fa-image text-cyber-accent/80"></i>';
+                    }
+
+                    const kbSize = (item.sizeBytes / 1024).toFixed(1);
+
+                    fileNode.innerHTML = `
+                        <div class="flex items-center space-x-2 truncate">
+                            ${iconHtml}
+                            <span class="truncate">${item.name}</span>
+                        </div>
+                        <span class="text-[10px] text-cyber-muted font-mono group-hover:text-cyber-accent transition duration-150">${kbSize} KB</span>
+                    `;
+
+                    fileNode.onclick = () => loadFile(item);
+                    return fileNode;
+                }
+            }
+
+            activeFileTree.children.forEach(item => {
+                const node = buildItemNode(item);
+                if (node) container.appendChild(node);
+            });
+
+            if (container.innerHTML === "") {
+                container.innerHTML = `<div class="text-cyber-muted text-xs py-4">Aramayla eşleşen dosya bulunamadı.</div>`;
+            }
+        }
+
+        // Handle File Searching
+        function handleSearch(e) {
+            renderFileTree(e.target.value);
+        }
+
+        // View File Content
+        async function loadFile(fileItem) {
+            selectedFile = fileItem;
+            
+            // UI elements reset
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('file-view').classList.remove('hidden');
+            document.getElementById('text-preview').classList.add('hidden');
+            document.getElementById('image-preview').classList.add('hidden');
+            document.getElementById('large-file-warning').classList.add('hidden');
+
+            document.getElementById('file-path').innerText = "ekodata/" + fileItem.path;
+            const kbSize = (fileItem.sizeBytes / 1024).toFixed(1);
+            document.getElementById('file-size-tag').innerText = kbSize + " KB";
+            
+            // Adjust icons based on type
+            let iconClass = 'fa-solid fa-file-lines';
+            if (fileItem.name.endsWith('.json')) iconClass = 'fa-solid fa-file-code text-cyber-blue';
+            else if (fileItem.name.endsWith('.js')) iconClass = 'fa-brands fa-js text-cyber-yellow';
+            else if (fileItem.name.endsWith('.py')) iconClass = 'fa-brands fa-python text-blue-400';
+            else if (fileItem.name.endsWith('.png') || fileItem.name.endsWith('.ico')) iconClass = 'fa-regular fa-image text-cyber-accent';
+            document.getElementById('file-icon').innerHTML = `<i class="${iconClass}"></i>`;
+
+            // Prepare download link
+            const fileUrl = fileItem.path;
+            document.getElementById('btn-download').href = fileUrl;
+
+            // Handle images
+            if (fileItem.name.endsWith('.png') || fileItem.name.endsWith('.ico')) {
+                document.getElementById('image-preview').classList.remove('hidden');
+                const imgElement = document.getElementById('preview-img-src');
+                imgElement.src = fileUrl;
+                document.getElementById('image-info-tag').innerText = `${fileItem.name} (${kbSize} KB)`;
+                return;
+            }
+
+            // Handle large text files (like allstops.json, ~3.6MB)
+            if (fileItem.sizeBytes > 500 * 1024) { // Larger than 500 KB
+                document.getElementById('large-file-warning').classList.remove('hidden');
+                document.getElementById('large-file-text').innerHTML = `
+                    Bu dosya (<strong>${kbSize} KB</strong>) boyut olarak büyüktür. Tarayıcıda render edilmesi kasmaya neden olabilir. 
+                    Dosyayı doğrudan indirebilir veya aşağıdaki buton ile tüm veriyi render etmeye zorlayabilirsiniz.
+                `;
+                document.getElementById('btn-force-load').onclick = () => {
+                    document.getElementById('large-file-warning').classList.add('hidden');
+                    fetchAndRenderText(fileUrl);
+                };
+                return;
+            }
+
+            // Standard load
+            fetchAndRenderText(fileUrl);
+        }
+
+        async function fetchAndRenderText(fileUrl) {
+            try {
+                const response = await fetch(fileUrl);
+                if (!response.ok) throw new Error("Dosya yüklenirken HTTP hatası alındı.");
+                selectedFileContent = await response.text();
+                
+                const codeEl = document.getElementById('code-content');
+                
+                // If it's a JSON, let's pretty format it if it isn't JSON lines
+                let formattedText = selectedFileContent;
+                if (fileUrl.endsWith('.json')) {
+                    try {
+                        const parsed = JSON.parse(selectedFileContent);
+                        formattedText = JSON.stringify(parsed, null, 2);
+                    } catch (e) {
+                        // Probably JSON lines, we will read line-by-line and format each
+                        try {
+                            const lines = selectedFileContent.split('\n');
+                            const prettyLines = lines.map(line => {
+                                if (line.trim() === '') return '';
+                                return JSON.stringify(JSON.parse(line));
+                            });
+                            formattedText = prettyLines.join('\n');
+                        } catch (err) {
+                            // Leave it raw
+                        }
+                    }
+                }
+
+                // Render code
+                codeEl.innerHTML = syntaxHighlight(formattedText, fileUrl);
+                document.getElementById('text-preview').classList.remove('hidden');
+            } catch (err) {
+                document.getElementById('code-content').innerHTML = `<span class="text-red-500 font-bold">Dosya okunamadı: ${err.message}</span>`;
+                document.getElementById('text-preview').classList.remove('hidden');
+            }
+        }
+
+        // Custom micro-highlighter to keep it fully standalone, lightweight, and ultra fast
+        function syntaxHighlight(code, fileUrl) {
+            // Escape HTML
+            code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            if (fileUrl.endsWith('.json')) {
+                // Regex for JSON syntax highlighting
+                return code.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*")(\s*:)?|(\b(true|false|null)\b)|(-?\b[0-9]+(?:\.[0-9]+)?\b)/g, function (match) {
+                    let cls = 'token-number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'token-key';
+                        } else {
+                            cls = 'token-string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'token-boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'token-null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            } else if (fileUrl.endsWith('.js') || fileUrl.endsWith('.py')) {
+                // Basic Keyword/String highlight for script files
+                const keywords = /\b(const|let|var|function|return|if|else|for|while|import|from|class|def|elif|import|try|except|as|with|in)\b/g;
+                const strings = /(["'`])(.*?)\1/g;
+                const comments = /(\/\/.*|#.*)/g;
+
+                code = code.replace(comments, '<span class="token-comment">$1</span>');
+                code = code.replace(keywords, '<span class="token-keyword">$1</span>');
+                return code;
+            }
+            return code;
+        }
+
+        function copyFileContent() {
+            navigator.clipboard.writeText(selectedFileContent).then(() => {
+                const btn = document.getElementById('btn-copy');
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check text-cyber-accent"></i> <span class="text-cyber-accent font-semibold">Kopyalandı!</span>`;
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                }, 2000);
+            }).catch(err => {
+                alert("Kopyalanamadı: " + err);
+            });
+        }
+
+        function closeFileView() {
+            document.getElementById('file-view').classList.add('hidden');
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            selectedFile = null;
+            selectedFileContent = "";
+        }
+    </script>
+</body>
+</html>
