@@ -1357,7 +1357,7 @@
           els.permissionStatusText.style.color = "var(--danger-color)";
           // Eğer hala devam etmek isterse bir yol sunabiliriz ama user mandatory istiyordu
         },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 }
       );
     };
 
@@ -1426,7 +1426,7 @@
           },
           {
             enableHighAccuracy: false,
-            timeout: 6000,
+            timeout: 10000,
             maximumAge: 600000
           }
         );
@@ -1790,7 +1790,7 @@
                 clearTimeout(timeoutId);
                 reject(e);
               },
-              { enableHighAccuracy: false, timeout: 6000, maximumAge: 300000 }
+              { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
             );
           });
         } catch (err) {

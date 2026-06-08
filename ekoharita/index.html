@@ -561,7 +561,7 @@
           console.warn('GPS İzni verilmedi veya alınamadı:', error);
           // Harita zaten varsayılan konumla açıldığı için bir şey yapmaya gerek yok
         },
-        { timeout: 10000, enableHighAccuracy: false } // Hızlı sonuç için ayarlar
+        { timeout: 15000, enableHighAccuracy: false } // Hızlı sonuç için ayarlar ama timeout'u artırdık
       );
     }
 
@@ -584,7 +584,8 @@
           },
           (error) => {
             console.error('Konum alınamadı:', error);
-          }
+          },
+          { timeout: 15000, enableHighAccuracy: true } // Konumuma Git butonu için yüksek doğruluk ve yeterli süre
         );
       }
     });

@@ -129,9 +129,15 @@ function centerOnStop() {
   }
 }
 
+window.locationWatchId = null;
+
 function getUserLocation() {
   if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition(position => {
+    if (window.locationWatchId !== null) {
+      navigator.geolocation.clearWatch(window.locationWatchId);
+    }
+    
+    window.locationWatchId = navigator.geolocation.watchPosition(position => {
       const userPos = [position.coords.latitude, position.coords.longitude];
       window.userLocation = userPos;
       
@@ -150,7 +156,11 @@ function getUserLocation() {
       .catch(err => console.error('Location API hatası:', err));
 
     }, error => {
-      console.error("Konum alınamadı: ", error.message);
+      console.warn("Konum alınamadı: ", error.message);
+    }, {
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout: 10000
     });
   }
 }
@@ -646,10 +656,7 @@ function init() {
       window.keepMapPosition = true;
       fetchStopData(stopId);
     }, 10000);
-    
-    setInterval(() => {
-      getUserLocation();
-    }, 5000);
+    // Konum güncellemeleri watchPosition ile yapıldığı için setInterval(getUserLocation) kaldırıldı
   } else {
     document.getElementById('bus-info').innerHTML = `
       <div class="info-item" style="color:#f56565;">
