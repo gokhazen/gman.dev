@@ -1210,10 +1210,6 @@
       </div>
     </div>
   </div>
-
-  şuanda kullanıcı siteyi açar açmaz otomatik konumu sayesinde şehri açılıyor ama otomatik şehri açıldıktan sonra
-  şehirlere basınca tekrardan otomatik şehri açılıyor
-
   <script>
     let APP_DATA = { regions: {}, region_icons: {} };
     let PROJECT_DATA = { name: "EkoGokhan", version: "v3.0" };
@@ -2058,7 +2054,7 @@
 
     // Initialize app
     window.addEventListener('load', async () => {
-      await fetchConfig();
+      await fetchConfig(); // initPermissionFlow() will be called inside
 
       // Register Service Worker
       if ('serviceWorker' in navigator) {
@@ -2076,12 +2072,11 @@
 
       if (urlRegion && APP_DATA.regions[urlRegion]) {
         userMadeChoice = true; // URL'den gelen seçim de manuel kabul edilir
+        autoSelectionDone = true;
         selectCity(urlRegion);
+        els.permissionOverlay.classList.add('hidden'); // URL'den region gelmişse permission popup gösterme
         return;
       }
-
-      // Show city selection with location detection
-      await createRegionsUI();
     });
 
     // Handle page visibility change to refresh data

@@ -509,8 +509,16 @@ window.animateBusMovement = function(busPlate, startPos, endPos, bearing) {
     const marker = window.activeBusMarkers[busPlate];
     if (marker) {
       marker.setLatLng(currentPos);
-      const updatedIcon = window.createBusIconWithPlate(busPlate, currentBearing);
-      marker.setIcon(updatedIcon);
+      
+      // Performansı artırmak ve titremeyi önlemek için ikonu yeniden oluşturmak yerine
+      // mevcut DOM elementini bularak SVG'nin rotasyonunu güncelliyoruz.
+      const el = marker.getElement();
+      if (el) {
+        const svgEl = el.querySelector('svg');
+        if (svgEl) {
+          svgEl.style.transform = `rotate(${currentBearing - 90}deg)`;
+        }
+      }
 
       if (window.trackedBusPlate === busPlate && !window.isFlying) {
         window.map.panTo(currentPos, { animate: true, duration: 0.2 });

@@ -257,9 +257,16 @@ window.findNearestStop = function(userPos) {
 };
 
 // Konum işlemleri
+window.locationWatchId = null;
+
 window.getUserLocation = function() {
   if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition(position => {
+    // Mevcut bir watch varsa temizle
+    if (window.locationWatchId !== null) {
+      navigator.geolocation.clearWatch(window.locationWatchId);
+    }
+    
+    window.locationWatchId = navigator.geolocation.watchPosition(position => {
       const userPos = [position.coords.latitude, position.coords.longitude];
       window.userLocation = userPos;
 
@@ -268,10 +275,6 @@ window.getUserLocation = function() {
 
       window.nearestStop = window.findNearestStop(userPos);
 
-      if (window.currentRouteCode) {
-        window.fetchRouteInfo(window.currentRouteCode);
-      }
-      
       // Konum API çağrısı
       fetch('../location', {
           method: 'POST',
@@ -287,8 +290,14 @@ window.getUserLocation = function() {
         .then(data => console.log('Location API yanıtı:', data))
         .catch(err => console.error('Location API hatası:', err));
 
+      // Harita üzerindeki en yakın durağı vb. yeniden render etmek gerekebilir,
+      // ama route info periyodik güncellendiği için orada yansıyacaktır.
     }, error => {
-      console.error("Konum alınamadı: ", error.message);
+      console.warn("Konum alınamadı: ", error.message);
+    }, {
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout: 10000
     });
   }
 };
@@ -785,10 +794,7 @@ function init() {
         window.fetchRouteInfo(window.currentRouteCode);
       }
     }, 10000);
-
-    window.locationUpdateInterval = setInterval(() => {
-      window.getUserLocation();
-    }, 5000);
+    // Konum güncellemeleri artık watchPosition ile yapıldığı için locationUpdateInterval kaldırıldı
   }
 
   // Event listener'ları ekle
