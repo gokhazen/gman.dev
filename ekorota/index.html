@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Eko Rota</title>
+  <link rel="icon" href="../ekodata/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="../manifest.json">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <script src="../ekodata/location_engine.js"></script>
+  <script src="../ekodata/project_loader.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <div class="route-header d-flex align-center justify-between">
+      <div class="d-flex align-center gap-3">
+        <button class="back-btn" id="goBackBtn" title="Geri Dön">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="route-title m-0" id="route-title">Hat: </div>
+      </div>
+      <div class="route-actions d-flex gap-2">
+        <button class="direction-btn" id="toggleDirectionBtn" title="Yön Değiştir" style="background:var(--primary-soft); color:var(--primary-color); border-color:var(--primary-soft);">
+          <i class="fas fa-exchange-alt"></i>
+        </button>
+        <button class="direction-btn" id="centerToUserLocationBtn" title="Konumuma Git">
+          <i class="fas fa-map-marker-alt"></i>
+        </button>
+        <button class="search-btn" id="openSearchPageBtn" title="Arama Sayfası">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+    
+    <div id="route-info" class="route-info"></div>
+  </div>
+  
+  <script src="../ekodata/models/vehicles.js"></script>
+  <script src="map.js"></script>
+  <script src="routeApi.js"></script>
+  <script src="extra.js"></script>
+  <script src="full.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('../sw.js', { scope: '../' })
+          .catch(err => console.log('SW Registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

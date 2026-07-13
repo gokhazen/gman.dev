@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EkoData - Veri Dokümantasyonu</title>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="./location_engine.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <div class="route-header d-flex align-center justify-between">
+      <div class="d-flex align-center gap-3">
+        <button class="back-btn" onclick="window.location.href='../ekoarama/index.html'" title="Ana Sayfa">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="route-title m-0">EkoData Dokümantasyonu</div>
+      </div>
+      <div class="route-actions d-flex gap-2">
+        <button class="direction-btn" onclick="window.location.reload()" title="Yenile">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="dashboard-layout">
+      <div class="explorer-panel">
+        <div class="explorer-tabs">
+          <button class="explorer-tab active" data-tab="regions" onclick="switchTab('regions')">
+            <i class="fas fa-map-location-dot"></i> Bölgeler
+          </button>
+          <button class="explorer-tab" data-tab="folders" onclick="switchTab('folders')">
+            <i class="fas fa-folder-open"></i> Klasörler
+          </button>
+        </div>
+        <div class="explorer-content" id="explorer-content">
+          <div id="tab-regions"></div>
+          <div id="tab-folders" class="hidden"></div>
+        </div>
+      </div>
+
+      <div class="detail-panel" id="detail-panel">
+        <button class="back-to-explorer" id="back-to-explorer" onclick="clearSelection()">
+          <i class="fas fa-arrow-left"></i> Geri
+        </button>
+        <div id="detail-content">
+          <div class="detail-empty">
+            <i class="fas fa-circle-info"></i>
+            <p>Sol panelden bir bölge seçerek detayları görüntüleyin veya bir dosya tıklayın</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="project_loader.js"></script>
+  <script>
+    let projectInfo = null;
+    let kentkartInfo = null;
+    let currentTab = 'regions';
+    let selectedRegion = null;
+    let selectedFile = null;
+    let folderFiles = { routes: [], models: [] };
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.explorer-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      document.getElementById('tab-regions').classList.toggle('hidden', tab !== 'regions');
+      document.getElementById('tab-folders').classList.toggle('hidden', tab !== 'folders');
+    }
+
+    async function loadData() {
+      try {
+        const [proj, kent] = await Promise.all([
+          fetch('./projectinfo.json').then(r => r.json()),
+          fetch('./kentkartinfo.json').then(r => r.json())
+        ]);
+        projectInfo = proj;
+        kentkartInfo = kent;
+        renderRegions();
+        renderFolders();
+      } catch (err) {
+        console.error('Veri yüklenemedi:', err);
+        document.getElementById('tab-regions').innerHTML = '<div class="detail-empty" style="min-height:auto;padding:20px;"><i class="fas fa-exclamation-triangle" style="color:var(--danger-color);"></i><p style="color:var(--danger-color);">Veri yüklenemedi</p></div>';
+      }
+    }
+
+    function renderRegions() {
+      const container = document.getElementById('tab-regions');
+      if (!kentkartInfo || !kentkartInfo.regions) {
+        container.innerHTML = '<div class="detail-empty" style="min-height:auto;padding:20px;"><p>Bölge verisi bulunamadı</p></div>';
+        return;
+      }
+      const regions = Object.entries(kentkartInfo.regions);
+      container.innerHTML = regions.map(([code, data]) => `
+        <div class="region-card" data-code="${code}" onclick="toggleRegion('${code}', this)">
+          <div class="region-card-header">
+            <div class="region-card-icon" style="background:${(data.colors && data.colors[0] ? data.colors[0] + '20' : 'var(--background-soft)')};color:${(data.colors && data.colors[0] ? data.colors[0] : 'var(--primary-color)')};">
+              <i class="fas ${data.icon || 'fa-bus'}"></i>
+            </div>
+            <div class="region-card-info">
+              <div class="region-card-name">${data.name}</div>
+              <div class="region-card-meta">${data.region || 'Bölge'} • ${data.routes ? data.routes.length : 0} Hat</div>
+            </div>
+            <div class="region-card-badge">${code}</div>
+            <button class="region-card-expand"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="region-routes-list">
+            ${(data.routes || []).map(route => `
+              <div class="region-route-item" onclick="event.stopPropagation(); loadRouteDetail('${code}', '${route}')">
+                <i class="fas fa-route"></i>
+                <span>${route}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleRegion(code, el) {
+      const wasExpanded = el.classList.contains('expanded');
+      document.querySelectorAll('.region-card').forEach(c => c.classList.remove('expanded'));
+      if (!wasExpanded) {
+        el.classList.add('expanded');
+        selectedRegion = code;
+        showRegionDetail(code);
+      } else {
+        selectedRegion = null;
+      }
+    }
+
+    function showRegionDetail(code) {
+      const data = kentkartInfo.regions[code];
+      if (!data) return;
+      document.getElementById('back-to-explorer').classList.add('visible');
+      const content = document.getElementById('detail-content');
+      content.innerHTML = `
+        <div class="detail-header">
+          <div class="detail-header-icon" style="background:${(data.colors && data.colors[0] ? data.colors[0] + '20' : 'var(--background-soft)')};color:${(data.colors && data.colors[0] ? data.colors[0] : 'var(--primary-color)')};">
+            <i class="fas ${data.icon || 'fa-bus'}"></i>
+          </div>
+          <div class="detail-header-info">
+            <div class="detail-header-title">${data.name}</div>
+            <div class="detail-header-sub">Kod: ${code} • ${data.region || 'Bölge'} • ${data.coords ? data.coords[0] + ', ' + data.coords[1] : 'Koordinat yok'}</div>
+          </div>
+          <div class="detail-header-actions">
+            <div class="count-badge" style="background:${(data.colors && data.colors[0] ? data.colors[0] + '20' : 'var(--background-soft)')};color:${(data.colors && data.colors[0] ? data.colors[0] : 'var(--primary-color)')};border:1px solid ${(data.colors && data.colors[0] ? data.colors[0] + '40' : 'var(--border-light)')};">
+              ${data.routes ? data.routes.length : 0} Hat
+            </div>
+          </div>
+        </div>
+        <div class="section-container" style="border-left-color:${(data.colors && data.colors[0] ? data.colors[0] : 'var(--primary-color)')};">
+          <div class="section-meta-label">GÜZERGAH LİSTESİ</div>
+          <div class="bus-cards-grid">
+            ${(data.routes || []).map(route => {
+              const routeFile = findRouteFile(route, code);
+              return `
+              <div class="bus-info-card" onclick="loadRouteFile('${routeFile}')" style="cursor:pointer;">
+                <div class="card-main">
+                  <div class="bus-id-section">
+                    <div class="bus-icon-pill" style="background:${(data.colors && data.colors[0] ? data.colors[0] + '20' : 'var(--background-soft)')};color:${(data.colors && data.colors[0] ? data.colors[0] : 'var(--primary-color)')};">
+                      <i class="fas fa-route"></i>
+                    </div>
+                    <div>
+                      <div class="plate-number">Hat ${route}</div>
+                      <div class="route-details">
+                        <div class="next-label">${data.name} Bölgesi</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-status-orb">
+                  <div class="status-label">Dosya</div>
+                  <div class="status-dist"><i class="fas fa-chevron-right"></i></div>
+                </div>
+              </div>
+            `;}).join('')}
+          </div>
+        </div>
+        ${(data.specialVehicles && data.specialVehicles.length) ? `
+        <div class="section-container" style="border-left-color:var(--accent-color);">
+          <div class="section-meta-label">ÖZEL ARAÇLAR</div>
+          <div class="bus-cards-grid">
+            ${data.specialVehicles.map(v => `
+              <div class="bus-info-card">
+                <div class="card-main">
+                  <div class="bus-id-section">
+                    <div class="bus-icon-pill" style="background:var(--warning-light);color:var(--warning-color);">
+                      <i class="fas fa-star"></i>
+                    </div>
+                    <div>
+                      <div class="plate-number">${v}</div>
+                      <div class="route-details">
+                        <div class="next-label">Özel Araç</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        ` : ''}
+      `;
+    }
+
+    function findRouteFile(routeName, regionCode) {
+      return './routes/' + regionCode + '.json';
+    }
+
+    async function loadRouteFile(path) {
+      selectedFile = path;
+      showFilePreview(path);
+    }
+
+    async function loadRouteDetail(code, route) {
+      selectedRegion = code;
+      showRegionDetail(code);
+      document.getElementById('back-to-explorer').classList.add('visible');
+    }
+
+    async function renderFolders() {
+      const container = document.getElementById('tab-folders');
+      container.innerHTML = `
+        <div class="folder-item" onclick="expandFolder('routes')">
+          <div class="folder-item-icon"><i class="fas fa-folder-open"></i></div>
+          <div class="folder-item-info">
+            <div class="folder-item-name">routes/</div>
+            <div class="folder-item-meta">Güzergah verileri</div>
+          </div>
+          <div class="region-card-badge" id="routes-count-badge">...</div>
+        </div>
+        <div class="folder-item" onclick="expandFolder('models')">
+          <div class="folder-item-icon"><i class="fas fa-folder-open"></i></div>
+          <div class="folder-item-info">
+            <div class="folder-item-name">models/</div>
+            <div class="folder-item-meta">JS modelleri</div>
+          </div>
+          <div class="region-card-badge" id="models-count-badge">...</div>
+        </div>
+      `;
+      scanDir('routes', 'routes-count-badge');
+      scanDir('models', 'models-count-badge');
+    }
+
+    async function scanDir(dir, badgeId) {
+      try {
+        const res = await fetch('./' + dir + '/');
+        if (res.ok) {
+          const text = await res.text();
+          const matches = text.match(/href="[^"]+\.(json|js)"/g) || [];
+          const files = matches.map(m => m.match(/href="([^"]+)"/)[1]).filter(f => !f.endsWith('/'));
+          folderFiles[dir] = files;
+          const badge = document.getElementById(badgeId);
+          if (badge) badge.textContent = files.length + ' dosya';
+          renderFolderFiles(dir, files);
+        } else {
+          throw new Error('dir fetch failed');
+        }
+      } catch (e) {
+        const badge = document.getElementById(badgeId);
+        if (badge) badge.textContent = '0 dosya';
+        folderFiles[dir] = [];
+      }
+    }
+
+    function renderFolderFiles(dir, files) {
+      const existing = document.getElementById('folder-files-' + dir);
+      if (existing) existing.remove();
+      const wrapper = document.createElement('div');
+      wrapper.id = 'folder-files-' + dir;
+      wrapper.style.paddingLeft = '36px';
+      wrapper.style.marginTop = '4px';
+      wrapper.innerHTML = files.map(f => `
+        <div class="file-item" onclick="event.stopPropagation(); loadRouteFile('./${dir}/${f}')">
+          <span class="file-item-icon"><i class="fas fa-file-code"></i></span>
+          <span class="file-item-name">${f}</span>
+        </div>
+      `).join('');
+      const folderItem = document.querySelector(`.folder-item[onclick*="'${dir}'"]`);
+      if (folderItem && folderItem.parentNode) {
+        folderItem.parentNode.insertBefore(wrapper, folderItem.nextSibling);
+      }
+    }
+
+    function expandFolder(dir) {
+      const wrapper = document.getElementById('folder-files-' + dir);
+      if (wrapper) {
+        wrapper.classList.toggle('hidden');
+      }
+    }
+
+    async function showFilePreview(path) {
+      document.getElementById('back-to-explorer').classList.add('visible');
+      const content = document.getElementById('detail-content');
+      content.innerHTML = `
+        <div class="detail-header">
+          <div class="detail-header-icon" style="background:var(--background-soft);color:var(--text-muted);">
+            <i class="fas fa-file-code"></i>
+          </div>
+          <div class="detail-header-info">
+            <div class="detail-header-title">${path.split('/').pop()}</div>
+            <div class="detail-header-sub">${path}</div>
+          </div>
+          <div class="detail-header-actions">
+            <button class="detail-action-btn" title="Kopyala" onclick="copyFileContent('${path}')"><i class="fas fa-copy"></i></button>
+          </div>
+        </div>
+        <div id="file-preview-body">
+          <div class="detail-empty" style="min-height:auto;"><i class="fas fa-spinner fa-spin"></i><p>Yükleniyor...</p></div>
+        </div>
+      `;
+      try {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error('fetch failed');
+        const text = await res.text();
+        const sizeKB = new Blob([text]).size / 1024;
+        let previewBody = document.getElementById('file-preview-body');
+        let warningHtml = '';
+        if (sizeKB > 500) {
+          warningHtml = `<div class="file-warning"><i class="fas fa-exclamation-triangle"></i> Dosya ${sizeKB.toFixed(0)}KB - Tarayıcıyı yorabilir<button onclick="forceLoadFile('${path}')">Zorla Yükle</button></div>`;
+        }
+        const lines = text.split('\n');
+        const displayLines = sizeKB > 500 ? lines.slice(0, 100) : lines;
+        const truncated = sizeKB > 500;
+        previewBody.innerHTML = warningHtml + `<div class="code-preview" id="code-preview">${highlightSyntax(displayLines.join('\n'))}${truncated ? '\n\n... (ilk 100 satır gösteriliyor, dosya ' + sizeKB.toFixed(0) + 'KB)' : ''}</div>`;
+        window._lastFileContent = text;
+      } catch (err) {
+        document.getElementById('file-preview-body').innerHTML = '<div class="detail-empty" style="min-height:auto;"><i class="fas fa-exclamation-triangle" style="color:var(--danger-color);"></i><p style="color:var(--danger-color);">Dosya yüklenemedi</p></div>';
+      }
+    }
+
+    async function forceLoadFile(path) {
+      const content = document.getElementById('file-preview-body');
+      content.innerHTML = '<div class="detail-empty" style="min-height:auto;"><i class="fas fa-spinner fa-spin"></i><p>Yükleniyor...</p></div>';
+      try {
+        const res = await fetch(path);
+        const text = await res.text();
+        const sizeKB = new Blob([text]).size / 1024;
+        const lines = text.split('\n');
+        const displayLines = sizeKB > 500 ? lines.slice(0, 100) : lines;
+        const truncated = sizeKB > 500;
+        content.innerHTML = `<div class="code-preview">${highlightSyntax(displayLines.join('\n'))}${truncated ? '\n\n... (ilk 100 satır gösteriliyor, dosya ' + sizeKB.toFixed(0) + 'KB)' : ''}</div>`;
+        window._lastFileContent = text;
+      } catch (err) {
+        content.innerHTML = '<div class="detail-empty" style="min-height:auto;"><i class="fas fa-exclamation-triangle" style="color:var(--danger-color);"></i><p style="color:var(--danger-color);">Dosya yüklenemedi</p></div>';
+      }
+    }
+
+    function highlightSyntax(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+          let cls = 'code-number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'code-key';
+            } else {
+              cls = 'code-string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'code-boolean';
+          } else if (/null/.test(match)) {
+            cls = 'code-null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+        })
+        .replace(/(\/\/.*$)/gm, '<span class="code-comment">$1</span>');
+    }
+
+    function copyFileContent(path) {
+      if (window._lastFileContent) {
+        navigator.clipboard.writeText(window._lastFileContent).then(() => {
+          const btn = document.querySelector('.detail-action-btn[title="Kopyala"] i');
+          if (btn) {
+            const original = btn.className;
+            btn.className = 'fas fa-check';
+            setTimeout(() => btn.className = original, 1500);
+          }
+        });
+      }
+    }
+
+    function clearSelection() {
+      selectedRegion = null;
+      selectedFile = null;
+      document.getElementById('back-to-explorer').classList.remove('visible');
+      document.getElementById('detail-content').innerHTML = `
+        <div class="detail-empty">
+          <i class="fas fa-circle-info"></i>
+          <p>Sol panelden bir bölge seçerek detayları görüntüleyin veya bir dosya tıklayın</p>
+        </div>
+      `;
+      document.querySelectorAll('.region-card').forEach(c => c.classList.remove('expanded'));
+    }
+
+    window.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>

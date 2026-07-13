@@ -1,0 +1,124 @@
+@keyframes activePulse {
+  0% {
+    transform: scale(0.97);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes nowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(13, 148, 136, 0.08);
+  }
+}
+
+@keyframes pillPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.2), 0 4px 12px rgba(13, 148, 136, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(13, 148, 136, 0.1), 0 4px 12px rgba(13, 148, 136, 0.4);
+  }
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-locate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes labelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) rotate(-35deg) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) rotate(-35deg) scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-panel {
+  display: none;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* === LAYOUT UTILITIES === */
+.d-flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 6px;
+}
+
+.gap-3 {
+  gap: 10px;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.min-w-0 {
+  min-width: 0;
+}

@@ -1,0 +1,13 @@
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: radial-gradient(circle at top right, rgba(20, 184, 166, 0.08), transparent 600px),
+              radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.05), transparent 400px),
+              var(--background-main);
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  min-height: 100vh;
+}

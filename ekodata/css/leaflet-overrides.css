@@ -1,0 +1,390 @@
+.leaflet-div-icon {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  font-size: var(--map-control-font) !important;
+  font-weight: 600 !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  line-height: 34px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  border-radius: 0 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+  box-shadow: none !important;
+}
+
+.leaflet-control-zoom a:first-child {
+  border-top-left-radius: var(--radius) !important;
+  border-top-right-radius: var(--radius) !important;
+  border-bottom: none !important;
+}
+
+.leaflet-control-zoom a:last-child {
+  border-bottom-left-radius: var(--radius) !important;
+  border-bottom-right-radius: var(--radius) !important;
+  border-top: none !important;
+}
+
+.leaflet-control-layers {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-control-layers-toggle {
+  background: var(--leaflet-control-bg) !important;
+  border: none !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  background-image: none !important;
+  position: relative;
+  transition: all 0.15s ease !important;
+}
+
+.leaflet-control-layers-toggle::before {
+  content: "🗺️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--map-control-font);
+  color: var(--leaflet-control-text);
+  transition: all 0.15s ease;
+}
+
+.leaflet-control-layers-toggle:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+}
+
+.leaflet-control-layers-toggle:hover::before {
+  color: var(--leaflet-control-hover-text);
+}
+
+.leaflet-control-layers-expanded {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 12px !important;
+  min-width: 160px !important;
+}
+
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+  display: none !important;
+}
+
+.leaflet-control-layers-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.leaflet-control-layers-base label,
+.leaflet-control-layers-overlays label {
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 0 !important;
+  margin: 0 !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease !important;
+  border-bottom: 1px solid var(--border-light) !important;
+}
+
+.leaflet-control-layers-base label:last-child,
+.leaflet-control-layers-overlays label:last-child {
+  border-bottom: none !important;
+}
+
+.leaflet-control-layers-base label:hover,
+.leaflet-control-layers-overlays label:hover {
+  color: var(--primary-color) !important;
+}
+
+.leaflet-control-layers-base input,
+.leaflet-control-layers-overlays input {
+  margin-right: 6px !important;
+  margin-left: 0 !important;
+  width: 14px !important;
+  height: 14px !important;
+  accent-color: var(--primary-color) !important;
+}
+
+.leaflet-control-layers-separator {
+  height: 1px !important;
+  background: var(--border-light) !important;
+  margin: 8px 0 !important;
+  border: none !important;
+}
+
+.leaflet-control-attribution {
+  background: var(--leaflet-attribution-bg) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-sm) !important;
+  backdrop-filter: blur(8px) !important;
+  font-size: 0.7rem !important;
+  color: var(--leaflet-attribution-text) !important;
+  padding: 3px 6px !important;
+  margin: var(--map-control-margin) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--leaflet-attribution-link) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+.leaflet-control-attribution a:hover {
+  text-decoration: underline !important;
+}
+
+/* === CUSTOM MAP CONTROL BUTTONS === */
+.custom-map-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--map-control-margin);
+}
+
+.map-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--map-control-size);
+  height: var(--map-control-size);
+  background: var(--card-background);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow);
+  font-size: var(--map-control-font);
+}
+
+.map-control-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.map-control-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* === LOCATION CONTROL BUTTON === */
+.leaflet-control-locate {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.leaflet-control-locate a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: var(--map-control-font) !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-locate a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+}
+
+.leaflet-control-locate.requesting a {
+  background: var(--warning-color) !important;
+  border-color: var(--warning-color) !important;
+  color: white !important;
+  animation: pulse-locate 1.5s infinite;
+}
+
+.leaflet-control-locate.active a {
+  background: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+  color: white !important;
+}
+
+/* === FULLSCREEN CONTROL === */
+.leaflet-control-fullscreen {
+  border: none !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.leaflet-control-fullscreen a {
+  background: var(--leaflet-control-bg) !important;
+  border: 1px solid var(--leaflet-control-border) !important;
+  color: var(--leaflet-control-text) !important;
+  width: var(--map-control-size) !important;
+  height: var(--map-control-size) !important;
+  border-radius: var(--radius) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: var(--map-control-font) !important;
+  transition: all 0.15s ease !important;
+  text-decoration: none !important;
+}
+
+.leaflet-control-fullscreen a:hover {
+  background: var(--leaflet-control-hover-bg) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--leaflet-control-hover-text) !important;
+}
+
+/* === CUSTOM MAP CONTROLS (ZOOM ONLY) === */
+.custom-map-controls-frame {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  margin-bottom: 25px;
+  margin-right: 20px;
+  z-index: 1000;
+  width: 42px;
+}
+
+.map-ctrl-btn {
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--primary-color);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.map-ctrl-btn:last-child {
+  border-bottom: none;
+}
+
+.map-ctrl-btn:hover {
+  background: var(--background-secondary);
+  color: var(--accent-color);
+}
+
+/* === TOP RIGHT INTERACTIVE BADGE === */
+.custom-map-name-frame {
+  margin: 15px !important;
+  position: relative;
+  z-index: 1001;
+}
+
+.active-map-name {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 10px;
+  font-weight: var(--font-weight-black);
+  color: var(--text-primary);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.active-map-name:hover {
+  background: var(--card-background);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.map-type-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--card-background);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  min-width: 160px;
+  display: none;
+  flex-direction: column;
+  z-index: 1002;
+  backdrop-filter: blur(10px);
+}
+
+.map-type-dropdown.show {
+  display: flex;
+  animation: menuFadeIn 0.2s ease-out;
+}
+
+.map-type-option {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.map-type-option:hover {
+  background: var(--background-secondary);
+  color: var(--primary-color);
+}
+
+.map-type-option.active {
+  background: var(--primary-color);
+  color: white;
+}

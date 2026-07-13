@@ -1,0 +1,190 @@
+:root {
+  /* === TYPOGRAPHY === */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  --font-size-xs: 0.7rem;   /* etiketler, rozetler */
+  --font-size-sm: 0.8rem;   /* ikincil metin */
+  --font-size-base: 0.9rem; /* gövde */
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.8rem;   /* başlık */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+  --font-weight-heavy: 900;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --tracking-tight: -0.011em; /* Inter için önerilen başlık tracking'i */
+  --tracking-normal: 0;
+
+  /* === MAIN COLORS === */
+  --primary-color: #0d9488;
+  --primary-light: #14b8a6;
+  --primary-soft: rgba(13, 148, 136, 0.1);
+  --accent-color: #f97316;
+
+  /* === BACKGROUND COLORS === */
+  --background-main: #f8fafc;
+  --background-secondary: #f1f5f9;
+  --background-soft: #e2e8f0;
+
+  /* === THE GLASS SYSTEM === */
+  --card-background: rgba(255, 255, 255, 0.75);
+  --card-secondary: rgba(255, 255, 255, 0.45);
+  --glass-blur: blur(10px);
+  --glass-blur-sm: blur(6px);
+  --glass-webkit-blur: saturate(150%) blur(10px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px rgba(13, 148, 136, 0.08);
+  --glass-background: var(--card-background);
+
+  /* === TEXT COLORS === */
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  /* === BORDER COLORS === */
+  --border-color: #cbd5e1;
+  --border-light: #e2e8f0;
+  --border-accent: #2dd4bf;
+
+  /* === STATUS COLORS === */
+  --success-color: #22c55e;
+  --success-light: #dcfce7;
+  --success-border: #bbf7d0;
+
+  --danger-color: #ef4444;
+  --danger-light: #fee2e2;
+  --danger-border: #fecaca;
+
+  --warning-color: #f59e0b;
+  --warning-light: #fffbeb;
+  --warning-border: #fde68a;
+
+  /* === TRACKING COLORS === */
+  --tracking-active-bg: #fff7ed;
+  --tracking-active-border: var(--accent-color);
+  --tracking-active-shadow: rgba(249, 115, 22, 0.15);
+
+  /* === MISSED TIME COLORS === */
+  --missed-bg: var(--danger-light);
+  --missed-border: var(--danger-border);
+  --missed-text: var(--text-muted);
+
+  /* === CURRENT TIME COLORS === */
+  --current-time-bg: #ecfdf5;
+  --current-time-border: var(--success-color);
+  --current-time-shadow: rgba(34, 197, 94, 0.15);
+
+  /* === STOP BADGE COLORS === */
+  --start-badge-bg: var(--success-light);
+  --start-badge-color: var(--success-color);
+  --start-badge-border: var(--success-border);
+
+  --end-badge-bg: var(--danger-light);
+  --end-badge-color: var(--danger-color);
+  --end-badge-border: var(--danger-border);
+
+  --nearest-badge-bg: var(--warning-light);
+  --nearest-badge-color: var(--warning-color);
+  --nearest-badge-border: var(--warning-border);
+
+  /* === STOP HIGHLIGHT COLORS === */
+  --nearest-stop-bg: #f5f6ff;
+  --buses-at-stop-bg: #f0fdf4;
+  --buses-at-stop-border: var(--success-border);
+
+  /* === BUS PLATE COLORS === */
+  --bus-plate-at-stop-bg: var(--success-color);
+  --bus-plate-between-stops-bg: var(--primary-color);
+
+  /* === SEGMENT COLORS === */
+  --segment-bg: var(--background-soft);
+  --segment-border: var(--primary-soft);
+
+  /* === LEAFLET OVERRIDE COLORS === */
+  --leaflet-control-bg: var(--card-background);
+  --leaflet-control-border: var(--border-light);
+  --leaflet-control-text: var(--text-secondary);
+  --leaflet-control-hover-bg: var(--primary-color);
+  --leaflet-control-hover-text: white;
+  --leaflet-attribution-bg: rgba(255, 255, 255, 0.9);
+  --leaflet-attribution-text: var(--text-muted);
+  --leaflet-attribution-link: var(--primary-color);
+
+  /* === SPACING & SIZING === */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+
+  /* === MOBILE SIZES === */
+  --header-padding: 12px 16px;
+  --route-title-size: 1rem;
+  --btn-size: 36px;
+  --btn-font-size: 0.875rem;
+  --content-padding: 16px;
+  --section-title-size: 0.95rem;
+  --section-title-margin: 12px;
+  --info-item-padding: 12px;
+  --info-item-margin: 10px;
+  --bus-item-margin: 4px;
+  --bus-main-padding: 6px 8px;
+  --bus-status-panel-width: 25%;
+  --bus-status-panel-padding: 4px 2px;
+  --bus-status-panel-height: 50px;
+  --bus-status-panel-min-width: 45px;
+  --bus-status-panel-font: 0.6rem;
+  --bus-status-text-font: 0.55rem;
+  --bus-status-value-font: 0.65rem;
+  --nearest-stop-padding: 6px 8px;
+  --nearest-stop-margin: 4px;
+  --nearest-stop-title-font: 0.75rem;
+  --nearest-stop-detail-font: 0.65rem;
+  --bus-plate-font: 0.9rem;
+  --destination-text-font: 0.75rem;
+  --destination-distance-font: 0.65rem;
+  --destination-distance-padding: 1px 4px;
+  --bus-user-status-font: 0.6rem;
+  --bus-user-status-padding: 2px 4px;
+  --bus-user-status-margin: 2px;
+  --bus-user-status-gap: 3px;
+  --user-status-icon-size: 5px;
+  --bus-info-font: 0.8rem;
+  --bus-info-padding: 8px 12px;
+  --tab-font: 0.8rem;
+  --tab-padding: 6px 8px;
+  --time-item-padding: 10px 12px;
+  --time-item-margin: 6px;
+  --time-display-font: 0.875rem;
+  --time-badge-font: 0.7rem;
+  --time-badge-padding: 3px 6px;
+  --stop-item-padding: 10px 12px;
+  --stop-item-margin: 6px;
+  --stop-name-font: 0.875rem;
+  --stop-index-font: 0.8rem;
+  --stop-index-margin: 6px;
+  --stop-index-width: 20px;
+  --stop-badge-padding: 2px 4px;
+  --stop-badge-font: 0.7rem;
+  --stop-badge-margin: 4px;
+  --buses-at-stop-padding: 6px 10px;
+  --buses-at-stop-font: 0.75rem;
+  --buses-at-stop-gap: 6px;
+  --buses-at-stop-margin: 8px;
+  --segment-padding: 8px 12px;
+  --segment-margin: 6px;
+  --segment-gap: 6px;
+  --expand-btn-font: 0.8rem;
+  --expand-btn-padding: 6px 12px;
+  --map-control-size: 36px;
+  --map-control-font: 14px;
+  --map-control-margin: 6px;
+}

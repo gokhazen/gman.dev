@@ -1,0 +1,1153 @@
+/* === HEADER BUTTONS === */
+.direction-btn, .search-btn, .back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: var(--btn-font-size);
+}
+
+.direction-btn:hover, .search-btn:hover, .back-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.bus-track-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bus-track-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+/* === CARDS & INFO ITEMS === */
+.info-item {
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: var(--info-item-padding);
+  margin-bottom: 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--glass-shadow);
+  will-change: transform;
+}
+
+.info-item:hover {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow);
+}
+
+.info-item[data-plate] {
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: 0;
+  margin-bottom: var(--bus-item-margin);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  overflow: hidden;
+}
+
+.info-item[data-plate]:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow);
+}
+
+.info-item[data-plate].tracking-active {
+  border-color: var(--tracking-active-border);
+  background: var(--tracking-active-bg);
+  box-shadow: 0 0 0 3px var(--tracking-active-shadow);
+}
+
+/* === BUS INFO === */
+.bus-main-content {
+  flex: 1;
+  padding: var(--bus-main-padding);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.bus-status-panel {
+  width: var(--bus-status-panel-width);
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--bus-status-panel-padding);
+  color: white;
+  font-size: var(--bus-status-panel-font);
+  text-align: center;
+  min-height: var(--bus-status-panel-height);
+  min-width: var(--bus-status-panel-min-width);
+}
+
+.bus-status-panel .status-text {
+  font-size: var(--bus-status-text-font);
+  margin-bottom: 2px;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bus-status-panel .status-value {
+  font-size: var(--bus-status-value-font);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.1;
+  word-break: break-word;
+}
+
+.info-item[data-plate].tracking-active .bus-status-panel {
+  background: linear-gradient(135deg, var(--warning-color) 0%, #f59e0b 100%);
+}
+
+.bus-plate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.bus-plate-number {
+  font-size: var(--bus-plate-font);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.5px;
+}
+
+.info-item[data-plate].tracking-active .bus-plate-number {
+  color: var(--warning-color);
+}
+
+.bus-status-badge {
+  display: none;
+}
+
+.bus-status-badge.at-stop {
+  background: var(--success-light);
+  color: var(--success-color);
+  border: 1px solid var(--success-border);
+}
+
+.bus-status-badge.in-route {
+  background: var(--background-soft);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-soft);
+}
+
+.bus-destination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 3px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.destination-icon {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.destination-text {
+  font-size: var(--destination-text-font);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.destination-distance {
+  font-size: var(--destination-distance-font);
+  color: var(--primary-color);
+  font-weight: 500;
+  background: var(--background-soft);
+  padding: var(--destination-distance-padding);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.bus-user-status {
+  display: flex;
+  align-items: center;
+  gap: var(--bus-user-status-gap);
+  padding: var(--bus-user-status-padding);
+  border-radius: var(--radius-sm);
+  font-size: var(--bus-user-status-font);
+  font-weight: 400;
+  margin-top: var(--bus-user-status-margin);
+}
+
+.bus-user-status.approaching {
+  background: var(--success-light);
+  color: var(--success-color);
+  border: 1px solid var(--success-border);
+}
+
+.bus-user-status.passed {
+  background: var(--danger-light);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-border);
+}
+
+.user-status-icon {
+  width: var(--user-status-icon-size);
+  height: var(--user-status-icon-size);
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* --- UNIFIED SCHEDULE BAR --- */
+.sched-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: var(--card-secondary);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  padding: 6px;
+  border-radius: 16px;
+  border: var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.sched-chips-scroll {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+.sched-chips-scroll::-webkit-scrollbar { display: none; }
+
+.sched-chip {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.sched-chip.active {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 4px 10px rgba(13,148,136,0.25);
+}
+
+.sched-actions {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  border-left: 1px solid var(--border-light);
+}
+
+.sched-inline-expand {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+  background: var(--card-background);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.sched-inline-expand:hover {
+  background: var(--primary-soft);
+  transform: scale(1.05);
+}
+.sched-inline-expand.is-expanded {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* --- MODERN BUS CARDS --- */
+.bus-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.bus-info-card {
+  position: relative;
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: var(--glass-border);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  will-change: transform;
+}
+
+.bus-info-card:hover {
+  border-color: var(--primary-soft);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.bus-info-card:active {
+  transform: scale(0.97);
+  transition: transform 0.1s;
+}
+
+.bus-info-card.tracking-active {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--card-background) 0%, rgba(13, 148, 136, 0.05) 100%);
+  box-shadow: 0 8px 32px rgba(13, 148, 136, 0.18);
+}
+
+.bus-info-card.pulse-anim {
+  animation: activePulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 100%;
+  opacity: 0.9;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sequence-mini {
+  color: white;
+  font-size: 0.7rem;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  letter-spacing: 1px;
+}
+
+.card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding-left: 18px;
+}
+
+.bus-id-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bus-icon-pill {
+  width: 32px;
+  height: 32px;
+  background: var(--background-soft);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+.plate-number {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.next-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.next-stop-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.card-status-orb {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.status-label {
+  font-size: 0.68rem;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--background-soft);
+  color: var(--text-muted);
+}
+
+.card-status-orb.at-stop .status-label {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success-color);
+}
+
+.card-status-orb.in-motion .status-label {
+  background: rgba(13, 148, 136, 0.15);
+  color: var(--primary-color);
+}
+
+.status-dist {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.count-badge {
+  background: var(--primary-soft);
+  color: var(--primary-color);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-left: 8px;
+}
+
+/* === SCHEDULE BASIC === */
+.sched-now-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(13,148,136,0.25);
+  animation: nowPulse 2s infinite;
+  flex-shrink: 0;
+}
+
+.sched-now-text {
+  font-size: 0.83rem;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.sched-now-text strong {
+  font-size: 0.9rem;
+}
+
+.sched-hour-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.15s;
+}
+.sched-hour-row:last-child { border-bottom: none; }
+.sched-hour-row.past-hour { opacity: 0.45; }
+.sched-hour-row.current-hour .sched-hour-label {
+  color: var(--primary-color);
+}
+
+.sched-hour-label {
+  font-size: 1rem;
+  color: var(--text-muted);
+  min-width: 28px;
+  text-align: right;
+  padding-top: 4px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-minutes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+.sched-min-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: default;
+  transition: all 0.2s;
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-min-pill.upcoming-departure {
+  background: var(--card-background);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+.sched-min-pill.upcoming-departure:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.sched-min-pill.past-departure {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-light);
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+.sched-min-pill.current-departure {
+  background: var(--primary-color);
+  color: white;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(13,148,136,0.2), 0 4px 12px rgba(13,148,136,0.35);
+  animation: pillPulse 2s infinite;
+  transform: scale(1.08);
+}
+
+.sched-empty {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* === STOPS === */
+.stop-item {
+  margin-bottom: var(--stop-item-margin);
+  padding: var(--stop-item-padding);
+}
+
+.stop-main-info {
+  display: flex;
+  align-items: center;
+}
+
+.stop-name-and-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  font-size: var(--stop-name-font);
+  color: var(--text-primary);
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.stop-index {
+  font-size: var(--stop-index-font);
+  color: var(--text-muted);
+  margin-right: var(--stop-index-margin);
+  min-width: var(--stop-index-width);
+  text-align: right;
+}
+
+.stop-name-and-badges strong {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-right: 8px;
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.stop-badge {
+  display: inline-block;
+  padding: var(--stop-badge-padding);
+  border-radius: var(--radius-sm);
+  font-size: var(--stop-badge-font);
+  font-weight: 500;
+  margin-left: var(--stop-badge-margin);
+  white-space: nowrap;
+}
+
+.start-badge {
+  background: var(--start-badge-bg);
+  color: var(--start-badge-color);
+  border: 1px solid var(--start-badge-border);
+}
+
+.end-badge {
+  background: var(--end-badge-bg);
+  color: var(--end-badge-color);
+  border: 1px solid var(--end-badge-border);
+}
+
+.nearest-badge {
+  background: var(--nearest-badge-bg);
+  color: var(--nearest-badge-color);
+  border: 1px solid var(--nearest-badge-border);
+}
+
+.nearest-stop-highlight {
+  border-color: var(--warning-color);
+  background: var(--nearest-stop-bg);
+}
+
+.buses-at-stop-indicator {
+  background: var(--buses-at-stop-bg);
+  border: 1px solid var(--buses-at-stop-border);
+  border-radius: var(--radius);
+  padding: var(--buses-at-stop-padding);
+  font-size: var(--buses-at-stop-font);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--buses-at-stop-gap);
+  margin-top: var(--buses-at-stop-margin);
+}
+
+.buses-at-stop-indicator .fas {
+  color: var(--success-color);
+  margin-right: 5px;
+}
+
+.bus-plate-tag-at-stop {
+  background: var(--bus-plate-at-stop-bg);
+  color: white;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+
+.segment-buses-summary {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--segment-padding);
+  margin-bottom: var(--segment-margin);
+  background: var(--segment-bg);
+  border: 1px solid var(--segment-border);
+  border-radius: var(--radius);
+  gap: var(--segment-gap);
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.segment-arrow {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.segment-bus-plates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.bus-plate-tag-between-stops {
+  background: var(--bus-plate-between-stops-bg);
+  color: white;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+
+.segment-distance-info {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+/* === STOP TIMELINE === */
+.stop-entry {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  gap: 12px;
+}
+
+.stop-node-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  position: relative;
+  align-self: stretch;
+}
+
+.stop-node {
+  width: 26px;
+  height: 26px;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  z-index: 5;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.stop-node.start {
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+.stop-node.end {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+}
+.stop-node.nearest {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 0 12px rgba(13, 148, 136, 0.35);
+}
+
+.stop-line {
+  position: absolute;
+  width: 2px;
+  background: var(--border-light);
+  top: 50%;
+  height: calc(100% + 8px);
+  z-index: 1;
+}
+
+.stop-entry:last-child .stop-line {
+  display: none;
+}
+
+.stop-content-card {
+  flex: 1;
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stop-content-card:hover {
+  border-color: var(--primary-light);
+  transform: translateX(4px);
+  box-shadow: var(--shadow);
+}
+
+.stop-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stop-name {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.sbadge {
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+.sbadge.start {
+  background: var(--success-light);
+  color: var(--success-color);
+}
+.sbadge.end {
+  background: var(--danger-light);
+  color: var(--danger-color);
+}
+
+.buses-dock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.bus-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.bus-badge.at-stop {
+  background: var(--success-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
+}
+
+.bus-badge.moving {
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(13, 148, 136, 0.2);
+  margin-bottom: 4px;
+}
+
+.bus-badge .dist {
+  font-size: 9px;
+  opacity: 0.85;
+  margin-left: 2px;
+}
+
+/* === SEGMENTS === */
+.segment-container {
+  display: flex;
+  margin-left: 5px;
+  min-height: 20px;
+  gap: 12px;
+}
+
+.segment-line-container {
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  align-self: stretch;
+}
+
+.segment-line {
+  width: 2px;
+  height: calc(100% + 8px);
+  background: var(--border-light);
+  border-radius: 1px;
+}
+
+.segment-buses {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 0 12px 0;
+}
+
+.nearest-stop-highlight {
+  background: rgba(13, 148, 136, 0.05) !important;
+  border-left: 3px solid var(--primary-color) !important;
+}
+
+/* === MAP STOP LABELS === */
+.stop-marker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.stop-dot {
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  z-index: 10;
+}
+
+.stop-name-label {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform-origin: left center;
+  background: var(--card-background);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  padding: 4px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--primary-soft);
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.18), 0 1px 4px rgba(0,0,0,0.12);
+  white-space: nowrap;
+  margin-left: 4px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.stop-name-label {
+  display: flex !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-50%) rotate(var(--angle, -45deg)) scale(0.7);
+  pointer-events: none;
+  transform-origin: left center;
+}
+
+.crowded-label .stop-name-label .name {
+  font-size: 0.7rem !important;
+  max-width: 100px !important;
+  opacity: 0.9;
+}
+
+.crowded-label .stop-name-label .idx {
+  font-size: 0.6rem !important;
+}
+
+.show-stop-numbers .stop-name-label {
+  opacity: 1;
+  visibility: visible;
+  padding: 4px 6px;
+  transform: translateY(-50%) rotate(var(--angle, -45deg)) scale(0.9);
+}
+
+.show-stop-numbers .stop-name-label .name {
+  display: none;
+}
+
+.show-stop-labels .stop-name-label {
+  opacity: 1;
+  visibility: visible;
+  padding: 3px 10px;
+  transform: translateY(-50%) rotate(var(--angle, -45deg)) scale(1);
+}
+
+.show-stop-labels .stop-name-label .name {
+  display: inline-block;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stop-name-label .idx {
+  color: var(--primary-color);
+  font-size: 10px;
+  min-width: 14px;
+}
+
+.stop-name-label .name {
+  font-size: 10px;
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.85), 0 0 4px rgba(255,255,255,0.5);
+}
+
+.stop-node.start + .stop-name-label,
+.stop-node.end + .stop-name-label {
+  background: var(--card-background);
+  border-color: var(--primary-light);
+}
+
+/* === PREMIUM SCHEDULE === */
+#schedule-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--glass-background);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 20px;
+  padding: 16px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  margin-top: 8px;
+}
+
+#schedule-tabs {
+  width: 100%;
+}
+
+.tab-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.03);
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 10px 4px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+
+.tab-btn.active {
+  background: white;
+  color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: scale(1.02);
+}
+
+.next-bus-highlight {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 25px rgba(13, 148, 136, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.next-bus-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.9;
+}
+
+.next-bus-time {
+  font-size: 3rem;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.next-bus-countdown {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  backdrop-filter: blur(4px);
+}
+
+.time-group-section {
+  margin-bottom: 20px;
+}
+
+.time-group-title {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-group-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-light);
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+  gap: 10px;
+}
+
+.time-card {
+  background: white;
+  border: 1px solid var(--border-light);
+  padding: 10px 6px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.time-card.past {
+  opacity: 0.4;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.time-card.active {
+  border-color: var(--primary-color);
+  background: rgba(13, 148, 136, 0.05);
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.1);
+}
+
+.time-val {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.time-status {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+
