@@ -253,7 +253,7 @@
     }
 
     .app-title {
-      font-size: 1.1rem;
+      font-size: var(--route-title-size);
       font-weight: 600;
       color: var(--primary-color);
       margin: 0;
@@ -266,7 +266,8 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
+      padding: 0 12px;
+      height: var(--btn-size);
       background: var(--primary-color);
       color: white;
       border: none;
@@ -1419,6 +1420,12 @@
 
     // Permission Flow — EkoLocation Engine kullanır
     const initPermissionFlow = async () => {
+      const urlRegion = new URLSearchParams(window.location.search).get('region');
+      if (urlRegion && APP_DATA.regions[urlRegion]) {
+        els.permissionOverlay.classList.add('hidden');
+        return;
+      }
+
       if (!window.EkoLocation && !navigator.geolocation) {
         els.permissionOverlay.classList.add('hidden');
         createRegionsUI();
@@ -1449,48 +1456,57 @@
       }
     };
 
-    els.requestPermissionBtn.onclick = async () => {
-      els.requestPermissionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>İstek Gönderiliyor...</span>';
+    els.requestPermissionBtn.onclick = () => {
+      // Butonu "Konum alınıyor..." animasyonuna çevir — overlay AÇIK kalır
+      els.requestPermissionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Konum Alınıyor...</span>';
+      els.requestPermissionBtn.disabled = true;
+      els.permissionStatusText.textContent = "GPS sinyali bekleniyor...";
+      els.permissionStatusText.style.color = "";
 
-      // EkoLocation Engine üzerinden izin iste (hem Native hem Web'i destekler)
-      const perm = window.EkoLocation
-        ? await window.EkoLocation.requestPermission()
-        : 'prompt';
+      let locationResolved = false;
 
-      if (perm !== 'granted') {
-        els.permissionStatusText.textContent = "İzin alınamadı. Lütfen ayarları kontrol edin.";
-        els.permissionStatusText.style.color = "var(--danger-color)";
-        els.requestPermissionBtn.innerHTML = '<i class="fas fa-location-arrow"></i><span>İzin Ver ve Başla</span>';
-        return;
-      }
-
-      // İzin alındı — YALNIZCA BURADA motor başlar (tek GPS bağlantısı)
-      window.EkoLocation && window.EkoLocation.start();
-
-      // Motor ilk konumu bulunca cachedCoords'u doldur ve UI'ı aç
-      const waitForFirstFix = () => {
-        return new Promise((resolve) => {
-          // Hemen son konum varsa kullan
-          const last = window.EkoLocation && window.EkoLocation.getLast();
-          if (last) { resolve(last); return; }
-
-          // Yoksa motorun ilk sinyalini bekle (max 15sn)
-          const timeout = setTimeout(() => resolve(null), 15000);
-          window.addEventListener('ekoLocationUpdate', function handler(e) {
-            clearTimeout(timeout);
-            window.removeEventListener('ekoLocationUpdate', handler);
-            resolve(e.detail);
-          }, { once: true });
+      // Konum geldiğinde otomatik şehir seç
+      const onLocationReceived = (pos) => {
+        if (locationResolved) return;
+        locationResolved = true;
+        cachedCoords = { latitude: pos.lat, longitude: pos.lng, accuracy: pos.accuracy };
+        
+        // En yakın şehri bul ve direkt aç
+        processLocation(pos.lat, pos.lng, (nearest) => {
+          els.permissionOverlay.classList.add('hidden');
+          if (nearest) {
+            autoSelectionDone = true;
+            selectCity(nearest);
+          } else {
+            createRegionsUI();
+          }
         });
       };
 
-      const coords = await waitForFirstFix();
-      if (coords) {
-        cachedCoords = { latitude: coords.lat, longitude: coords.lng, accuracy: coords.accuracy };
-      }
+      // 10 saniye içinde konum gelmezse şehir listesini göster
+      const fallbackTimer = setTimeout(() => {
+        if (locationResolved) return;
+        locationResolved = true;
+        els.permissionOverlay.classList.add('hidden');
+        createRegionsUI();
+      }, 10000);
 
-      els.permissionOverlay.classList.add('hidden');
-      createRegionsUI();
+      // Motoru başlat (100ms gecikme: DOM güncellenmesi için)
+      setTimeout(() => {
+        if (window.EkoLocation) {
+          window.EkoLocation.start();
+          window.EkoLocation.onUpdate((pos) => {
+            clearTimeout(fallbackTimer);
+            onLocationReceived(pos);
+          });
+        } else {
+          // EkoLocation yoksa hemen şehir listesini göster
+          clearTimeout(fallbackTimer);
+          locationResolved = true;
+          els.permissionOverlay.classList.add('hidden');
+          createRegionsUI();
+        }
+      }, 100);
     };
 
     // Pencereye tekrar odaklanıldığında (ayar değişmiş olabilir) kontrol et
@@ -1927,40 +1943,10 @@
       }
     };
 
-    // Nearest stops functions
-    const loadNearestStops = async () => {
-      els.nearestStops.innerHTML = '<li class="loading"><i class="fas fa-spinner"></i><span>Konum alınıyor...</span></li>';
+    let cachedStopsForNearest = null;
+    let nearestUpdateInterval = null;
 
-      try {
-        let pos;
-        let isDefault = false;
-
-        try {
-          if (!navigator.geolocation) throw new Error('Geolocation not supported');
-
-          pos = await new Promise((resolve, reject) => {
-            const timeoutId = setTimeout(() => reject(new Error('Timeout')), 8000);
-            navigator.geolocation.getCurrentPosition(
-              p => {
-                clearTimeout(timeoutId);
-                resolve(p.coords);
-              },
-              e => {
-                clearTimeout(timeoutId);
-                reject(e);
-              },
-              { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
-            );
-          });
-        } catch (err) {
-          pos = { latitude: APP_DATA.regions[region].coords[0], longitude: APP_DATA.regions[region].coords[1] };
-          isDefault = true;
-        }
-
-        // Load stops from local JSON file
-        const stops = await fetchStopsForRegion(region);
-
-        // Calculate distances and sort
+    const renderNearestStops = (pos, stops, isDefault) => {
         const sorted = stops
           .map(stop => ({
             id: stop.stopId,
@@ -1971,13 +1957,12 @@
           .slice(0, 4);
 
         els.nearestStops.innerHTML = '';
-
         const formatDist = d => d >= 1000 ? (d / 1000).toFixed(1) + ' km' : Math.round(d) + 'm';
 
         if (isDefault) {
           const statusLi = document.createElement('li');
           statusLi.className = 'status-message info';
-          statusLi.innerHTML = '<i class="fas fa-info-circle"></i> Konumunuz alınamadı, şehir merkezi durakları gösteriliyor';
+          statusLi.innerHTML = '<i class="fas fa-info-circle"></i> Konum alınamadı, şehir merkezi gösteriliyor';
           statusLi.style.cursor = 'default';
           statusLi.style.marginBottom = '12px';
           els.nearestStops.appendChild(statusLi);
@@ -1999,7 +1984,31 @@
           };
           els.nearestStops.appendChild(li);
         });
+    };
 
+    // Nearest stops functions
+    const loadNearestStops = async () => {
+      els.nearestStops.innerHTML = '<li class="loading"><i class="fas fa-spinner"></i><span>Duraklar hesaplanıyor...</span></li>';
+      try {
+        if (!cachedStopsForNearest) {
+          cachedStopsForNearest = await fetchStopsForRegion(region);
+        }
+        
+        // EkoLocation'ı kullanarak dinamik güncelleme başlat
+        if (window.EkoLocation) {
+          const last = window.EkoLocation.getLast();
+          if (last) {
+            renderNearestStops({ latitude: last.lat, longitude: last.lng }, cachedStopsForNearest, false);
+          } else {
+            renderNearestStops({ latitude: APP_DATA.regions[region].coords[0], longitude: APP_DATA.regions[region].coords[1] }, cachedStopsForNearest, true);
+          }
+          
+          window.EkoLocation.onUpdate((pos) => {
+            if (els.mainApp.classList.contains('active')) {
+              renderNearestStops({ latitude: pos.lat, longitude: pos.lng }, cachedStopsForNearest, false);
+            }
+          });
+        }
       } catch (err) {
         console.error('Nearest stops error:', err);
         els.nearestStops.innerHTML = `
@@ -2224,6 +2233,26 @@
         }
       });
       els.clearSearch.addEventListener('click', clearSearch);
+
+      // Capacitor Native Android Geri Tuşu (Hardware Back Button)
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+        window.Capacitor.Plugins.App.addListener('backButton', ({ canGoBack }) => {
+          if (els.mainApp.classList.contains('active')) {
+            goBackToCitySelection();
+          } else if (canGoBack) {
+            window.history.back();
+          } else {
+            window.Capacitor.Plugins.App.exitApp();
+          }
+        });
+      } else {
+        document.addEventListener('backbutton', (e) => {
+          if (els.mainApp.classList.contains('active')) {
+            e.preventDefault();
+            goBackToCitySelection();
+          }
+        }, false);
+      }
 
       // Navigation
       els.backButton.addEventListener('click', goBackToCitySelection);

@@ -58,8 +58,13 @@
       this._detectPlatform();
       try {
         if (this._isNative) {
-          const p = await window.Capacitor.Plugins.Geolocation.requestPermissions();
-          return p.location;
+          // Capacitor'ın requestPermissions metodu bazı Android sürümlerinde askıda kalabiliyor.
+          // watchPosition zaten izin isteyeceği için burada çok beklemeden devam edebiliriz.
+          const p = await Promise.race([
+            window.Capacitor.Plugins.Geolocation.requestPermissions(),
+            new Promise(r => setTimeout(() => r({ location: 'granted' }), 2000))
+          ]);
+          return p.location || 'granted';
         }
         // Web: doğrudan watchPosition tetiklemek izin penceresini açar
         return new Promise((resolve) => {
