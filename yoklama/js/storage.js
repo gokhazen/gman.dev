@@ -84,10 +84,13 @@ const Storage = {
 
     // --- EXPORT / IMPORT ALL DATA ---
 
-    generateExportHash: () => {
+        generateExportHash: () => {
         const data = Storage.load();
         data.exportedAt = Date.now();
         const jsonStr = JSON.stringify(data);
+        if (typeof LZString !== 'undefined') {
+            return LZString.compressToEncodedURIComponent(jsonStr);
+        }
         return btoa(encodeURIComponent(jsonStr));
     },
 
@@ -168,13 +171,19 @@ const Storage = {
         }
     },
 
-    importFromHash: (hash) => {
+        importFromHash: (hash) => {
         try {
             let cleanHash = hash.trim();
             if (cleanHash.includes('#import=')) {
                 cleanHash = cleanHash.split('#import=')[1];
             }
-            const decoded = decodeURIComponent(atob(cleanHash));
+            let decoded = null;
+            if (typeof LZString !== 'undefined') {
+                decoded = LZString.decompressFromEncodedURIComponent(cleanHash);
+            }
+            if (!decoded) {
+                decoded = decodeURIComponent(atob(cleanHash));
+            }
             const parsedData = JSON.parse(decoded);
             if (parsedData && Array.isArray(parsedData.classes) && typeof parsedData.attendance === 'object') {
                 Storage.save(parsedData);
@@ -267,10 +276,14 @@ const Storage = {
         const data = Storage.load();
         const records = data.attendance[classId] || {};
         let present = 0, absent = 0, excused = 0, proxy = 0, canceled = 0;
+        let absentDates = [];
 
-        Object.values(records).forEach(status => {
+        Object.entries(records).forEach(([dateStr, status]) => {
             if (status === 'present') present++;
-            else if (status === 'absent') absent++;
+            else if (status === 'absent') {
+                absent++;
+                absentDates.push(dateStr);
+            }
             else if (status === 'excused') excused++;
             else if (status === 'proxy') proxy++;
             else if (status === 'canceled') canceled++;
@@ -283,7 +296,7 @@ const Storage = {
         // Proxy counts as present for display
         const totalPresentDisplay = present + proxy;
 
-        return { present: totalPresentDisplay, absent, excused, proxy, canceled, limit, dangerPercentage };
+        return { present: totalPresentDisplay, absent, excused, proxy, canceled, limit, dangerPercentage, absentDates };
     }
 };
 

@@ -52,22 +52,83 @@ function setupDateNavigation() {
     });
 
     const datePickerContainer = document.getElementById('btnDatePicker');
-    const hiddenPicker = document.getElementById('hiddenDatePicker');
     
     datePickerContainer.addEventListener('click', () => {
-        const offset = currentViewDate.getTimezoneOffset() * 60000;
-        const localISOTime = (new Date(currentViewDate - offset)).toISOString().split('T')[0];
-        hiddenPicker.value = localISOTime;
-        hiddenPicker.showPicker();
+        pickerCurrentDate = new Date(currentViewDate);
+        renderCustomDatePicker();
+        document.getElementById('customDatePickerModal').classList.add('active');
     });
 
-    hiddenPicker.addEventListener('change', (e) => {
-        if(e.target.value) {
-            currentViewDate = new Date(e.target.value);
+    document.getElementById('btnPickerPrevMonth').addEventListener('click', () => {
+        pickerCurrentDate.setMonth(pickerCurrentDate.getMonth() - 1);
+        renderCustomDatePicker();
+    });
+
+    document.getElementById('btnPickerNextMonth').addEventListener('click', () => {
+        pickerCurrentDate.setMonth(pickerCurrentDate.getMonth() + 1);
+        renderCustomDatePicker();
+    });
+
+    document.getElementById('btnPickerToday').addEventListener('click', () => {
+        pickerCurrentDate = new Date();
+        renderCustomDatePicker();
+    });
+}
+
+let pickerCurrentDate = new Date();
+
+function renderCustomDatePicker() {
+    const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+    document.getElementById('datePickerMonthYear').textContent = `${months[pickerCurrentDate.getMonth()]} ${pickerCurrentDate.getFullYear()}`;
+
+    const grid = document.getElementById('datePickerGrid');
+    grid.innerHTML = '';
+
+    const firstDayIndex = new Date(pickerCurrentDate.getFullYear(), pickerCurrentDate.getMonth(), 1).getDay();
+    const startDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+    const daysInMonth = new Date(pickerCurrentDate.getFullYear(), pickerCurrentDate.getMonth() + 1, 0).getDate();
+
+    for (let i = 0; i < startDay; i++) {
+        const div = document.createElement('div');
+        grid.appendChild(div);
+    }
+
+    const today = new Date();
+    
+    for (let i = 1; i <= daysInMonth; i++) {
+        const div = document.createElement('div');
+        div.textContent = i;
+        div.style.padding = '8px 4px';
+        div.style.cursor = 'pointer';
+        div.style.borderRadius = 'var(--radius-sm)';
+        
+        const isSelected = i === currentViewDate.getDate() && pickerCurrentDate.getMonth() === currentViewDate.getMonth() && pickerCurrentDate.getFullYear() === currentViewDate.getFullYear();
+        const isToday = i === today.getDate() && pickerCurrentDate.getMonth() === today.getMonth() && pickerCurrentDate.getFullYear() === today.getFullYear();
+        
+        if (isSelected) {
+            div.style.background = 'var(--primary)';
+            div.style.color = '#fff';
+            div.style.fontWeight = 'bold';
+        } else if (isToday) {
+            div.style.border = '1px solid var(--primary)';
+            div.style.color = 'var(--primary)';
+            div.style.fontWeight = 'bold';
+        } else {
+            div.style.color = 'var(--text-main)';
+        }
+
+        div.addEventListener('mouseover', () => { if(!isSelected) div.style.background = 'var(--bg-base)'; });
+        div.addEventListener('mouseout', () => { if(!isSelected) div.style.background = 'transparent'; });
+
+        div.onclick = () => {
+            currentViewDate = new Date(pickerCurrentDate.getFullYear(), pickerCurrentDate.getMonth(), i);
+            document.getElementById('customDatePickerModal').classList.remove('active');
             updateDateDisplay();
             renderTodayView();
-        }
-    });
+        };
+
+        grid.appendChild(div);
+    }
 }
 
 function updateDateDisplay() {
@@ -371,14 +432,14 @@ function renderScheduleView(dayIndex) {
                 <div>
                     <span class="class-time">${cls.time}</span>
                     <h3 class="class-name">${cls.name}</h3>
-                    <span class="class-id-badge">${cls.id}</span>
+                    <span class="class-id-badge">ID: ${cls.id}</span>
                 </div>
-                <div style="display:flex; gap:0.5rem">
-                    <button class="icon-btn" style="color:var(--info)" onclick="openEditModal('${cls.id}')">
-                        <i data-lucide="edit"></i>
+                <div style="display:flex; flex-direction:column; gap:0.25rem; align-items:center; justify-content:center;">
+                    <button class="icon-btn" style="color:var(--info); padding:6px;" onclick="openEditModal('${cls.id}')">
+                        <i data-lucide="edit" style="width:16px; height:16px;"></i>
                     </button>
-                    <button class="icon-btn text-danger" onclick="deleteClass('${cls.id}', ${cls.day})">
-                        <i data-lucide="trash-2"></i>
+                    <button class="icon-btn text-danger" style="padding:6px;" onclick="deleteClass('${cls.id}', ${cls.day})">
+                        <i data-lucide="trash-2" style="width:16px; height:16px;"></i>
                     </button>
                 </div>
             </div>
@@ -470,6 +531,27 @@ window.markAttendance = (btnElement, classId, dateStr, status) => {
     if (!wasSelected) btnElement.classList.add('selected');
 };
 
+window.goToDateFromStats = (dateStr) => {
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    
+    const todayNav = document.querySelector('.bottom-nav .nav-item[data-target="view-today"]');
+    if(todayNav) todayNav.classList.add('active');
+    
+    document.getElementById('view-today').classList.add('active');
+    document.getElementById('pageTitle').textContent = 'Takvim';
+    
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+        currentViewDate = new Date(parts[0], parseInt(parts[1])-1, parts[2]);
+    } else {
+        currentViewDate = new Date(dateStr);
+    }
+    
+    updateDateDisplay();
+    renderTodayView();
+};
+
 function renderStatsView() {
     const data = Storage.load();
     const container = document.getElementById('statsContainer');
@@ -501,6 +583,47 @@ function renderStatsView() {
             presentPct = (stats.present / total) * 100;
         }
 
+        let absentDatesHtml = '';
+        if (stats.absentDates && stats.absentDates.length > 0) {
+            const sortedDates = [...stats.absentDates].sort((a, b) => new Date(b) - new Date(a));
+            const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            
+            let datesList = sortedDates.map(d => {
+                const dateObj = new Date(d);
+                const dayName = days[dateObj.getDay()];
+                const diffTime = today.getTime() - dateObj.getTime();
+                const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+                
+                let timeAgoStr = "";
+                if (diffDays === 0) timeAgoStr = "(Bugün)";
+                else if (diffDays === 1) timeAgoStr = "(Dün)";
+                else timeAgoStr = `(${diffDays} gün önce)`;
+
+                const dd = String(dateObj.getDate()).padStart(2, '0');
+                const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const yyyy = dateObj.getFullYear();
+
+                return `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(239, 68, 68, 0.1); padding:4px 8px; border-radius:4px; margin-top:4px; font-size:0.8rem; border-left:2px solid var(--danger);">
+                    <div>
+                        <span style="color:var(--text-main); font-weight:500; display:block;">${dd}.${mm}.${yyyy} - ${dayName}</span>
+                        <span style="color:var(--text-muted); font-size:0.75rem;">${timeAgoStr}</span>
+                    </div>
+                    <button class="icon-btn" onclick="goToDateFromStats('${d}')" style="padding:4px; color:var(--text-main);" title="Bu güne git ve düzenle">
+                        <i data-lucide="edit" style="width:14px; height:14px;"></i>
+                    </button>
+                </div>`;
+            }).join('');
+
+            absentDatesHtml = `
+                <div style="margin-top:0.75rem; border-top:1px solid var(--border-color); padding-top:0.5rem;">
+                    <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:0.25rem;"><i data-lucide="calendar-x" style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:4px;"></i>Devamsızlık Geçmişi:</span>
+                    ${datesList}
+                </div>
+            `;
+        }
+
         const div = document.createElement('div');
         div.className = 'stat-card glass-panel';
         div.innerHTML = `
@@ -514,9 +637,11 @@ function renderStatsView() {
                 <div class="dual-bar-present" style="width: ${presentPct}%"></div>
             </div>
             ${stats.canceled > 0 ? `<div class="stat-label" style="font-size:0.85rem; margin-top:0.5rem">İşlenmeyen Ders: ${stats.canceled}</div>` : ''}
+            ${absentDatesHtml}
         `;
         container.appendChild(div);
     });
+    lucide.createIcons();
 }
 
 /* ==========================================================================
@@ -552,18 +677,47 @@ function setupSettings() {
         }
     });
 
-    // QR EXPORT
+        // QR EXPORT
     document.getElementById('btnExportQR').addEventListener('click', () => {
+        document.getElementById('exportDataModal').classList.remove('active');
         const hash = Storage.generateExportHash();
         const url = window.location.origin + window.location.pathname + '#import=' + hash;
         const container = document.getElementById('qrcode-container');
         container.innerHTML = ''; 
-        new QRCode(container, { text: url, width: 200, height: 200, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.L });
+        
+        if (url.length > 2900) {
+            container.innerHTML = '<p class="text-danger" style="margin-top:2rem;"><i data-lucide="alert-triangle"></i> Veri çok büyük! Aylar süren yoklama kayıtları QR koda sığmaz. Lütfen Manuel Kod veya Dosya Olarak İndir seçeneğini kullanın.</p>';
+            lucide.createIcons();
+            document.getElementById('btnDownloadQR').style.display = 'none';
+        } else {
+            new QRCode(container, { text: url, width: 200, height: 200, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.L });
+            document.getElementById('btnDownloadQR').style.display = 'block';
+            
+            // Set up download button
+            document.getElementById('btnDownloadQR').onclick = () => {
+                const canvas = container.querySelector('canvas');
+                if(canvas) {
+                    const link = document.createElement('a');
+                    link.download = 'yoklama_qr_yedek.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                } else {
+                    const img = container.querySelector('img');
+                    if(img && img.src) {
+                        const link = document.createElement('a');
+                        link.download = 'yoklama_qr_yedek.png';
+                        link.href = img.src;
+                        link.click();
+                    }
+                }
+            };
+        }
         document.getElementById('qrModal').classList.add('active');
     });
 
     // MANUAL EXPORT
     document.getElementById('btnExportManual').addEventListener('click', () => {
+        document.getElementById('exportDataModal').classList.remove('active');
         const hash = Storage.generateExportHash();
         document.getElementById('manualCodeExportText').value = hash;
         document.getElementById('manualCodeExportModal').classList.add('active');
@@ -576,13 +730,47 @@ function setupSettings() {
         showToast('Kod kopyalandı! İstediğin yere kaydedebilirsin.');
     });
 
-    // IMPORT SCANNED QR
+        // IMPORT SCANNED QR
+    let html5QrcodeScanner = null;
     document.getElementById('btnScanQRInfo').addEventListener('click', () => {
-        showToast('Kamera uygulamasını veya Denetim Merkezi\'ndeki QR kod okuyucuyu açın ve ekrandaki kodu tarayın.');
+        document.getElementById('qrScannerModal').classList.add('active');
+        if (!html5QrcodeScanner) {
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", { fps: 10, qrbox: 250 }, false);
+            html5QrcodeScanner.render((decodedText, decodedResult) => {
+                html5QrcodeScanner.clear();
+                html5QrcodeScanner = null;
+                document.getElementById('qrScannerModal').classList.remove('active');
+                
+                let hash = decodedText;
+                if (hash.includes('#import=')) {
+                    hash = hash.split('#import=')[1];
+                }
+                confirmImport(hash, (success) => {
+                    if(success) {
+                        showToast('Veriler başarıyla aktarıldı!');
+                        setTimeout(() => window.location.reload(), 1000);
+                    }
+                });
+            }, (error) => {
+                // Ignore errors
+            });
+        }
     });
+
+    document.getElementById('btnCloseScanner').addEventListener('click', () => {
+        if(html5QrcodeScanner) {
+            html5QrcodeScanner.clear();
+            html5QrcodeScanner = null;
+        }
+        document.getElementById('qrScannerModal').classList.remove('active');
+    });
+
+    
 
     // MANUAL IMPORT
     document.getElementById('btnImportManual').addEventListener('click', () => {
+        document.getElementById('importDataModal').classList.remove('active');
         document.getElementById('manualCodeImportText').value = '';
         document.getElementById('manualCodeImportModal').classList.add('active');
     });
@@ -599,8 +787,9 @@ function setupSettings() {
         }
     });
 
-    // FILE EXPORT/IMPORT
+    // TXT FILE EXPORT (btnExportFile is the setting-item div in exportDataModal)
     document.getElementById('btnExportFile').addEventListener('click', () => {
+        document.getElementById('exportDataModal').classList.remove('active');
         const hash = Storage.generateExportHash();
         const blob = new Blob([hash], { type: 'text/plain' });
         const a = document.createElement('a');
@@ -616,10 +805,10 @@ function setupSettings() {
         showToast('TXT yedeği başarıyla indirildi!');
     });
 
+    // TXT FILE IMPORT (the invisible input overlaid on the setting-item)
     document.getElementById('fileImportInput').addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = (event) => {
             const hash = event.target.result.trim();
@@ -637,8 +826,10 @@ function setupSettings() {
         reader.readAsText(file);
     });
 
+
     // IMAGE EXPORT/IMPORT
     document.getElementById('btnExportImage').addEventListener('click', () => {
+        document.getElementById('exportDataModal').classList.remove('active');
         const dataURL = Storage.exportToImage();
         const a = document.createElement('a');
         a.href = dataURL;
@@ -676,6 +867,7 @@ function setupSettings() {
 
     // SCHEDULE ONLY EXPORT/IMPORT
     document.getElementById('btnExportScheduleOnly').addEventListener('click', () => {
+        document.getElementById('scheduleOpsModal').classList.remove('active');
         const hash = Storage.generateScheduleHash();
         document.getElementById('manualCodeExportText').value = hash;
         document.getElementById('manualCodeExportModal').classList.add('active');
@@ -683,6 +875,7 @@ function setupSettings() {
     });
 
     document.getElementById('btnImportScheduleOnly').addEventListener('click', () => {
+        document.getElementById('scheduleOpsModal').classList.remove('active');
         document.getElementById('manualCodeImportText').value = '';
         document.getElementById('manualCodeImportModal').classList.add('active');
     });
@@ -881,22 +1074,21 @@ function setupCascadingSelects() {
                 dayHeader.style.cssText = 'padding:0 1rem; margin-top:1rem; margin-bottom:0.5rem; color:var(--text-main); font-size:1.1rem; border-bottom:1px solid var(--border-color); padding-bottom:5px;';
                 container.appendChild(dayHeader);
                 
+                const list = document.createElement('div');
+                list.style.cssText = 'padding: 0 1rem;';
                 dayClasses.forEach(cls => {
-                    const card = document.createElement('div');
-                    card.className = 'glass-panel';
-                    card.style.cssText = 'margin: 0.5rem 1rem; padding: 0.8rem; display:flex; justify-content:space-between; align-items:center;';
+                    const row = document.createElement('div');
+                    row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding: 8px 0; font-size:0.85rem;';
                     
-                    const info = document.createElement('div');
-                    info.innerHTML = `<strong style="display:block; color:var(--text-main); font-size:0.9rem;">${cls.name}</strong>
-                                      <span style="font-size:0.8rem; color:var(--text-muted);"><i data-lucide="clock" style="width:12px; height:12px; margin-right:3px; vertical-align:-2px;"></i>${cls.time}</span>`;
-                    
-                    const badge = document.createElement('div');
-                    badge.innerHTML = `<span style="background:var(--bg-card); padding:4px 8px; border-radius:12px; font-size:0.75rem; color:var(--text-muted); border:1px solid var(--border-color);">Limit: ${cls.absenceLimit}</span>`;
-                    
-                    card.appendChild(info);
-                    card.appendChild(badge);
-                    container.appendChild(card);
+                    row.innerHTML = `
+                        <div style="flex:1; display:flex; align-items:center; gap:10px;">
+                            <span style="color:var(--text-muted); width:40px; font-weight:600;">${cls.time}</span>
+                            <span style="color:var(--text-main); font-weight:500;">${cls.name}</span>
+                        </div>
+                    `;
+                    list.appendChild(row);
                 });
+                container.appendChild(list);
             }
         });
         

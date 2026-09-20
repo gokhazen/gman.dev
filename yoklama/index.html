@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YoklamaTakip</title>
-    
+
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1e1e2e">
@@ -17,16 +18,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icons (Lucide SVG Local) -->
     <script src="js/lucide.min.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
-    
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <!-- QR Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
+
 <body>
     <div class="app-container">
         <!-- Header -->
@@ -40,45 +45,63 @@
             <section id="view-today" class="view active">
                 <div class="date-navigation">
                     <button id="btnPrevDay" class="icon-btn"><i data-lucide="chevron-left"></i></button>
-                    <div id="btnDatePicker" class="text-center" style="cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+                    <div id="btnDatePicker" class="text-center"
+                        style="cursor:pointer; display:flex; flex-direction:column; align-items:center;">
                         <h2 id="currentDay">Pazartesi</h2>
                         <div style="display:flex; align-items:center; gap:6px; color:var(--primary); margin-top:2px;">
                             <i data-lucide="calendar" style="width:14px; height:14px;"></i>
-                            <p id="currentDate" style="color:inherit; font-weight:500; font-size:0.85rem; margin:0;">20 Eylül 2026</p>
+                            <p id="currentDate" style="color:inherit; font-weight:500; font-size:0.85rem; margin:0;">20
+                                Eylül 2026</p>
                         </div>
-                        <input type="date" id="hiddenDatePicker" style="position:absolute; opacity:0; pointer-events:none; width:0; height:0;">
+                        <input type="date" id="hiddenDatePicker"
+                            style="position:absolute; opacity:0; pointer-events:none; width:0; height:0;">
                     </div>
                     <button id="btnNextDay" class="icon-btn"><i data-lucide="chevron-right"></i></button>
                 </div>
-                
+
                 <div id="todayClassesList" class="class-list">
                     <!-- Classes will be injected here -->
                 </div>
-                
+
                 <div class="backup-reminder">
-                    <i data-lucide="lightbulb" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i> Verilerinizi düzenli olarak yedeklemeyi unutmayın.
+                    <i data-lucide="lightbulb"
+                        style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>
+                    Verilerinizi düzenli olarak yedeklemeyi unutmayın.
                 </div>
             </section>
 
             <!-- View: Schedule -->
             <section id="view-schedule" class="view">
                 <div class="week-scroller" id="scheduleWeekScroller">
-                    <div class="day-pill active" data-day="1"><span class="day-name">Pzt</span><div class="day-dot"></div></div>
-                    <div class="day-pill" data-day="2"><span class="day-name">Sal</span><div class="day-dot"></div></div>
-                    <div class="day-pill" data-day="3"><span class="day-name">Çar</span><div class="day-dot"></div></div>
-                    <div class="day-pill" data-day="4"><span class="day-name">Per</span><div class="day-dot"></div></div>
-                    <div class="day-pill" data-day="5"><span class="day-name">Cum</span><div class="day-dot"></div></div>
-                    <div class="day-pill" data-day="6"><span class="day-name">Cmt</span><div class="day-dot"></div></div>
-                    <div class="day-pill" data-day="0"><span class="day-name">Paz</span><div class="day-dot"></div></div>
+                    <div class="day-pill active" data-day="1"><span class="day-name">Pzt</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-pill" data-day="2"><span class="day-name">Sal</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-pill" data-day="3"><span class="day-name">Çar</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-pill" data-day="4"><span class="day-name">Per</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-pill" data-day="5"><span class="day-name">Cum</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-pill" data-day="6"><span class="day-name">Cmt</span>
+                        <div class="day-dot"></div>
+                    </div>
+                    <div class="day-pill" data-day="0"><span class="day-name">Paz</span>
+                        <div class="day-dot"></div>
+                    </div>
                 </div>
-                
+                <button id="btnOpenAddClassModal" class="btn-primary w-100 mt-1 mb-3">
+                    <i data-lucide="plus"></i> Yeni Ders Ekle
+                </button>
+
                 <div id="scheduleList" class="class-list mb-4">
                     <!-- Schedule goes here -->
                 </div>
-                
-                <button id="btnOpenAddClassModal" class="btn-primary w-100 mt-2">
-                    <i data-lucide="plus"></i> Yeni Ders Ekle
-                </button>
             </section>
 
             <!-- View: Stats -->
@@ -91,15 +114,18 @@
             <!-- AYARLAR VIEW -->
             <section id="view-settings" class="view">
                 <div class="settings-card glass-panel mb-4">
-                    <div class="setting-item" style="cursor: default; flex-direction: column; align-items: flex-start; gap: 12px; padding: var(--spacing-lg) var(--spacing-md);">
+                    <div class="setting-item"
+                        style="cursor: default; flex-direction: column; align-items: flex-start; gap: 12px; padding: var(--spacing-lg) var(--spacing-md);">
                         <div style="display: flex; align-items: center; width: 100%;">
-                            <div class="setting-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i data-lucide="palette"></i></div>
+                            <div class="setting-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i
+                                    data-lucide="palette"></i></div>
                             <div class="setting-text">
                                 <h3>Tema Seçimi</h3>
                                 <p>Renk ve tarzını seç</p>
                             </div>
                         </div>
-                        <select id="themeSelect" style="width:100%; background:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:8px; outline:none; cursor:pointer; font-family:'Outfit', sans-serif; font-size:0.9rem; appearance:none;">
+                        <select id="themeSelect"
+                            style="width:100%; background:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:8px; outline:none; cursor:pointer; font-family:'Outfit', sans-serif; font-size:0.9rem; appearance:none;">
                             <option value="dark">Karanlık (Klasik)</option>
                             <option value="dracula">Dracula</option>
                             <option value="nord">Nord</option>
@@ -134,7 +160,7 @@
                         </div>
                         <i data-lucide="chevron-right" class="text-muted"></i>
                     </div>
-                    
+
                     <div class="setting-item" id="btnOpenImportModal">
                         <div class="setting-icon bg-gradient-green"><i data-lucide="cloud-download"></i></div>
                         <div class="setting-text">
@@ -143,7 +169,7 @@
                         </div>
                         <i data-lucide="chevron-right" class="text-muted"></i>
                     </div>
-                    
+
                     <div class="setting-item" id="btnOpenScheduleOpsModal">
                         <div class="setting-icon bg-gradient-purple"><i data-lucide="calendar"></i></div>
                         <div class="setting-text">
@@ -152,7 +178,7 @@
                         </div>
                         <i data-lucide="chevron-right" class="text-muted"></i>
                     </div>
-                    
+
                     <div class="setting-item" id="btnOpenPwaModal">
                         <div class="setting-icon bg-gradient-orange"><i data-lucide="smartphone"></i></div>
                         <div class="setting-text">
@@ -174,18 +200,25 @@
                 </div>
 
                 <!-- Hakkımda / Geliştirici -->
-                <div class="settings-card glass-panel mb-4" style="text-align: center; padding: 1rem; display: flex; flex-direction: column; align-items: center;">
-                    <h3 style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.3rem;">Geliştirici: Gökhan Özen</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;">Daha fazlası için web sitemi ziyaret edebilirsiniz.</p>
-                    <a href="https://gman.dev" target="_blank" rel="noopener noreferrer" onclick="if(window.matchMedia('(display-mode: standalone)').matches) { window.open(this.href, '_blank', 'noopener,noreferrer'); return false; }" class="btn-primary" style="display: inline-flex; align-items: center; padding: 0.4rem 1rem; text-decoration: none; border-radius: var(--radius-md); font-size: 0.8rem;">
+                <div class="settings-card glass-panel mb-4"
+                    style="text-align: center; padding: 1rem; display: flex; flex-direction: column; align-items: center;">
+                    <h3 style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.3rem;">Geliştirici: Gökhan
+                        Özen</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;">Daha fazlası için web
+                        sitemi ziyaret edebilirsiniz.</p>
+                    <a href="https://gman.dev" target="_blank" rel="noopener noreferrer"
+                        onclick="if(window.matchMedia('(display-mode: standalone)').matches) { window.open(this.href, '_blank', 'noopener,noreferrer'); return false; }"
+                        class="btn-primary"
+                        style="display: inline-flex; align-items: center; padding: 0.4rem 1rem; text-decoration: none; border-radius: var(--radius-md); font-size: 0.8rem;">
                         <i data-lucide="globe" style="width: 14px; height: 14px; margin-right: 6px;"></i> gman.dev
                     </a>
                 </div>
 
                 <!-- Sürüm Bilgisi -->
                 <div style="text-align: center; padding: 0.5rem; margin-bottom: 2rem;">
-                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">v0.9.1 Beta</p>
-                    <p style="font-size: 0.7rem; color: var(--text-muted); opacity: 0.7;">Sürüm Tarihi: 21 Eylül 2026</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">v0.9.4 Beta</p>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); opacity: 0.7;">Sürüm Tarihi: 21 Eylül 2026
+                    </p>
                 </div>
             </section>
         </main>
@@ -240,19 +273,28 @@
                     </div>
                     <div class="input-group">
                         <label>Saat (24s)</label>
-                        <div style="display:flex; align-items:center; gap:10px; justify-content:center; background:var(--bg-base); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:5px;">
+                        <div
+                            style="display:flex; align-items:center; gap:10px; justify-content:center; background:var(--bg-base); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:5px;">
                             <!-- Hour Controls -->
                             <div style="display:flex; flex-direction:column; align-items:center;">
-                                <button type="button" class="icon-btn" id="btnAddHourUp" style="padding:4px;"><i data-lucide="chevron-up"></i></button>
-                                <input type="text" id="addClassHour" style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);" readonly value="08">
-                                <button type="button" class="icon-btn" id="btnAddHourDown" style="padding:4px;"><i data-lucide="chevron-down"></i></button>
+                                <button type="button" class="icon-btn" id="btnAddHourUp" style="padding:4px;"><i
+                                        data-lucide="chevron-up"></i></button>
+                                <input type="text" id="addClassHour"
+                                    style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);"
+                                    readonly value="08">
+                                <button type="button" class="icon-btn" id="btnAddHourDown" style="padding:4px;"><i
+                                        data-lucide="chevron-down"></i></button>
                             </div>
                             <span style="font-size:1.5rem; font-weight:bold; color:var(--text-muted);">:</span>
                             <!-- Minute Controls -->
                             <div style="display:flex; flex-direction:column; align-items:center;">
-                                <button type="button" class="icon-btn" id="btnAddMinUp" style="padding:4px;"><i data-lucide="chevron-up"></i></button>
-                                <input type="text" id="addClassMin" style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);" readonly value="30">
-                                <button type="button" class="icon-btn" id="btnAddMinDown" style="padding:4px;"><i data-lucide="chevron-down"></i></button>
+                                <button type="button" class="icon-btn" id="btnAddMinUp" style="padding:4px;"><i
+                                        data-lucide="chevron-up"></i></button>
+                                <input type="text" id="addClassMin"
+                                    style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);"
+                                    readonly value="30">
+                                <button type="button" class="icon-btn" id="btnAddMinDown" style="padding:4px;"><i
+                                        data-lucide="chevron-down"></i></button>
                             </div>
                         </div>
                         <input type="hidden" id="classTime" value="08:30">
@@ -291,19 +333,28 @@
                     </div>
                     <div class="input-group">
                         <label>Saat (24s)</label>
-                        <div style="display:flex; align-items:center; gap:10px; justify-content:center; background:var(--bg-base); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:5px;">
+                        <div
+                            style="display:flex; align-items:center; gap:10px; justify-content:center; background:var(--bg-base); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:5px;">
                             <!-- Hour Controls -->
                             <div style="display:flex; flex-direction:column; align-items:center;">
-                                <button type="button" class="icon-btn" id="btnEditHourUp" style="padding:4px;"><i data-lucide="chevron-up"></i></button>
-                                <input type="text" id="editClassHour" style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);" readonly value="08">
-                                <button type="button" class="icon-btn" id="btnEditHourDown" style="padding:4px;"><i data-lucide="chevron-down"></i></button>
+                                <button type="button" class="icon-btn" id="btnEditHourUp" style="padding:4px;"><i
+                                        data-lucide="chevron-up"></i></button>
+                                <input type="text" id="editClassHour"
+                                    style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);"
+                                    readonly value="08">
+                                <button type="button" class="icon-btn" id="btnEditHourDown" style="padding:4px;"><i
+                                        data-lucide="chevron-down"></i></button>
                             </div>
                             <span style="font-size:1.5rem; font-weight:bold; color:var(--text-muted);">:</span>
                             <!-- Minute Controls -->
                             <div style="display:flex; flex-direction:column; align-items:center;">
-                                <button type="button" class="icon-btn" id="btnEditMinUp" style="padding:4px;"><i data-lucide="chevron-up"></i></button>
-                                <input type="text" id="editClassMin" style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);" readonly value="30">
-                                <button type="button" class="icon-btn" id="btnEditMinDown" style="padding:4px;"><i data-lucide="chevron-down"></i></button>
+                                <button type="button" class="icon-btn" id="btnEditMinUp" style="padding:4px;"><i
+                                        data-lucide="chevron-up"></i></button>
+                                <input type="text" id="editClassMin"
+                                    style="width:40px; text-align:center; padding:4px; font-size:1.2rem; background:transparent; border:none; outline:none; color:var(--text-main);"
+                                    readonly value="30">
+                                <button type="button" class="icon-btn" id="btnEditMinDown" style="padding:4px;"><i
+                                        data-lucide="chevron-down"></i></button>
                             </div>
                         </div>
                         <input type="hidden" id="editClassTime">
@@ -321,41 +372,54 @@
                 <h3>Verileri Dışa Aktar</h3>
                 <button class="close-modal"><i data-lucide="x"></i></button>
             </div>
-            
+
             <div class="settings-card">
                 <div class="setting-item" id="btnExportShare">
                     <div class="setting-icon bg-gradient-blue"><i data-lucide="link"></i></div>
                     <div class="setting-text">
                         <h3>Sihirli Bağlantı</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Tüm verilerinizi (dersler ve yoklamalar) uzun bir şifrelenmiş metin linkine (URL) dönüştürür. Tıklandığında doğrudan içe aktarılır. Çok güvenli ve hızlıdır.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Tüm
+                            verilerinizi (dersler ve yoklamalar) uzun bir şifrelenmiş metin linkine (URL) dönüştürür.
+                            Tıklandığında doğrudan içe aktarılır. Çok güvenli ve hızlıdır.</p>
                     </div>
                 </div>
                 <div class="setting-item" id="btnExportImage">
-                    <div class="setting-icon" style="background: linear-gradient(135deg, #8e2de2, #4a00e0);"><i data-lucide="image"></i></div>
+                    <div class="setting-icon" style="background: linear-gradient(135deg, #8e2de2, #4a00e0);"><i
+                            data-lucide="image"></i></div>
                     <div class="setting-text">
                         <h3>Resim Olarak Kaydet (Güvenli)</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Verilerinizi bir PNG resminin içindeki piksellere şifreler (Steganografi). Resmi kimse okuyamaz. WhatsApp'tan atarsanız bozulabilir, dosya olarak saklayın.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
+                            Verilerinizi bir PNG resminin içindeki piksellere şifreler (Steganografi). Resmi kimse
+                            okuyamaz. WhatsApp'tan atarsanız bozulabilir, dosya olarak saklayın.</p>
                     </div>
                 </div>
                 <div class="setting-item" id="btnExportQR">
                     <div class="setting-icon bg-gradient-orange"><i data-lucide="qr-code"></i></div>
                     <div class="setting-text">
                         <h3>QR Kod Oluştur</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Tüm verinizi karekoda dönüştürür. Yeni bir telefon veya tablete aktarırken ekranı okutarak saniyeler içinde geçiş yapabilirsiniz.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Tüm
+                            verinizi karekoda dönüştürür. Yeni bir telefon veya tablete aktarırken ekranı okutarak
+                            saniyeler içinde geçiş yapabilirsiniz.</p>
                     </div>
                 </div>
                 <div class="setting-item" id="btnExportFile">
-                    <div class="setting-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i data-lucide="file-text"></i></div>
+                    <div class="setting-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i
+                            data-lucide="file-text"></i></div>
                     <div class="setting-text">
                         <h3>Dosya Olarak Kaydet (.TXT)</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">JSON formatında (kodsal yapı) işlenmiş tüm veriyi bilgisayarınıza TXT dosyası olarak indirir. En risksiz ve geleneksel saklama yöntemidir.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">JSON
+                            formatında (kodsal yapı) işlenmiş tüm veriyi bilgisayarınıza TXT dosyası olarak indirir. En
+                            risksiz ve geleneksel saklama yöntemidir.</p>
                     </div>
                 </div>
                 <div class="setting-item" id="btnExportManual">
-                    <div class="setting-icon" style="background:#4b5563"><i class="fa-solid fa-code"></i><i data-lucide="code"></i></div>
+                    <div class="setting-icon" style="background:#4b5563"><i class="fa-solid fa-code"></i><i
+                            data-lucide="code"></i></div>
                     <div class="setting-text">
                         <h3>Kodu Kopyala</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Şifrelenmiş veriyi düz metin olarak panoya kopyalar. Bir not defterine (Notes) veya kendinize WhatsApp'tan atarak yedekleyebilirsiniz.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
+                            Şifrelenmiş veriyi düz metin olarak panoya kopyalar. Bir not defterine (Notes) veya
+                            kendinize WhatsApp'tan atarak yedekleyebilirsiniz.</p>
                     </div>
                 </div>
             </div>
@@ -369,41 +433,50 @@
                 <h3>Verileri İçe Aktar</h3>
                 <button class="close-modal"><i data-lucide="x"></i></button>
             </div>
-            
-            <p class="text-muted mb-2 text-center" style="font-size:0.85rem">Yedeklediğiniz verileri cihazınıza geri yükleyin. Mevcut verilerin üzerine yazılacaktır.</p>
-            
+
+            <p class="text-muted mb-2 text-center" style="font-size:0.85rem">Yedeklediğiniz verileri cihazınıza geri
+                yükleyin. Mevcut verilerin üzerine yazılacaktır.</p>
+
             <div class="settings-card">
                 <div class="setting-item" style="position:relative">
-                    <input type="file" id="imageImportInput" accept="image/png" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
+                    <input type="file" id="imageImportInput" accept="image/png"
+                        style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
                     <div class="setting-icon bg-gradient-green"><i data-lucide="image"></i></div>
                     <div class="setting-text">
                         <h3>Resimden Yükle (Steganografi)</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Daha önce kaydettiğiniz şifreli PNG resmini seçin. Resmin kalitesi bozulmamış olmalıdır (Orijinal dosya).</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Daha
+                            önce kaydettiğiniz şifreli PNG resmini seçin. Resmin kalitesi bozulmamış olmalıdır (Orijinal
+                            dosya).</p>
                     </div>
                 </div>
-                
+
                 <div class="setting-item" style="position:relative">
-                    <input type="file" id="fileImportInput" accept=".txt" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
-                    <div class="setting-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i data-lucide="file-text"></i></div>
+                    <input type="file" id="fileImportInput" accept=".txt"
+                        style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:10;">
+                    <div class="setting-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i
+                            data-lucide="file-text"></i></div>
                     <div class="setting-text">
                         <h3>Dosyadan Yükle (TXT)</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">İndirdiğiniz veya paylaşılan .TXT formatındaki veri dosyasını seçerek yükleyin.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
+                            İndirdiğiniz veya paylaşılan .TXT formatındaki veri dosyasını seçerek yükleyin.</p>
                     </div>
                 </div>
-                
+
                 <div class="setting-item" id="btnImportManual">
                     <div class="setting-icon" style="background:#4b5563"><i data-lucide="keyboard"></i></div>
                     <div class="setting-text">
                         <h3>Kod ile Yükle</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Panoya kopyaladığınız uzun şifreli metni (Base64) yapıştırarak verilerinizi yükleyin.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Panoya
+                            kopyaladığınız uzun şifreli metni (Base64) yapıştırarak verilerinizi yükleyin.</p>
                     </div>
                 </div>
-                
+
                 <div class="setting-item" id="btnScanQRInfo">
                     <div class="setting-icon bg-gradient-orange"><i data-lucide="scan"></i></div>
                     <div class="setting-text">
                         <h3>QR Kod Tara</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">Kameranızı açarak eski cihazdaki QR kodu okutun ve açılan sihirli linke tıklayın.</p>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
+                            Kameranızı açarak eski cihazdaki QR kodu okutun ve açılan sihirli linke tıklayın.</p>
                     </div>
                 </div>
             </div>
@@ -417,7 +490,7 @@
                 <h3>Ders Programı İşlemleri</h3>
                 <button class="close-modal"><i data-lucide="x"></i></button>
             </div>
-            
+
             <div class="settings-card mb-4">
                 <h3 class="mb-1 text-muted" style="font-size:0.85rem; padding-left:0.5rem">PROGRAM PAYLAŞIMI</h3>
                 <div class="setting-item" id="btnImportScheduleOnly">
@@ -454,9 +527,14 @@
                     <select id="prebuiltGradeSelect" class="mb-1" disabled style="display:none;">
                         <option value="">Sınıf seçin...</option>
                     </select>
-                    <button id="btnApplyPrebuilt" class="btn-primary w-100" style="display:none;">Programı Yükle</button>
-                    <button id="btnPreviewPrebuilt" class="btn-secondary w-100 mt-1" style="display:none; background-color:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color);">Önizlemesini Görüntüle</button>
-                    <p class="text-muted text-center text-danger" style="font-size:0.85rem; margin-top:0.5rem; font-weight:600;">Sadece ders programınız değil, TÜM verileriniz (yoklamalar dahil) SİLİNİR ve yeni program yüklenir!</p>
+                    <button id="btnApplyPrebuilt" class="btn-primary w-100" style="display:none;">Programı
+                        Yükle</button>
+                    <button id="btnPreviewPrebuilt" class="btn-secondary w-100 mt-1"
+                        style="display:none; background-color:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color);">Önizlemesini
+                        Görüntüle</button>
+                    <p class="text-muted text-center text-danger"
+                        style="font-size:0.85rem; margin-top:0.5rem; font-weight:600;">Sadece ders programınız değil,
+                        TÜM verileriniz (yoklamalar dahil) SİLİNİR ve yeni program yüklenir!</p>
                 </div>
             </div>
         </div>
@@ -475,38 +553,56 @@
         </div>
     </div>
 
+
+    <!-- QR Scanner Modal -->
+    <div id="qrScannerModal" class="modal-overlay fullscreen-modal">
+        <div class="modal-content glass-panel text-center" style="display:flex; flex-direction:column;">
+            <div class="modal-header">
+                <h3>QR Kodu Tarat</h3>
+                <button class="close-modal" id="btnCloseScanner"><i data-lucide="x"></i></button>
+            </div>
+            <div id="qr-reader" style="width:100%; max-width:400px; margin: 0 auto; flex:1;"></div>
+            <p class="text-muted mt-1" style="font-size:0.85rem">Kameranızı kullanın veya 'Scan an Image file' diyerek
+                galeriden QR seçin.</p>
+        </div>
+    </div>
+
     <!-- QR Display Modal -->
-    <div id="qrModal" class="modal-overlay">
-        <div class="modal-content glass-modal text-center">
+    <div id="qrModal" class="modal-overlay fullscreen-modal">
+        <div class="modal-content glass-panel text-center">
             <div class="modal-header">
                 <h3>QR Kodu Taratın</h3>
                 <button class="close-modal"><i data-lucide="x"></i></button>
             </div>
             <div id="qrcode-container"></div>
-            <p class="text-muted" style="font-size:0.85rem">Diğer cihazın kamerasıyla bu kodu okutarak verileri aktarabilirsiniz.</p>
+            <button id="btnDownloadQR" class="btn-primary w-100 mt-1" style="display:none;">Görseli İndir</button>
+            <p class="text-muted" style="font-size:0.85rem">Diğer cihazın kamerasıyla bu kodu okutarak verileri
+                aktarabilirsiniz.</p>
         </div>
     </div>
 
     <!-- Manual Code Export Modal -->
-    <div id="manualCodeExportModal" class="modal-overlay">
-        <div class="modal-content glass-modal text-center">
+    <div id="manualCodeExportModal" class="modal-overlay fullscreen-modal">
+        <div class="modal-content glass-panel text-center">
             <div class="modal-header">
                 <h3>Manuel Kod</h3>
                 <button class="close-modal"><i data-lucide="x"></i></button>
             </div>
-            <textarea id="manualCodeExportText" readonly style="width:100%; height:120px; font-family:monospace; font-size:0.75rem; margin-bottom:1rem; padding:0.75rem; border-radius:0.5rem;"></textarea>
+            <textarea id="manualCodeExportText" readonly
+                style="width:100%; height:120px; font-family:monospace; font-size:0.75rem; margin-bottom:1rem; padding:0.75rem; border-radius:0.5rem;"></textarea>
             <button id="btnCopyManualCode" class="btn-primary w-100">Kopyala</button>
         </div>
     </div>
 
     <!-- Manual Code Import Modal -->
-    <div id="manualCodeImportModal" class="modal-overlay">
-        <div class="modal-content glass-modal text-center">
+    <div id="manualCodeImportModal" class="modal-overlay fullscreen-modal">
+        <div class="modal-content glass-panel text-center">
             <div class="modal-header">
                 <h3>Kodu Yapıştırın</h3>
                 <button class="close-modal"><i data-lucide="x"></i></button>
             </div>
-            <textarea id="manualCodeImportText" placeholder="Yedekleme kodunu buraya yapıştırın..." style="width:100%; height:120px; font-family:monospace; font-size:0.75rem; margin-bottom:1rem; padding:0.75rem; border-radius:0.5rem;"></textarea>
+            <textarea id="manualCodeImportText" placeholder="Yedekleme kodunu buraya yapıştırın..."
+                style="width:100%; height:120px; font-family:monospace; font-size:0.75rem; margin-bottom:1rem; padding:0.75rem; border-radius:0.5rem;"></textarea>
             <button id="btnApplyManualCode" class="btn-primary w-100">İçe Aktar</button>
         </div>
     </div>
@@ -518,22 +614,31 @@
                 <h3>Uygulama Olarak Kurulum</h3>
                 <button class="close-modal"><i data-lucide="x"></i></button>
             </div>
-            
+
             <div style="padding:0 0.5rem; text-align:left;">
-                <p style="font-size:0.95rem; line-height:1.4; color:var(--text-muted); margin-bottom:1.5rem;">Yoklama Takip uygulamasını telefonunuzun ana ekranına ekleyerek normal bir uygulama gibi tam ekran ve internetsiz çalışmasını sağlayabilirsiniz.</p>
-                
+                <p style="font-size:0.95rem; line-height:1.4; color:var(--text-muted); margin-bottom:1.5rem;">Yoklama
+                    Takip uygulamasını telefonunuzun ana ekranına ekleyerek normal bir uygulama gibi tam ekran ve
+                    internetsiz çalışmasını sağlayabilirsiniz.</p>
+
                 <div class="settings-card mb-4" style="background:var(--bg-base)">
-                    <h3 style="margin-bottom:0.5rem; color:var(--text-main); font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;"><i data-lucide="apple"></i> iPhone (iOS) İçin</h3>
+                    <h3
+                        style="margin-bottom:0.5rem; color:var(--text-main); font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                        <i data-lucide="apple"></i> iPhone (iOS) İçin
+                    </h3>
                     <ol style="margin-left:1.5rem; font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
                         <li>Safari tarayıcısında uygulamayı açın.</li>
                         <li>Alt menüdeki <b>Paylaş</b> (kare içinde yukarı ok) butonuna dokunun.</li>
-                        <li>Açılan menüyü aşağı kaydırın ve <b>Ana Ekrana Ekle</b> (Add to Home Screen) seçeneğine tıklayın.</li>
+                        <li>Açılan menüyü aşağı kaydırın ve <b>Ana Ekrana Ekle</b> (Add to Home Screen) seçeneğine
+                            tıklayın.</li>
                         <li>Sağ üstteki <b>Ekle</b> butonuna basarak kurulumu tamamlayın.</li>
                     </ol>
                 </div>
-                
+
                 <div class="settings-card" style="background:var(--bg-base)">
-                    <h3 style="margin-bottom:0.5rem; color:var(--text-main); font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;"><i data-lucide="smartphone"></i> Android İçin</h3>
+                    <h3
+                        style="margin-bottom:0.5rem; color:var(--text-main); font-size:1.1rem; display:flex; align-items:center; gap:0.5rem;">
+                        <i data-lucide="smartphone"></i> Android İçin
+                    </h3>
                     <ol style="margin-left:1.5rem; font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
                         <li>Chrome veya Edge tarayıcısında uygulamayı açın.</li>
                         <li>Tarayıcının sağ üst köşesindeki <b>Üç Nokta</b> menüsüne dokunun.</li>
@@ -554,7 +659,46 @@
             <p id="confirmActionMessage" style="margin-bottom:1.5rem; font-size:0.95rem;"></p>
             <div class="input-row">
                 <button id="btnCancelAction" class="btn-secondary" style="flex:1">İptal</button>
-                <button id="btnConfirmAction" class="btn-primary" style="flex:1; background:var(--danger)">Onayla</button>
+                <button id="btnConfirmAction" class="btn-primary"
+                    style="flex:1; background:var(--danger)">Onayla</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="customDatePickerModal" class="modal-overlay">
+        <div class="modal-content glass-modal" style="max-width: 340px; margin: auto; padding: 1.5rem;">
+            <div class="modal-header"
+                style="justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="icon-btn" id="btnPickerPrevMonth" style="padding:4px;"><i
+                            data-lucide="chevron-left"></i></button>
+                </div>
+                <h3 id="datePickerMonthYear" style="margin:0; font-size:1.1rem; color:var(--text-main);">Eylül 2026</h3>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="icon-btn" id="btnPickerNextMonth" style="padding:4px;"><i
+                            data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-bottom: 0.5rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
+                <div>Pt</div>
+                <div>Sa</div>
+                <div>Ça</div>
+                <div>Pe</div>
+                <div>Cu</div>
+                <div>Ct</div>
+                <div>Pz</div>
+            </div>
+            <div id="datePickerGrid"
+                style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;">
+                <!-- Days will be injected here -->
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; justify-content: space-between;">
+                <button id="btnPickerToday" class="btn-secondary"
+                    style="padding: 6px 12px; font-size: 0.85rem; border: none; background: transparent; color: var(--primary);">Bugüne
+                    Git</button>
+                <button class="btn-secondary close-modal" style="padding: 6px 12px; font-size: 0.85rem;">Kapat</button>
             </div>
         </div>
     </div>
@@ -579,4 +723,5 @@
         }
     </script>
 </body>
+
 </html>
