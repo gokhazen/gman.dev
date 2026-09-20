@@ -721,29 +721,59 @@ function loadPrebuiltList() {
 
 function setupCascadingSelects() {
     const uniSelect = document.getElementById('prebuiltUniSelect');
+    const yearSelect = document.getElementById('prebuiltYearSelect');
     const termSelect = document.getElementById('prebuiltTermSelect');
     const deptSelect = document.getElementById('prebuiltDeptSelect');
     const gradeSelect = document.getElementById('prebuiltGradeSelect');
     const applyBtn = document.getElementById('btnApplyPrebuilt');
+    const previewBtn = document.getElementById('btnPreviewPrebuilt');
 
     let currentUni = null;
+    let currentYear = null;
     let currentTerm = null;
     let currentDept = null;
+    let currentGradeClasses = null;
 
     uniSelect.addEventListener('change', (e) => {
         const val = e.target.value;
+        yearSelect.style.display = 'none';
         termSelect.style.display = 'none';
         deptSelect.style.display = 'none';
         gradeSelect.style.display = 'none';
-        applyBtn.disabled = true;
+        applyBtn.style.display = 'none';
+        previewBtn.style.display = 'none';
         
         if (!val) return;
         
         currentUni = window.prebuiltData.universities.find(u => u.id === val);
-        if(!currentUni) return;
+        if(!currentUni || !currentUni.years) return;
+        
+        yearSelect.innerHTML = '<option value="">Yıl seçin...</option>';
+        currentUni.years.forEach(y => {
+            const opt = document.createElement('option');
+            opt.value = y.id;
+            opt.textContent = y.name;
+            yearSelect.appendChild(opt);
+        });
+        yearSelect.style.display = 'block';
+        yearSelect.disabled = false;
+    });
+
+    yearSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        termSelect.style.display = 'none';
+        deptSelect.style.display = 'none';
+        gradeSelect.style.display = 'none';
+        applyBtn.style.display = 'none';
+        previewBtn.style.display = 'none';
+        
+        if (!val) return;
+        
+        currentYear = currentUni.years.find(y => y.id === val);
+        if(!currentYear || !currentYear.terms) return;
         
         termSelect.innerHTML = '<option value="">Dönem seçin...</option>';
-        currentUni.terms.forEach(t => {
+        currentYear.terms.forEach(t => {
             const opt = document.createElement('option');
             opt.value = t.id;
             opt.textContent = t.name;
@@ -757,12 +787,13 @@ function setupCascadingSelects() {
         const val = e.target.value;
         deptSelect.style.display = 'none';
         gradeSelect.style.display = 'none';
-        applyBtn.disabled = true;
+        applyBtn.style.display = 'none';
+        previewBtn.style.display = 'none';
         
         if (!val) return;
         
-        currentTerm = currentUni.terms.find(t => t.id === val);
-        if(!currentTerm) return;
+        currentTerm = currentYear.terms.find(t => t.id === val);
+        if(!currentTerm || !currentTerm.departments) return;
         
         deptSelect.innerHTML = '<option value="">Bölüm seçin...</option>';
         currentTerm.departments.forEach(d => {
@@ -778,12 +809,13 @@ function setupCascadingSelects() {
     deptSelect.addEventListener('change', (e) => {
         const val = e.target.value;
         gradeSelect.style.display = 'none';
-        applyBtn.disabled = true;
+        applyBtn.style.display = 'none';
+        previewBtn.style.display = 'none';
         
         if (!val) return;
         
         currentDept = currentTerm.departments.find(d => d.id === val);
-        if(!currentDept) return;
+        if(!currentDept || !currentDept.grades) return;
         
         gradeSelect.innerHTML = '<option value="">Sınıf seçin...</option>';
         currentDept.grades.forEach(g => {
@@ -797,26 +829,79 @@ function setupCascadingSelects() {
     });
 
     gradeSelect.addEventListener('change', (e) => {
-        applyBtn.disabled = !e.target.value;
+        const gradeId = e.target.value;
+        if (gradeId && currentDept) {
+            const currentGrade = currentDept.grades.find(g => g.id === gradeId);
+            if (currentGrade && currentGrade.classes) {
+                currentGradeClasses = currentGrade.classes;
+                applyBtn.style.display = 'block';
+                previewBtn.style.display = 'block';
+            } else {
+                applyBtn.style.display = 'none';
+                previewBtn.style.display = 'none';
+            }
+        } else {
+            applyBtn.style.display = 'none';
+            previewBtn.style.display = 'none';
+        }
     });
     
     applyBtn.addEventListener('click', () => {
-        const gradeId = gradeSelect.value;
-        if (!gradeId || !currentDept) return;
-        const currentGrade = currentDept.grades.find(g => g.id === gradeId);
-        if (currentGrade && currentGrade.classes) {
-            customConfirm('TÜM verileriniz (Dersler ve Yoklama Geçmişi) SİLİNECEK ve bu program yüklenecek. Emin misiniz?', () => {
-                const currentTheme = Storage.load().theme;
-                Storage.clearAll();
-                const freshData = Storage.load(); 
-                freshData.theme = currentTheme; 
-                Storage.save(freshData);
+        if (!currentGradeClasses) return;
+        customConfirm('TÜM verileriniz (Dersler ve Yoklama Geçmişi) SİLİNECEK ve bu program yüklenecek. Emin misiniz?', () => {
+            const currentTheme = Storage.load().theme;
+            Storage.clearAll();
+            const freshData = Storage.load(); 
+            freshData.theme = currentTheme; 
+            Storage.save(freshData);
+            
+            Storage.importPrebuilt(currentGradeClasses);
+            showToast('Hazır program başarıyla yüklendi! Yenileniyor...');
+            setTimeout(() => window.location.reload(), 1000);
+        });
+    });
+
+    previewBtn.addEventListener('click', () => {
+        if (!currentGradeClasses) return;
+        const container = document.getElementById('previewScheduleContainer');
+        container.innerHTML = '';
+        
+        // Group by day
+        const days = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
+        const dayMap = [1, 2, 3, 4, 5, 6, 0];
+        
+        days.forEach((dayName, idx) => {
+            const dayClasses = currentGradeClasses.filter(c => c.day === dayMap[idx]);
+            if (dayClasses.length > 0) {
+                // Sort by time
+                dayClasses.sort((a, b) => a.time.localeCompare(b.time));
                 
-                Storage.importPrebuilt(currentGrade.classes);
-                showToast('Hazır program başarıyla yüklendi! Yenileniyor...');
-                setTimeout(() => window.location.reload(), 1000);
-            });
-        }
+                const dayHeader = document.createElement('h4');
+                dayHeader.textContent = dayName;
+                dayHeader.style.cssText = 'padding:0 1rem; margin-top:1rem; margin-bottom:0.5rem; color:var(--text-main); font-size:1.1rem; border-bottom:1px solid var(--border-color); padding-bottom:5px;';
+                container.appendChild(dayHeader);
+                
+                dayClasses.forEach(cls => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-panel';
+                    card.style.cssText = 'margin: 0.5rem 1rem; padding: 0.8rem; display:flex; justify-content:space-between; align-items:center;';
+                    
+                    const info = document.createElement('div');
+                    info.innerHTML = `<strong style="display:block; color:var(--text-main); font-size:0.9rem;">${cls.name}</strong>
+                                      <span style="font-size:0.8rem; color:var(--text-muted);"><i data-lucide="clock" style="width:12px; height:12px; margin-right:3px; vertical-align:-2px;"></i>${cls.time}</span>`;
+                    
+                    const badge = document.createElement('div');
+                    badge.innerHTML = `<span style="background:var(--bg-card); padding:4px 8px; border-radius:12px; font-size:0.75rem; color:var(--text-muted); border:1px solid var(--border-color);">Limit: ${cls.absenceLimit}</span>`;
+                    
+                    card.appendChild(info);
+                    card.appendChild(badge);
+                    container.appendChild(card);
+                });
+            }
+        });
+        
+        lucide.createIcons();
+        document.getElementById('previewScheduleModal').classList.add('active');
     });
 }
 
