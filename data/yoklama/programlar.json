@@ -37,7 +37,7 @@
                   "id": "ceng_2",
                   "name": "2. Sınıf",
                   "classes": [
-                    { "name": "BMB 207 Elektronik Devreler", "day": 1, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 207 Elektronik Devreler", "day": 1, "time": "09:10", "absenceLimit": 4 },
                     { "name": "BMB 203 Ayrık Matematik", "day": 1, "time": "13:10", "absenceLimit": 4 },
                     { "name": "BMB 209 Elk. Devreler Lab. A1", "day": 2, "time": "08:10", "absenceLimit": 4 },
                     { "name": "BMB 209 Elk. Devreler Lab. A2", "day": 2, "time": "10:10", "absenceLimit": 4 },
@@ -49,8 +49,8 @@
                     { "name": "BMB 211 Veri Yapıları", "day": 4, "time": "10:10", "absenceLimit": 4 },
                     { "name": "BMB 213 Veri Yapıları Lab. B", "day": 4, "time": "13:10", "absenceLimit": 4 },
                     { "name": "BMB 213 Veri Yapıları Lab. A", "day": 4, "time": "15:10", "absenceLimit": 4 },
-                    { "name": "BMB 205 Mesleki İng. I - A", "day": 5, "time": "10:10", "absenceLimit": 4 },
-                    { "name": "BMB 201 Diferansiyel Denk. - B", "day": 5, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 205 Mesleki İng. I - A", "day": 5, "time": "09:10", "absenceLimit": 4 },
+                    { "name": "BMB 201 Diferansiyel Denk. - B", "day": 5, "time": "09:10", "absenceLimit": 4 },
                     { "name": "BMB 205 Mesleki İng. I - B", "day": 5, "time": "13:10", "absenceLimit": 4 },
                     { "name": "BMB 201 Diferansiyel Denk. - A", "day": 5, "time": "13:10", "absenceLimit": 4 }
                   ]
