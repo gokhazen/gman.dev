@@ -1,0 +1,104 @@
+{
+  "universities": [
+    {
+      "id": "oku",
+      "name": "Osmaniye Korkut Ata Üniversitesi",
+      "terms": [
+        {
+          "id": "guz",
+          "name": "Güz Dönemi",
+          "departments": [
+            {
+              "id": "bilgisayar",
+              "name": "Bilgisayar Mühendisliği",
+              "grades": [
+                {
+                  "id": "ceng_1",
+                  "name": "1. Sınıf",
+                  "classes": [
+                    { "name": "YDİ101 Yabancı Dil I - ONLINE", "day": 1, "time": "08:10", "absenceLimit": 4 },
+                    { "name": "TDL101 Türk Dili I - ONLINE", "day": 1, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "FZK147 Fizik - EB 203", "day": 1, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "KMY147 Kimya - EA 103", "day": 2, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "AİİT I Atatürk İlk. - ONLINE", "day": 2, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "KMY147 Kimya - EA 103", "day": 2, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "FZK147 Fizik - EB 202", "day": 3, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "DOY101 Dijital Okur. - EA 103", "day": 3, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "BIL101 Alg. ve Prog. I - A", "day": 4, "time": "08:10", "absenceLimit": 4 },
+                    { "name": "BIL101 Alg. ve Prog. I - B", "day": 4, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "MAT147 Matematik", "day": 4, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BIL101 Alg. ve Prog. I - B", "day": 5, "time": "08:10", "absenceLimit": 4 },
+                    { "name": "BIL101 Alg. ve Prog. I - A", "day": 5, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BIL103 Bilg. Müh. Giriş - B", "day": 5, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BIL103 Bilg. Müh. Giriş - A", "day": 5, "time": "15:10", "absenceLimit": 4 }
+                  ]
+                },
+                {
+                  "id": "ceng_2",
+                  "name": "2. Sınıf",
+                  "classes": [
+                    { "name": "BMB 207 Elektronik Devreler", "day": 1, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 203 Ayrık Matematik", "day": 1, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 209 Elk. Devreler Lab. A1", "day": 2, "time": "08:10", "absenceLimit": 4 },
+                    { "name": "BMB 209 Elk. Devreler Lab. A2", "day": 2, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 217 NYP Lab. B", "day": 2, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 209 Elk. Devreler Lab. B1", "day": 2, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 217 NYP Lab. A", "day": 2, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 209 Elk. Devreler Lab. B2", "day": 2, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "BMB 215 Nesneye Dayalı Prog.", "day": 3, "time": "09:10", "absenceLimit": 4 },
+                    { "name": "BMB 211 Veri Yapıları", "day": 4, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 213 Veri Yapıları Lab. B", "day": 4, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 213 Veri Yapıları Lab. A", "day": 4, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "BMB 205 Mesleki İng. I - A", "day": 5, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 201 Diferansiyel Denk. - B", "day": 5, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 205 Mesleki İng. I - B", "day": 5, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 201 Diferansiyel Denk. - A", "day": 5, "time": "13:10", "absenceLimit": 4 }
+                  ]
+                },
+                {
+                  "id": "ceng_3",
+                  "name": "3. Sınıf",
+                  "classes": [
+                    { "name": "BMB 311 Bilgisayar Ağları", "day": 1, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 309 İşletim Sistemleri - A", "day": 1, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 309 İşletim Sistemleri - B", "day": 1, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "BMB 313 Bilgisayar Ağları Lab. - A", "day": 2, "time": "08:10", "absenceLimit": 4 },
+                    { "name": "BMB 325 Girişimcilik", "day": 2, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 309 İşletim Sistemleri - A", "day": 2, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 313 Bilgisayar Ağları Lab. - B", "day": 2, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 309 İşletim Sistemleri - B", "day": 2, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "BMB 317 Görsel Programlama - A", "day": 2, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "BMB 319 Web Programlama", "day": 3, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 321 Oyun Programlama", "day": 3, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 317 Görsel Programlama - B", "day": 4, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 301 Veritabanı Yön. Sis.", "day": 5, "time": "08:10", "absenceLimit": 4 },
+                    { "name": "BMB 305 Mikroişlemciler", "day": 5, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 307 Mikroişlemciler Lab. B", "day": 5, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 303 VTYS Lab. A", "day": 5, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 307 Mikroişlemciler Lab. A", "day": 5, "time": "15:10", "absenceLimit": 4 },
+                    { "name": "BMB 303 VTYS Lab. B", "day": 5, "time": "15:10", "absenceLimit": 4 }
+                  ]
+                },
+                {
+                  "id": "ceng_4",
+                  "name": "4. Sınıf",
+                  "classes": [
+                    { "name": "BMB 401 Yazılım Mühendisliği", "day": 1, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 419 Metasezgisel Yöntemler - A", "day": 2, "time": "10:10", "absenceLimit": 4 },
+                    { "name": "BMB 433 Nesnelerin İnterneti", "day": 3, "time": "09:10", "absenceLimit": 4 },
+                    { "name": "BMB 431 Veri Madenciliği", "day": 3, "time": "09:10", "absenceLimit": 4 },
+                    { "name": "BMB 403 Bilgisayar Müh. Projesi", "day": 3, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 409 Makine Öğrenmesi", "day": 4, "time": "09:10", "absenceLimit": 4 },
+                    { "name": "BMB 413 Yenilenebilir Enerji Kay.", "day": 4, "time": "09:10", "absenceLimit": 4 },
+                    { "name": "BMB 419 Metasezgisel Yöntemler - B", "day": 4, "time": "13:10", "absenceLimit": 4 },
+                    { "name": "BMB 421 Siber Güvenlik", "day": 5, "time": "10:10", "absenceLimit": 4 }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
