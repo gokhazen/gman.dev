@@ -316,7 +316,7 @@ function setupForms() {
         const time = document.getElementById('editClassTime').value;
 
         if (id && name && time) {
-            Storage.updateClass(id, { name, day, time });
+            Storage.editClass(id, { name, day, time });
             document.getElementById('editClassModal').classList.remove('active');
             renderScheduleView(day);
             renderTodayView();
