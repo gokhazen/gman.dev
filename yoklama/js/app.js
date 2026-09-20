@@ -69,10 +69,6 @@ function setupDateNavigation() {
         renderCustomDatePicker();
     });
 
-    document.getElementById('btnPickerToday').addEventListener('click', () => {
-        pickerCurrentDate = new Date();
-        renderCustomDatePicker();
-    });
 }
 
 let pickerCurrentDate = new Date();
