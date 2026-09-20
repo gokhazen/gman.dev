@@ -99,6 +99,43 @@
           ]
         }
       ]
+    },
+    {
+      "id": "duzce",
+      "name": "Düzce Üniversitesi",
+      "terms": [
+        {
+          "id": "guz",
+          "name": "Güz Dönemi",
+          "departments": [
+            {
+              "id": "eem",
+              "name": "Elektrik Elektronik Mühendisliği",
+              "grades": [
+                {
+                  "id": "eem_1",
+                  "name": "1. Sınıf",
+                  "classes": [
+                    { "name": "EEM163 Bilgisayar Destekli Çizim (Teori)", "day": 1, "time": "13:00", "absenceLimit": 4 },
+                    { "name": "EEM163 Bilgisayar Destekli Çizim (Uygulama)", "day": 1, "time": "14:40", "absenceLimit": 4 },
+                    { "name": "AIB101 Atatürk İlkeleri ve İnkılap Tarihi I - ONLINE", "day": 1, "time": "17:00", "absenceLimit": 4 },
+                    { "name": "ING101 İngilizce I", "day": 2, "time": "14:40", "absenceLimit": 4 },
+                    { "name": "MAT111 Matematik I (Teori)", "day": 3, "time": "09:20", "absenceLimit": 4 },
+                    { "name": "MAT111 Matematik I", "day": 3, "time": "13:00", "absenceLimit": 4 },
+                    { "name": "MAT111 Matematik I", "day": 3, "time": "13:50", "absenceLimit": 4 },
+                    { "name": "KIM 111 Kimya (Teori)", "day": 4, "time": "08:30", "absenceLimit": 4 },
+                    { "name": "KIM 111 Kimya", "day": 4, "time": "11:00", "absenceLimit": 4 },
+                    { "name": "FIZ111 Fizik I (Teori)", "day": 4, "time": "14:40", "absenceLimit": 4 },
+                    { "name": "TDB121 Türk Dili I - ONLINE", "day": 4, "time": "17:00", "absenceLimit": 4 },
+                    { "name": "EEM161 Elektrik Elektronik Mühendisliğine Giriş", "day": 5, "time": "09:20", "absenceLimit": 4 },
+                    { "name": "FIZ111 Fizik I (Uygulama)", "day": 5, "time": "13:50", "absenceLimit": 4 }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
