@@ -157,7 +157,23 @@ const Storage = {
             if (cleanHash.includes('#import=')) {
                 cleanHash = cleanHash.split('#import=')[1];
             }
-            const decoded = decodeURIComponent(atob(cleanHash));
+
+            let decoded = null;
+
+            // Önce LZString ile çözmeyi dene (generateExportHash LZString kullanıyor)
+            if (typeof LZString !== 'undefined') {
+                decoded = LZString.decompressFromEncodedURIComponent(cleanHash);
+            }
+
+            // LZString başarısız olduysa veya mevcut değilse btoa ile dene
+            if (!decoded) {
+                try {
+                    decoded = decodeURIComponent(atob(cleanHash));
+                } catch(e2) {
+                    return false;
+                }
+            }
+
             const parsedData = JSON.parse(decoded);
             if (parsedData && Array.isArray(parsedData.classes)) {
                 return {
