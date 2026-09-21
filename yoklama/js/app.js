@@ -734,20 +734,32 @@ function setupSettings() {
             html5QrcodeScanner = new Html5QrcodeScanner(
                 "qr-reader", { fps: 10, qrbox: 250 }, false);
             html5QrcodeScanner.render((decodedText, decodedResult) => {
-                html5QrcodeScanner.clear();
-                html5QrcodeScanner = null;
-                document.getElementById('qrScannerModal').classList.remove('active');
-                
                 let hash = decodedText;
                 if (hash.includes('#import=')) {
                     hash = hash.split('#import=')[1];
                 }
-                confirmImport(hash, (success) => {
-                    if(success) {
-                        showToast('Veriler başarıyla aktarıldı!');
-                        setTimeout(() => window.location.reload(), 1000);
-                    }
-                });
+                
+                // Freeze the camera and flash
+                html5QrcodeScanner.pause();
+                const flashEl = document.getElementById('cameraFlash');
+                if (flashEl) {
+                    flashEl.classList.add('active');
+                    setTimeout(() => flashEl.classList.remove('active'), 1000);
+                }
+                
+                // Wait 1 second before showing confirm modal
+                setTimeout(() => {
+                    html5QrcodeScanner.clear();
+                    html5QrcodeScanner = null;
+                    document.getElementById('qrScannerModal').classList.remove('active');
+                    
+                    confirmImport(hash, (success) => {
+                        if(success) {
+                            showToast('Veriler başarıyla aktarıldı!');
+                            setTimeout(() => window.location.reload(), 1000);
+                        }
+                    });
+                }, 800);
             }, (error) => {
                 // Ignore errors
             });
@@ -801,25 +813,100 @@ function setupSettings() {
         showToast('TXT yedeği başarıyla indirildi!');
     });
 
-    // TXT FILE IMPORT (the invisible input overlaid on the setting-item)
-    document.getElementById('fileImportInput').addEventListener('change', (e) => {
+    // PDF FILE EXPORT
+    document.getElementById('btnExportPdf').addEventListener('click', () => {
+        document.getElementById('exportDataModal').classList.remove('active');
+        const hash = Storage.generateExportHash();
+        
+        if (window.jspdf) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('tr-TR');
+            const timeStr = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            
+            doc.setFontSize(22);
+            doc.text("Yoklama Takip - Yedek Dosyasi", 105, 20, null, null, "center");
+            
+            doc.setFontSize(12);
+            doc.text(`Tarih: ${dateStr} ${timeStr}`, 105, 30, null, null, "center");
+            
+            doc.setFontSize(10);
+            doc.text("Bu PDF dosyasi yedekleme verilerinizi icerir. Uygulamaya yukleyerek geri alabilirsiniz.", 105, 40, null, null, "center");
+            
+            doc.setFontSize(8);
+            const wrappedHash = "YKLM_BGN:" + hash + ":YKLM_END";
+            const splitHash = doc.splitTextToSize(wrappedHash, 180);
+            doc.text(splitHash, 15, 60);
+            
+            doc.save(`yoklama_yedek_${dateStr.replace(/\./g, '-')}_${timeStr.replace(':', '-')}.pdf`);
+            showToast('PDF yedeği başarıyla indirildi!');
+        } else {
+            showToast('Hata: PDF kütüphanesi yüklenemedi.');
+        }
+    });
+
+    // TXT / PDF FILE IMPORT (the invisible input overlaid on the setting-item)
+    document.getElementById('fileImportInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const hash = event.target.result.trim();
-            if (hash) {
-                confirmImport(hash, (success) => {
-                    if (success) {
-                        showToast('Dosyadan veriler başarıyla alındı!');
-                        setTimeout(() => window.location.reload(), 1000);
+        
+        if (file.name.toLowerCase().endsWith('.pdf')) {
+            // PDF Import
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const typedarray = new Uint8Array(event.target.result);
+                    if (window.pdfjsLib) {
+                        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                        const page = await pdf.getPage(1);
+                        const textContent = await page.getTextContent();
+                        
+                        const allText = textContent.items.map(item => item.str).join('').replace(/\s+/g, '');
+                        
+                        const match = allText.match(/YKLM_BGN:(.*?):YKLM_END/);
+                        
+                        if (match && match[1]) {
+                            const extractedHash = match[1];
+                            confirmImport(extractedHash, (success) => {
+                                if (success) {
+                                    showToast('PDF dosyasından veriler başarıyla alındı!');
+                                    setTimeout(() => window.location.reload(), 1000);
+                                }
+                            });
+                        } else {
+                            showToast('Hata: PDF içinde geçerli veri bulunamadı.');
+                        }
+                    } else {
+                        showToast('Hata: PDF okuyucu yüklenemedi.');
                     }
-                });
-            } else {
-                showToast('Hata: TXT dosyası boş veya geçersiz.');
-            }
-        };
-        reader.readAsText(file);
+                } catch(err) {
+                    console.error(err);
+                    showToast('Hata: PDF dosyası okunamadı.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            // TXT Import
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const hash = event.target.result.trim();
+                if (hash) {
+                    confirmImport(hash, (success) => {
+                        if (success) {
+                            showToast('Dosyadan veriler başarıyla alındı!');
+                            setTimeout(() => window.location.reload(), 1000);
+                        }
+                    });
+                } else {
+                    showToast('Hata: TXT dosyası boş veya geçersiz.');
+                }
+            };
+            reader.readAsText(file);
+        }
+        e.target.value = '';
     });
 
 
