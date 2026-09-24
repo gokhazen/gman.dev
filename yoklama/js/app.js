@@ -14,6 +14,7 @@ function initApp() {
     setupNavigation();
     setupThemeToggle();
     setupModals();
+    setupBackButtonModals();
     setupForms();
     setupSettings();
     setupDateNavigation();
@@ -21,6 +22,55 @@ function initApp() {
     updateDateDisplay();
     renderTodayView();
     renderScheduleView(1); // Default to Monday (1) instead of current day
+}
+
+/* ==========================================================================
+   BACK BUTTON FOR MODALS (ANDROID / IOS SWIPE BACK)
+   ========================================================================== */
+function setupBackButtonModals() {
+    window.modalStack = [];
+    window.ignoreNextPopState = false;
+    let syncTimeout = null;
+    
+    const observer = new MutationObserver(() => {
+        if (syncTimeout) clearTimeout(syncTimeout);
+        syncTimeout = setTimeout(() => {
+            const activeModals = Array.from(document.querySelectorAll('.modal-overlay.active'));
+            
+            while (window.modalStack.length < activeModals.length) {
+                window.modalStack.push(activeModals[window.modalStack.length]);
+                history.pushState({ isModal: true }, "");
+            }
+            
+            while (window.modalStack.length > activeModals.length) {
+                window.modalStack.pop();
+                if (history.state && history.state.isModal) {
+                    window.ignoreNextPopState = true;
+                    history.back();
+                }
+            }
+            
+            for(let i = 0; i < activeModals.length; i++) {
+                window.modalStack[i] = activeModals[i];
+            }
+        }, 10);
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    window.addEventListener('popstate', (e) => {
+        if (window.ignoreNextPopState) {
+            window.ignoreNextPopState = false;
+            return;
+        }
+        
+        if (window.modalStack.length > 0) {
+            const topmost = window.modalStack.pop();
+            topmost.classList.remove('active');
+        }
+    });
 }
 
 /* ==========================================================================
