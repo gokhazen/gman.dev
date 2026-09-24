@@ -33,23 +33,33 @@
     <!-- PDF Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    
+
     <style>
         /* Camera Flash Effect */
         .camera-flash {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background-color: white;
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
         }
+
         .camera-flash.active {
             animation: flashAnimation 1s ease-out;
         }
+
         @keyframes flashAnimation {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -238,8 +248,8 @@
 
                 <!-- Sürüm Bilgisi -->
                 <div style="text-align: center; padding: 0.5rem; margin-bottom: 2rem;">
-                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">v0.9.4 Beta</p>
-                    <p style="font-size: 0.7rem; color: var(--text-muted); opacity: 0.7;">Sürüm Tarihi: 21 Eylül 2026
+                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">v0.9.5 Beta</p>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); opacity: 0.7;">Sürüm Tarihi: 24 Eylül 2026
                     </p>
                 </div>
             </section>
@@ -439,7 +449,8 @@
                     <div class="setting-text">
                         <h3>PDF Olarak Kaydet (.PDF)</h3>
                         <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
-                            Verilerinizi bir PDF belgesine yazar. Her cihazda kolayca taşınabilir ve içe aktarılabilir.</p>
+                            Verilerinizi bir PDF belgesine yazar. Her cihazda kolayca taşınabilir ve içe aktarılabilir.
+                        </p>
                     </div>
                 </div>
                 <div class="setting-item" id="btnExportManual">
@@ -488,7 +499,8 @@
                     <div class="setting-text">
                         <h3>Dosyadan Yükle (TXT / PDF)</h3>
                         <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
-                            İndirdiğiniz veya paylaşılan .TXT veya .PDF formatındaki veri dosyasını seçerek yükleyin.</p>
+                            İndirdiğiniz veya paylaşılan .TXT veya .PDF formatındaki veri dosyasını seçerek yükleyin.
+                        </p>
                     </div>
                 </div>
 
@@ -586,10 +598,11 @@
 
     <!-- QR Scanner Modal -->
     <div id="qrScannerModal" class="modal-overlay fullscreen-modal">
-        <div class="modal-content glass-panel text-center" style="display:flex; flex-direction:column; position:relative; overflow:hidden;">
+        <div class="modal-content glass-panel text-center"
+            style="display:flex; flex-direction:column; position:relative; overflow:hidden;">
             <!-- Camera Flash Element -->
             <div id="cameraFlash" class="camera-flash"></div>
-            
+
             <div class="modal-header">
                 <h3>QR Kodu Tarat</h3>
                 <button class="close-modal" id="btnCloseScanner"><i data-lucide="x"></i></button>

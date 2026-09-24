@@ -96,22 +96,31 @@ const Storage = {
 
     exportToImage: () => {
         const hash = Storage.generateExportHash();
-        const dataStr = hash + '\0'; 
-        const totalPixels = Math.ceil(dataStr.length / 3);
-        const dim = Math.max(4, Math.ceil(Math.sqrt(totalPixels)));
+        const dataStr = 'YKLM' + hash + '\0'; 
+        
+        const nibbles = [];
+        for (let i = 0; i < dataStr.length; i++) {
+            const code = dataStr.charCodeAt(i);
+            nibbles.push(code >> 4);
+            nibbles.push(code & 15);
+        }
+        
+        const totalChannels = nibbles.length;
+        const totalPixelsRequired = Math.ceil(totalChannels / 3);
+        const dim = Math.max(10, Math.ceil(Math.sqrt(totalPixelsRequired)));
         
         const canvas = document.createElement('canvas');
         canvas.width = dim;
         canvas.height = dim;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true, colorSpace: 'srgb' });
         const imgData = ctx.createImageData(dim, dim);
         const data = imgData.data;
         
-        let charIndex = 0;
+        let n = 0;
         for (let i = 0; i < data.length; i += 4) {
-            data[i] = charIndex < dataStr.length ? dataStr.charCodeAt(charIndex++) : Math.floor(Math.random() * 256);
-            data[i+1] = charIndex < dataStr.length ? dataStr.charCodeAt(charIndex++) : Math.floor(Math.random() * 256);
-            data[i+2] = charIndex < dataStr.length ? dataStr.charCodeAt(charIndex++) : Math.floor(Math.random() * 256);
+            data[i]   = n < nibbles.length ? nibbles[n++] * 17 : Math.floor(Math.random() * 256);
+            data[i+1] = n < nibbles.length ? nibbles[n++] * 17 : Math.floor(Math.random() * 256);
+            data[i+2] = n < nibbles.length ? nibbles[n++] * 17 : Math.floor(Math.random() * 256);
             data[i+3] = 255;
         }
         
@@ -125,25 +134,50 @@ const Storage = {
             const canvas = document.createElement('canvas');
             canvas.width = img.width;
             canvas.height = img.height;
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d', { willReadFrequently: true, colorSpace: 'srgb' });
             ctx.drawImage(img, 0, 0);
             
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imgData.data;
-            let result = '';
             
+            // Try robust decode first
+            let resultRobust = '';
+            let nibbles = [];
             for (let i = 0; i < data.length; i += 4) {
-                if (data[i] === 0) break;
-                result += String.fromCharCode(data[i]);
-                
-                if (data[i+1] === 0) break;
-                result += String.fromCharCode(data[i+1]);
-                
-                if (data[i+2] === 0) break;
-                result += String.fromCharCode(data[i+2]);
+                nibbles.push(Math.round(data[i] / 17));
+                nibbles.push(Math.round(data[i+1] / 17));
+                nibbles.push(Math.round(data[i+2] / 17));
             }
             
-            if (callback) callback(result);
+            for (let i = 0; i < nibbles.length - 1; i += 2) {
+                const high = nibbles[i] || 0;
+                const low = nibbles[i+1] || 0;
+                const cHigh = Math.max(0, Math.min(15, high));
+                const cLow = Math.max(0, Math.min(15, low));
+                const code = (cHigh << 4) | cLow;
+                if (code === 0) break;
+                resultRobust += String.fromCharCode(code);
+            }
+            
+            if (resultRobust.startsWith('YKLM')) {
+                if (callback) callback(resultRobust.substring(4));
+                return;
+            }
+            
+            // Fallback to old decode
+            let resultOld = '';
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i] === 0) break;
+                resultOld += String.fromCharCode(data[i]);
+                
+                if (data[i+1] === 0) break;
+                resultOld += String.fromCharCode(data[i+1]);
+                
+                if (data[i+2] === 0) break;
+                resultOld += String.fromCharCode(data[i+2]);
+            }
+            
+            if (callback) callback(resultOld);
         };
         img.onerror = () => {
             if (callback) callback(null);
