@@ -8,7 +8,8 @@ const STORAGE_KEY = 'yoklama_takip_data';
 const getEmptyData = () => ({
     classes: [], 
     attendance: {},
-    theme: 'dark'
+    theme: 'dark',
+    hapticFeedback: true
 });
 
 // Prebuilt Schedules are now fetched dynamically via API.
@@ -21,6 +22,7 @@ const Storage = {
             if (!dataStr) return getEmptyData();
             const parsed = JSON.parse(dataStr);
             if (!parsed.theme) parsed.theme = 'dark';
+            if (parsed.hapticFeedback === undefined) parsed.hapticFeedback = true;
             return parsed;
         } catch (e) {
             console.error("Error loading data:", e);
@@ -343,10 +345,8 @@ const Storage = {
         const limit = cls ? parseInt(cls.absenceLimit) || 4 : 4;
         const dangerPercentage = Math.min(100, (absent / limit) * 100);
 
-        // Proxy counts as present for display
-        const totalPresentDisplay = present + proxy;
-
-        return { present: totalPresentDisplay, absent, excused, proxy, canceled, limit, dangerPercentage, absentDates };
+        // Return pure present and proxy separately
+        return { present, absent, excused, proxy, canceled, limit, dangerPercentage, absentDates };
     }
 };
 

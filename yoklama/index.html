@@ -91,6 +91,9 @@
                     <button id="btnNextDay" class="icon-btn"><i data-lucide="chevron-right"></i></button>
                 </div>
 
+                <!-- LIVE CLASS / COUNTDOWN WIDGET -->
+                <div id="liveClassWidget"></div>
+
                 <div id="todayClassesList" class="class-list">
                     <!-- Classes will be injected here -->
                 </div>
@@ -127,9 +130,15 @@
                         <div class="day-dot"></div>
                     </div>
                 </div>
-                <button id="btnOpenAddClassModal" class="btn-primary w-100 mt-1" style="margin-bottom: 1.5rem;">
-                    <i data-lucide="plus"></i> Yeni Ders Ekle
-                </button>
+                
+                <div style="display:flex; gap:10px; margin-top:0.5rem; margin-bottom:1.5rem;">
+                    <button id="btnOpenAddClassModal" class="btn-primary" style="flex:1;">
+                        <i data-lucide="plus"></i> Yeni Ders Ekle
+                    </button>
+                    <button id="btnDownloadStoryModal" class="btn-secondary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:var(--bg-panel); color:var(--text-main); border:1px solid var(--border-color); font-weight:600; font-size:0.88rem; padding:10px 12px; border-radius:var(--radius-md); cursor:pointer;">
+                        <i data-lucide="sparkles" style="color:var(--primary); width:17px; height:17px;"></i> Story İndir
+                    </button>
+                </div>
 
                 <div id="scheduleList" class="class-list mb-4">
                     <!-- Schedule goes here -->
@@ -146,40 +155,27 @@
             <!-- AYARLAR VIEW -->
             <section id="view-settings" class="view">
                 <div class="settings-card glass-panel mb-4">
-                    <div class="setting-item"
-                        style="cursor: default; flex-direction: column; align-items: flex-start; gap: 12px; padding: var(--spacing-lg) var(--spacing-md);">
-                        <div style="display: flex; align-items: center; width: 100%;">
-                            <div class="setting-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i
-                                    data-lucide="palette"></i></div>
-                            <div class="setting-text">
-                                <h3>Tema Seçimi</h3>
-                                <p>Renk ve tarzını seç</p>
-                            </div>
+                    <div class="setting-item" id="btnOpenThemeModal">
+                        <div class="setting-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i
+                                data-lucide="palette"></i></div>
+                        <div class="setting-text">
+                            <h3>Tema Seçimi</h3>
+                            <p id="currentThemeLabel">Karanlık (Klasik)</p>
                         </div>
-                        <select id="themeSelect"
-                            style="width:100%; background:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:8px; outline:none; cursor:pointer; font-family:'Outfit', sans-serif; font-size:0.9rem; appearance:none;">
-                            <option value="dark">Karanlık (Klasik)</option>
-                            <option value="dracula">Dracula</option>
-                            <option value="nord">Nord</option>
-                            <option value="oled">OLED Siyah</option>
-                            <option value="cyberpunk">Cyberpunk</option>
-                            <option value="midnight">Gece Yarısı</option>
-                            <option value="sunset">Gün Batımı</option>
-                            <option value="ocean">Okyanus (Ocean)</option>
-                            <option value="forest">Orman (Forest)</option>
-                            <option value="hacker">Hacker (Yeşil)</option>
-                            <option value="lavender">Lavanta (Lavender)</option>
-                            <option value="peach">Şeftali (Peach)</option>
-                            <option value="mint">Nane Yeşili (Mint)</option>
-                            <option value="sky">Gökyüzü (Sky)</option>
-                            <option value="vanilla">Vanilya (Vanilla)</option>
-                            <option value="coffee">Kahve (Açık)</option>
-                            <option value="rose">Gül (Rose)</option>
-                            <option value="emerald">Zümrüt (Emerald)</option>
-                            <option value="amethyst">Ametist (Amethyst)</option>
-                            <option value="sand">Kum (Sand)</option>
-                            <option value="slate">Koyu Kayrak (Slate)</option>
-                        </select>
+                        <i data-lucide="chevron-right" class="text-muted"></i>
+                    </div>
+
+                    <div class="setting-item" style="cursor: default;">
+                        <div class="setting-icon" style="background: linear-gradient(135deg, #ec4899, #be185d);"><i
+                                data-lucide="vibrate"></i></div>
+                        <div class="setting-text">
+                            <h3>Titreşimli Geri Bildirim</h3>
+                            <p>Butonlara dokunurken hafif titreşim (Haptic)</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="hapticToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
                     </div>
                 </div>
 
@@ -198,6 +194,16 @@
                         <div class="setting-text">
                             <h3>Verileri İçe Aktar</h3>
                             <p>Yedeği cihazına geri yükle</p>
+                        </div>
+                        <i data-lucide="chevron-right" class="text-muted"></i>
+                    </div>
+
+                    <div class="setting-item" id="btnOpenCalendarExportModal">
+                        <div class="setting-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);"><i
+                                data-lucide="calendar-plus"></i></div>
+                        <div class="setting-text">
+                            <h3>Google / Apple Takvim'e Aktar</h3>
+                            <p>Haftalık programı takvimine (.ics) ekle</p>
                         </div>
                         <i data-lucide="chevron-right" class="text-muted"></i>
                     </div>
@@ -248,8 +254,8 @@
 
                 <!-- Sürüm Bilgisi -->
                 <div style="text-align: center; padding: 0.5rem; margin-bottom: 2rem;">
-                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">v0.9.5 Beta</p>
-                    <p style="font-size: 0.7rem; color: var(--text-muted); opacity: 0.7;">Sürüm Tarihi: 24 Eylül 2026
+                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">v0.9.6 Beta</p>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); opacity: 0.7;">Sürüm Tarihi: 20 Ekim 2026
                     </p>
                 </div>
             </section>
@@ -453,19 +459,29 @@
                         </p>
                     </div>
                 </div>
-                <div class="setting-item" id="btnExportManual">
-                    <div class="setting-icon" style="background:#4b5563"><i class="fa-solid fa-code"></i><i
-                            data-lucide="code"></i></div>
-                    <div class="setting-text">
-                        <h3>Kodu Kopyala</h3>
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
-                            Şifrelenmiş veriyi düz metin olarak panoya kopyalar. Bir not defterine (Notes) veya
-                            kendinize WhatsApp'tan atarak yedekleyebilirsiniz.</p>
+                    <div class="setting-item" id="btnExportCalendarFromModal">
+                        <div class="setting-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);"><i
+                                data-lucide="calendar-plus"></i></div>
+                        <div class="setting-text">
+                            <h3>Google / Apple Takvim (.ICS)</h3>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
+                                Haftalık ders programınızı telefonunuzun yerel takvimine otomatik aktarın.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="setting-item" id="btnExportManual">
+                        <div class="setting-icon" style="background:#4b5563"><i class="fa-solid fa-code"></i><i
+                                data-lucide="code"></i></div>
+                        <div class="setting-text">
+                            <h3>Kodu Kopyala</h3>
+                            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px; line-height:1.2;">
+                                Şifrelenmiş veriyi düz metin olarak panoya kopyalar. Bir not defterine (Notes) veya
+                                kendinize WhatsApp'tan atarak yedekleyebilirsiniz.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Import Data Modal -->
     <div id="importDataModal" class="modal-overlay fullscreen-modal">
@@ -743,6 +759,117 @@
             <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
                 <button class="btn-secondary close-modal" style="padding: 6px 12px; font-size: 0.85rem;">Kapat</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Theme Picker Fullscreen Modal -->
+    <div id="themePickerModal" class="modal-overlay fullscreen-modal theme-studio-modal">
+        <div class="modal-content glass-panel theme-studio-content">
+            <div class="theme-studio-header">
+                <button type="button" class="studio-back-btn close-modal" aria-label="Geri">
+                    <i data-lucide="arrow-left"></i>
+                </button>
+                <div class="studio-title-box">
+                    <h3 class="studio-title">Tema Seçimi</h3>
+                </div>
+                <div id="themeActiveBadge" class="theme-active-badge">Aktif: Karanlık</div>
+            </div>
+
+            <!-- Theme Cards Grid (All themes shown directly) -->
+            <div id="themeGridContainer" class="theme-cards-container">
+                <!-- Theme cards will be injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Story / Wallpaper Download Fullscreen Modal (Minimal & Clean) -->
+    <div id="storyExportModal" class="modal-overlay fullscreen-modal story-minimal-modal">
+        <div class="modal-content glass-panel story-minimal-content">
+            <!-- Header -->
+            <div class="story-minimal-header">
+                <button type="button" class="studio-back-btn close-modal" aria-label="Geri">
+                    <i data-lucide="arrow-left"></i>
+                </button>
+                <div class="studio-title-box">
+                    <h3 class="studio-title">Program Görseli</h3>
+                </div>
+                <span id="storyStageResBadge" class="theme-active-badge">1080 × 2400</span>
+            </div>
+
+            <!-- Preview Stage -->
+            <div class="story-minimal-stage">
+                <div class="story-stage-ambient-glow" id="storyStageGlow"></div>
+                <img id="storyPreviewImg" class="story-minimal-img" alt="Ders Programı Görseli">
+            </div>
+
+            <!-- Resolution Selector (Minimal Chips) -->
+            <div class="story-res-selector-section">
+                <div class="story-res-header-row">
+                    <span class="story-res-title">Format & Çözünürlük</span>
+                    <span id="storyStageAutoTag" class="story-auto-pill">Cihazınıza Uygun</span>
+                </div>
+                <div class="story-chips-scroll" id="storyChipsScroll">
+                    <!-- Minimal chips rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="story-minimal-footer">
+                <button id="btnDownloadStoryImage" class="btn-primary story-dl-btn">
+                    <i data-lucide="download"></i>
+                    <span>Görseli İndir</span>
+                </button>
+                <button type="button" class="btn-secondary close-modal story-close-btn">
+                    Kapat
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar (.ics) Export Fullscreen Modal -->
+    <div id="calendarExportModal" class="modal-overlay fullscreen-modal">
+        <div class="modal-content glass-panel" style="display:flex; flex-direction:column;">
+            <div class="modal-header">
+                <h3>Takvime Aktar (.ICS)</h3>
+                <button class="close-modal"><i data-lucide="x"></i></button>
+            </div>
+            <p class="text-muted mb-3" style="font-size:0.85rem; line-height:1.4;">
+                Ders programınızı Google Takvim, Apple Takvim veya Outlook'a kolayca aktarın.
+            </p>
+            
+            <div class="settings-card mb-3">
+                <div class="input-group mb-3">
+                    <label style="font-weight:600; font-size:0.88rem; color:var(--text-main); margin-bottom:6px; display:block;">Dönem Başlangıç Pazartesisi</label>
+                    <input type="date" id="calStartDate" style="width:100%; background:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:10px 14px; outline:none; font-family:inherit; font-size:0.95rem;">
+                </div>
+
+                <div class="input-row mb-2">
+                    <div class="input-group">
+                        <label style="font-weight:600; font-size:0.88rem; color:var(--text-main); margin-bottom:6px; display:block;">Dönem Süresi</label>
+                        <select id="calDurationWeeks" style="width:100%; background:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:10px 12px; outline:none; font-family:inherit; font-size:0.9rem;">
+                            <option value="12">12 Hafta</option>
+                            <option value="14" selected>14 Hafta (Standart)</option>
+                            <option value="16">16 Hafta</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label style="font-weight:600; font-size:0.88rem; color:var(--text-main); margin-bottom:6px; display:block;">Ders Süresi</label>
+                        <select id="calClassDuration" style="width:100%; background:var(--bg-base); color:var(--text-main); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:10px 12px; outline:none; font-family:inherit; font-size:0.9rem;">
+                            <option value="40">40 Dakika</option>
+                            <option value="45">45 Dakika</option>
+                            <option value="50" selected>50 Dakika</option>
+                            <option value="60">60 Dakika</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button id="btnGenerateIcs" class="btn-primary w-100 mb-2" style="padding:12px; font-size:0.95rem;">
+                <i data-lucide="download"></i> .ICS Dosyasını İndir
+            </button>
+            <p class="text-muted text-center" style="font-size:0.78rem; line-height:1.4;">
+                İndirilen dosyaya tıkladığınızda telefonunuz veya bilgisayarınız haftalık dersleri yerel takviminize otomatik olarak işleyecektir.
+            </p>
         </div>
     </div>
 
