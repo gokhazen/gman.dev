@@ -1,0 +1,1 @@
+var t;(function(r){r[r.Bus=1]=`Bus`,r[r.Tram=2]=`Tram`,r[r.Metro=3]=`Metro`,r[r.Funicular=4]=`Funicular`,r[r.Ship=5]=`Ship`,r[r.HighSpeedTrain=6]=`HighSpeedTrain`})(t||(t={}));function u(r){let n=r.lastIndexOf(`_`);return n<0?{routeNumber:r,direction:`0`}:{routeNumber:r.slice(0,n),direction:r.slice(n+1)}}export{u as n,t};
