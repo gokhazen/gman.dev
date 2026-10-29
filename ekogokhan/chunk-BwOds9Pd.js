@@ -1,0 +1,1 @@
+import{n as E}from"./chunk-DnLseXkL.js";var e=class extends E{async show(o){}async hide(o){}};export{e as SplashScreenWeb};
