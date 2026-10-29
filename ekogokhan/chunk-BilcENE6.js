@@ -1,1 +1,0 @@
-function a(e){return e.toLocaleLowerCase(`tr-TR`).replace(new RegExp(`(^|[\\s\\-/(.])(\\p{L})`,`gu`),(o,r,t)=>r+t.toLocaleUpperCase(`tr-TR`))}export{a as t};
