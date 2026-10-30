@@ -2,5 +2,17 @@
   "regionId": null,
   "appName": null,
   "kentkartToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrZW50a2FydC5jb20iLCJzdWIiOiJBQzE2IiwiYXVkIjoiYUMxdW4iLCJleHAiOjE3OTg3NTA4MDAsIm5iZiI6MTc4MTUwNzgxMSwiaWF0IjoxNzgxNTA3ODExLCJqdGkiOiI0MDcwZWU0NC1kNGQ0LTQ1MzQtOWVjNC0wZDdmZGUzZTcyYWUiLCJzeXN0ZW1faWQiOiIwMDQiLCJzY29wZXMiOltdfQ.Wvc_ykK--hQ_xvv5Sk6NRtAcAG4frpHAsVCwJWFDtOuN6GpH5UR2MFfdhrK-R7gjYo_mgvbqPACDrfV94EfM7wCA_Dl4xo0nZLV5QyMnsGlkibDoJOKFenXiAYbmjIaAsA9-RPCuCxQbjPri0ao4D1_amFxZcmWLUPLnwZaE1Mo6AWuST1oy_l04_lbggWzM2zZFpPZe9JvRy8hvEJFFfKADA071ihFtLyX1mLvKH3HG5jAeOAD9zhy3cHRRkCQNpc-qgOMe1zlwb-xAzvXLpj9WhvkBPLLMKW4mkLNOa5Dax1nWBNiyIclq7IKXN3JEHfRfX_XD9Dqmn7S6v1QUKg",
-  "apiProxyUrl": null
+  "apiProxyUrl": null,
+  "homeUrl": "https://gman.dev/ekogokhan",
+  "vehicleModels": {
+    "004": [
+      {
+        "plate": "41 AIG",
+        "model": "articulated"
+      }
+    ]
+  },
+  "vehicleDefaults": {
+    "033": "midibus"
+  }
 }
