@@ -9,6 +9,22 @@
       {
         "plate": "41 AIG",
         "model": "articulated"
+      },
+      {
+        "plate": "41 HO",
+        "model": "minibus"
+      },
+      {
+        "plate": "41 J",
+        "model": "minibus"
+      },
+      {
+        "plate": "41 ALL",
+        "model": "articulated"
+      },
+      {
+        "plate": "41 AUJ",
+        "model": "articulated"
       }
     ]
   },
