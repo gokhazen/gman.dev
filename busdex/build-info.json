@@ -1,0 +1,18 @@
+{
+  "builtAt": "2026-11-11T12:38:09.652Z",
+  "buses": 10,
+  "photos": 64,
+  "brands": 3,
+  "models": 7,
+  "settings": {
+    "maxEdge": 1920,
+    "quality": 80,
+    "format": "webp"
+  },
+  "photoBytes": {
+    "original": 122954405,
+    "output": 14931264,
+    "savedPercent": 88
+  },
+  "skipped": []
+}
